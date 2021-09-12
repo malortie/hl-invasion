@@ -22,7 +22,7 @@ public:
 	int				m_iEnt;
 	CImageLabel		*m_pImage;
 
-	CImageLabel		*m_pDigit	[4];
+	CImageLabel		*m_pDigit	[4] {};
 	int				m_iDigit	[4];
 
 
