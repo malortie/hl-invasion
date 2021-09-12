@@ -53,6 +53,11 @@ extern void CopyToBodyQue(entvars_t* pev);
 extern int giPrecacheGrunt;
 extern int gmsgSayText;
 
+// modif de Julien
+extern CBaseEntity *FindEntityForward( CBaseEntity *pMe );
+
+
+
 extern cvar_t allow_spectators;
 
 extern int g_teamplay;
@@ -496,6 +501,7 @@ called each time a player uses a "cmd" command
 ============
 */
 extern float g_flWeaponCheat;
+extern int g_testmode;	// modif de Julien
 
 // Use CMD_ARGV,  CMD_ARGV, and CMD_ARGC to get pointers the character string command.
 void ClientCommand( edict_t *pEntity )
@@ -558,6 +564,163 @@ void ClientCommand( edict_t *pEntity )
 	{
 		GetClassPtr((CBasePlayer *)pev)->SelectLastItem();
 	}
+	//modif de Julien
+	else if (FStrEq(pcmd, "test" ))
+	{
+		ALERT ( at_console , "testmode ON\n" );
+		g_testmode = 1;
+
+		int i = 0;
+		while ( i < 5 )
+		{
+			GetClassPtr((CBasePlayer *)pev)->CheatImpulseCommands( 101 );
+			i++;
+		}
+	}
+
+	//modif de Julien
+	else if (FStrEq(pcmd, "testmode" ))
+	{
+		ALERT ( at_console , "testmode ON\n" );
+		g_testmode = 1;
+	}
+
+
+
+	// SCHED_DIE
+	//modif de Julien
+	else if (FStrEq(pcmd, "flybee" ))
+	{
+
+/*		CBaseMonster *pFlybee = ( CBaseMonster *) UTIL_FindEntityByClassname ( NULL, "monster_flybee" );
+
+		if ( pFlybee != NULL )
+		{
+			pFlybee->GetScheduleOfType ( SCHED_DIE );
+		}*/
+
+		CBaseEntity *pMe = CBaseEntity::Instance ( pEntity );
+
+
+		CBaseEntity *pE = FindEntityForward( pMe );
+
+		if ( pE )
+		{
+			if ( pE->pev->takedamage )
+				pE->TakeDamage ( pev, pev, pE->pev->health, DMG_GENERIC );
+		}
+	}
+
+	//modif de Julien
+	else if (FStrEq(pcmd, "ordimenu" ))
+	{
+		if ( std::atoi(CMD_ARGV(1)) == 2 )
+		{
+			EMIT_SOUND( ENT(pev), CHAN_ITEM, "buttons/blip2.wav", 1, ATTN_NORM );
+
+			//désactive les caméras
+			
+			edict_t* pentCherche = NULL;
+
+			for ( int i = 0 ; i<15 ; i++ )
+			{
+				pentCherche = FIND_ENTITY_BY_CLASSNAME ( pentCherche, "monster_camera" );
+
+				if (!FNullEnt(pentCherche))
+				{
+					CBaseEntity *pTarget = CBaseEntity::Instance(pentCherche);
+					pTarget->Use( CBaseEntity::Instance(pEntity), CBaseEntity::Instance(pEntity), USE_ON, 1 );
+					//la valeur 1 désactive la camera, 0 la déclenche
+				}
+			}
+
+			// détruit certains triggers
+
+			pentCherche = NULL;
+
+			for ( int j = 0 ; j<5 ; j++ )
+			{
+				pentCherche = FIND_ENTITY_BY_TARGETNAME ( pentCherche, "security" );
+
+				if (!FNullEnt(pentCherche))
+					UTIL_Remove( CBaseEntity::Instance(pentCherche) );
+			}
+			for ( int k = 0 ; k<5 ; k++ )
+			{
+				pentCherche = FIND_ENTITY_BY_TARGETNAME ( pentCherche, "security_2" );
+
+				if (!FNullEnt(pentCherche))
+					UTIL_Remove( CBaseEntity::Instance(pentCherche) );
+			}
+
+			for ( int l = 0 ; l<5 ; l++ )
+			{
+				pentCherche = FIND_ENTITY_BY_TARGETNAME ( pentCherche, "security_3" );
+
+				if (!FNullEnt(pentCherche))
+					UTIL_Remove( CBaseEntity::Instance(pentCherche) );
+			}
+
+		}
+
+		else if ( std::atoi(CMD_ARGV(1)) == 1 )
+			EMIT_SOUND( ENT(pev), CHAN_ITEM, "sentences/blip.wav", 1, ATTN_NORM );
+	}
+
+	//modif de Julien
+	else if (FStrEq(pcmd, "ordicontrol" ))
+	{
+		CBaseEntity *pEnt = UTIL_FindEntityByClassname ( NULL, "func_conveyorcontrol" );
+
+		if ( pEnt != NULL )
+		{
+			pEnt->Use ( GetClassPtr((CBasePlayer *)pev), GetClassPtr((CBasePlayer *)pev), USE_OFF, std::atoi(CMD_ARGV(1)) );
+		}
+
+	}
+
+	else if (FStrEq(pcmd, "keypad" ))
+	{
+		if ( std::atoi(CMD_ARGV(1)) == 0 )
+		{
+			EMIT_SOUND( ENT(pev), CHAN_ITEM, "buttons/button10.wav", 1, ATTN_NORM );
+			return;
+		}
+
+		CBaseEntity *pEntity = UTIL_FindEntityByClassname ( NULL, "func_keypad" );
+
+		while ( pEntity != NULL )
+		{
+			if ( ENTINDEX(pEntity->edict()) == std::atoi(CMD_ARGV(1)) )
+			{
+				FireTargets ( STRING(pEntity->pev->target), pEntity, GetClassPtr((CBasePlayer *)pev), USE_ON, 0 );
+				break;
+			}
+
+			pEntity = UTIL_FindEntityByClassname ( pEntity, "func_keypad" );
+		}
+
+		EMIT_SOUND( ENT(pev), CHAN_ITEM, "buttons/blip2.wav", 1, ATTN_NORM );
+
+	}
+
+	else if (FStrEq(pcmd, "medkit" ))
+	{
+		GetClassPtr((CBasePlayer *)pev)->UseMedkit();
+	}
+
+	else if (FStrEq(pcmd, "battery" ))
+	{
+		GetClassPtr((CBasePlayer *)pev)->UseBattery(0);
+	}
+
+	else if (FStrEq(pcmd, "soin" ))
+	{
+		int commande = std::atoi(CMD_ARGV(1));
+		GetClassPtr((CBasePlayer *)pev)->UseBattery(commande);
+	}
+
+
 	else if ( FStrEq( pcmd, "spectate" ) )	// clients wants to become a spectator
 	{
 			// always allow proxies to become a spectator
@@ -910,6 +1073,10 @@ void ClientPrecache( void )
 	PRECACHE_SOUND("player/geiger2.wav");
 	PRECACHE_SOUND("player/geiger1.wav");
 
+	// modif de Julien
+
+	PRECACHE_SOUND("items/smallmedkit2.wav");
+
 	if (giPrecacheGrunt)
 		UTIL_PrecacheOther("monster_human_grunt");
 }
@@ -926,7 +1093,7 @@ const char *GetGameDescription()
 	if ( g_pGameRules ) // this function may be called before the world has spawned, and the game rules initialized
 		return g_pGameRules->GetGameDescription();
 	else
-		return "Half-Life";
+		return "Half-Life : Invasion";
 }
 
 /*
@@ -1067,6 +1234,20 @@ void SetupVisibility( edict_t *pViewEntity, edict_t *pClient, unsigned char **pv
 		return;
 	}
 
+	// modif de Julien
+	// camera du tank
+
+	CBaseEntity *pEnt = CBaseEntity::Instance(pClient);
+	if ( pEnt->IsPlayer() )
+	{
+		CBasePlayer *pPlayer = (CBasePlayer*)pEnt;
+		if( pPlayer->m_iDrivingTank == TRUE )
+		{
+			// origine de la camera et non pas du joueur
+			pView = UTIL_FindEntityByClassname(NULL, "info_tank_camera" )->edict();
+		}
+	}
+
 	org = pView->v.origin + pView->v.view_ofs;
 	if ( pView->v.flags & FL_DUCKING )
 	{
@@ -1115,7 +1296,8 @@ int AddToFullPack( struct entity_state_s *state, int e, edict_t *ent, edict_t *h
 	// If pSet is NULL, then the test will always succeed and the entity will be added to the update
 	if ( ent != host )
 	{
-		if ( !ENGINE_CHECK_VISIBILITY( (const struct edict_s *)ent, pSet ) )
+		// modif de Julien
+		if ( !ENGINE_CHECK_VISIBILITY( (const struct edict_s *)ent, pSet ) && !FClassnameIs ( ent, "info_tank_camera") )
 		{
 			return 0;
 		}

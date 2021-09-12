@@ -108,6 +108,7 @@ TYPEDESCRIPTION	CBaseMonster::m_SaveData[] =
 
 	DEFINE_FIELD( CBaseMonster, m_scriptState, FIELD_INTEGER ),
 	DEFINE_FIELD( CBaseMonster, m_pCine, FIELD_CLASSPTR ),
+	DEFINE_FIELD( CBaseMonster, m_iHasGibbed, FIELD_INTEGER ),
 };
 
 //IMPLEMENT_SAVERESTORE( CBaseMonster, CBaseToggle );
@@ -2149,13 +2150,13 @@ void CBaseMonster :: StartMonster ( void )
 	SetThink ( &CBaseMonster::CallMonsterThink );
 	pev->nextthink += RANDOM_FLOAT(0.1, 0.4); // spread think times.
 	
-	if ( !FStringNull(pev->targetname) )// wait until triggered
+/*	if ( !FStringNull(pev->targetname) )// wait until triggered
 	{
 		SetState( MONSTERSTATE_IDLE );
 		// UNDONE: Some scripted sequence monsters don't have an idle?
 		SetActivity( ACT_IDLE );
 		ChangeSchedule( GetScheduleOfType( SCHED_WAIT_TRIGGER ) );
-	}
+	}*/	// modif de Julien
 }
 
 
@@ -3445,4 +3446,28 @@ BOOL CBaseMonster :: ShouldFadeOnDeath( void )
 		return TRUE;
 
 	return FALSE;
+}
+
+
+//---------------------------------------------------
+// modif de Julien
+
+
+void CBaseMonster :: Gunflash ( void )
+{
+	Vector vecSrc = GetGunPosition ();
+
+	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, vecSrc );
+		WRITE_BYTE(TE_DLIGHT);
+		WRITE_COORD(vecSrc.x);	// X
+		WRITE_COORD(vecSrc.y);	// Y
+		WRITE_COORD(vecSrc.z);	// Z
+		WRITE_BYTE( 12 * RANDOM_FLOAT(0.8, 1.2) );		// radius * 0.1
+		WRITE_BYTE( 255 );		// r
+		WRITE_BYTE( 180 );		// g
+		WRITE_BYTE( 96 );		// b
+		WRITE_BYTE( 0.5 );		// time * 10
+		WRITE_BYTE( 10 );		// decay * 0.1
+	MESSAGE_END( );
+
 }

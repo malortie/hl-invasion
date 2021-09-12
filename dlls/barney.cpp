@@ -40,6 +40,9 @@
 #define	BARNEY_BODY_GUNDRAWN		1
 #define BARNEY_BODY_GUNGONE			2
 
+//Julien
+#define	SF_BARNEY_L2M6				2048
+
 class CBarney : public CTalkMonster
 {
 public:
@@ -261,6 +264,10 @@ int CBarney :: ISoundMask ( void)
 //=========================================================
 int	CBarney :: Classify ( void )
 {
+	// modif de julien
+	if ( pev->spawnflags & SF_BARNEY_L2M6 )
+		return CLASS_NONE;
+
 	return	CLASS_PLAYER_ALLY;
 }
 
@@ -425,6 +432,10 @@ void CBarney :: Spawn()
 
 	MonsterInit();
 	SetUse( &CBarney::FollowerUse );
+
+	// modif de Julien
+
+	m_bIdleSentState = FALSE;
 }
 
 //=========================================================

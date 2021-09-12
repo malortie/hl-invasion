@@ -33,6 +33,9 @@ void CL_DLLEXPORT HUD_DrawNormalTriangles( void )
 {
 //	RecClDrawNormalTriangles();
 
+	// dessin du brouillard
+	gHUD.m_Fog.DrawFog ();
+
 	gHUD.m_Spectator.DrawOverview();
 }
 
@@ -54,6 +57,11 @@ void CL_DLLEXPORT HUD_DrawTransparentTriangles( void )
 #if defined( _TFC )
 	RunEventList();
 #endif
+
+	gHUD.m_Particules.DrawAll();	// affichage des particules et des decals
+	gHUD.m_LFlammes.DrawFlammes();	// lance flammes
+	gHUD.m_Briquet.DrawFlamme();	// briquet
+	gHUD.m_LensFlare.DrawLight();	// lensflare
 
 	if ( g_pParticleMan )
 		 g_pParticleMan->Update();

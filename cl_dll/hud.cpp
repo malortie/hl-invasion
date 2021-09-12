@@ -203,6 +203,32 @@ int __MsgFunc_VGUIMenu(const char *pszName, int iSize, void *pbuf)
 	return 0;
 }
 
+//modif de Julien
+//permet de passer des paramètres au vgui qui s'affiche
+
+int __MsgFunc_VGUIordi(const char *pszName, int iSize, void *pbuf)
+{
+	if (gViewPort)
+		return gViewPort->MsgFunc_VGUIordi( pszName, iSize, pbuf );
+	return 0;
+}
+
+int __MsgFunc_Keypad(const char *pszName, int iSize, void *pbuf)
+{
+	if (gViewPort)
+		return gViewPort->MsgFunc_Keypad( pszName, iSize, pbuf );
+	return 0;
+}
+
+int __MsgFunc_Conveyor(const char *pszName, int iSize, void *pbuf)
+{
+	if (gViewPort)
+		return gViewPort->MsgFunc_Conveyor( pszName, iSize, pbuf );
+	return 0;
+}
+
+
+
 int __MsgFunc_MOTD(const char *pszName, int iSize, void *pbuf)
 {
 	if (gViewPort)
@@ -318,6 +344,10 @@ void CHud :: Init( void )
 
 	// VGUI Menus
 	HOOK_MESSAGE( VGUIMenu );
+	HOOK_MESSAGE( VGUIordi );	//modif de Julien
+	HOOK_MESSAGE( Keypad );	//modif de Julien
+	HOOK_MESSAGE( Conveyor );	//modif de Julien
+
 
 	CVAR_CREATE( "hud_classautokill", "1", FCVAR_ARCHIVE | FCVAR_USERINFO );		// controls whether or not to suicide immediately on TF class switch
 	CVAR_CREATE( "hud_takesshots", "0", FCVAR_ARCHIVE );		// controls whether or not to automatically take screenshots at the end of a round
@@ -367,6 +397,19 @@ void CHud :: Init( void )
 	GetClientVoiceMgr()->Init(&g_VoiceStatusHelper, (vgui::Panel**)&gViewPort);
 
 	m_Menu.Init();
+
+	// modifs de Julien
+	m_Particules.Init();
+	m_Sniper.Init();
+	m_NVG.Init();
+	m_RPG.Init();
+	m_Fog.Init();
+	m_LFlammes.Init();
+	m_Briquet.Init();
+	m_LensFlare.Init();
+	m_HudTank.Init();
+	m_HudRadio.Init();
+	
 	
 	ServersInit();
 
@@ -514,6 +557,18 @@ void CHud :: VidInit( void )
 	m_TextMessage.VidInit();
 	m_StatusIcons.VidInit();
 	GetClientVoiceMgr()->VidInit();
+
+	// modifs de Julien
+	m_Particules.VidInit();
+	m_Sniper.VidInit();
+	m_NVG.VidInit();
+	m_RPG.VidInit();
+	m_Fog.VidInit();
+	m_LFlammes.VidInit();
+	m_Briquet.VidInit();
+	m_LensFlare.VidInit();
+	m_HudTank.VidInit();
+	m_HudRadio.VidInit();
 }
 
 int CHud::MsgFunc_Logo(const char *pszName,  int iSize, void *pbuf)

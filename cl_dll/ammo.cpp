@@ -1026,9 +1026,13 @@ int CHudAmmo::DrawWList(float flTime)
 	else 
 		iActiveSlot = gpActiveSel->iSlot;
 
-	x = 10; //!!!
-	y = 10; //!!!
+//	x = 10; //!!!
+//	y = 10; //!!!
 	
+	//modif de Julien
+
+	x = ScreenWidth - 5 * (giBucketWidth + 5);	// haut-gauche du weaponmenu
+	y = 10;
 
 	// Ensure that there are available choices in the active slot
 	if ( iActiveSlot > 0 )
@@ -1048,15 +1052,15 @@ int CHudAmmo::DrawWList(float flTime)
 		UnpackRGB(r,g,b, RGB_YELLOWISH);
 	
 		if ( iActiveSlot == i )
-			a = 255;
+			a = 255;									// Julien - fx amount slot selectionné
 		else
-			a = 192;
+			a = 192;									// Julien - fx amount slot deselectionné
 
 		ScaleColors(r, g, b, 255);
 		SPR_Set(gHUD.GetSprite(m_HUD_bucket0 + i), r, g, b );
 
 		// make active slot wide enough to accomodate gun pictures
-		if ( i == iActiveSlot )
+/*		if ( i == iActiveSlot )
 		{
 			WEAPON *p = gWR.GetFirstPos(iActiveSlot);
 			if ( p )
@@ -1068,18 +1072,46 @@ int CHudAmmo::DrawWList(float flTime)
 			iWidth = giBucketWidth;
 
 		SPR_DrawAdditive(0, x, y, &gHUD.GetSpriteRect(m_HUD_bucket0 + i));
-		
-		x += iWidth + 5;
+*/
+
+		//-----------------------
+		// modif de Julien
+
+		iWidth = giBucketWidth;
+
+		if ( i == iActiveSlot )
+		{
+			SPR_Set(gHUD.GetSprite(m_HUD_bucket0 + i + 5), r, g, b );
+			SPR_DrawAdditive (
+				0, ScreenWidth - 5 * (giBucketWidth + 5), 10,
+				&gHUD.GetSpriteRect(m_HUD_bucket0 + i + 5)
+				);
+		}
+		else
+		{
+			SPR_DrawAdditive(0, x, y, &gHUD.GetSpriteRect(m_HUD_bucket0 + i));
+		}
+
+		//-----------------
+
+
+		x += iWidth + 4;
 	}
 
 
 	a = 128; //!!!
-	x = 10;
+//	x = 10;
+
+	// modif de Julien
+	x = ScreenWidth - 5 * (giBucketWidth + 5);	// haut-gauche du weaponmenu
 
 	// Draw all of the buckets
 	for (i = 0; i < MAX_WEAPON_SLOTS; i++)
 	{
-		y = giBucketHeight + 10;
+		//y = giBucketHeight + 10;
+
+		//modif de Julien
+		y = gHUD.GetSpriteRect(m_HUD_bucket0 + i + 5).bottom - gHUD.GetSpriteRect(m_HUD_bucket0 + i + 5).top + 10 + 5;
 
 		// If this is the active slot, draw the bigger pictures,
 		// otherwise just draw boxes
@@ -1135,7 +1167,7 @@ int CHudAmmo::DrawWList(float flTime)
 			x += iWidth + 5;
 
 		}
-		else
+	/*	else
 		{
 			// Draw Row of weapons.
 
@@ -1166,6 +1198,7 @@ int CHudAmmo::DrawWList(float flTime)
 
 			x += giBucketWidth + 5;
 		}
+		*/
 	}	
 
 	return 1;

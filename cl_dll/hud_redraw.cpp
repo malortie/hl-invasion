@@ -153,7 +153,8 @@ int CHud :: Redraw( float flTime, int intermission )
 			{
 				if ( !intermission )
 				{
-					if ( (pList->p->m_iFlags & HUD_ACTIVE) && !(m_iHideHUDDisplay & HIDEHUD_ALL) )
+					if (   ( (pList->p->m_iFlags & HUD_ACTIVE) && !(m_iHideHUDDisplay & HIDEHUD_ALL) ) 
+						|| ( (pList->p->m_iFlags & HUD_ACTIVE) &&  (m_iHideHUDDisplay & HIDEHUD_ALL) && pList->p->m_iFlags & HUD_ALWAYSDRAW) )	// modif de Julien
 						pList->p->Draw(flTime);
 				}
 				else

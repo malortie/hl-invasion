@@ -392,7 +392,7 @@ void COsprey::FlyThink( void )
 		UpdateGoal( );
 	}
 
-	if (gpGlobals->time > m_startTime + m_dTime)
+	if (gpGlobals->time > m_startTime + m_dTime)	// globals time : tps ds le jeu ; start : tps depuis le dernier path_corner ; mdtime : tps estimé pour aller au suivant  tout ca c est le moment ou il atteint le path suivant
 	{
 		if (m_pGoalEnt->pev->speed == 0)
 		{
@@ -400,7 +400,7 @@ void COsprey::FlyThink( void )
 		}
 		do {
 			m_pGoalEnt = CBaseEntity::Instance( FIND_ENTITY_BY_TARGETNAME ( NULL, STRING( m_pGoalEnt->pev->target ) ) );
-		} while (m_pGoalEnt->pev->speed < 400 && !HasDead());
+		} while (m_pGoalEnt->pev->speed < 400 && !HasDead());		// continue si 1 des grunts est mort
 		UpdateGoal( );
 	}
 

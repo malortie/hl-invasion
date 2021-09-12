@@ -883,6 +883,8 @@ void CRotDoor :: SetToggleState( int state )
 	UTIL_SetOrigin( pev, pev->origin );
 }
 
+//modif de Julien
+#define	SF_MOMENT_DOOR_BLOCK					1024 // no idle noises from this monster
 
 class CMomentaryDoor : public CBaseToggle
 {
@@ -901,6 +903,10 @@ public:
 	void EXPORT DoorMoveDone( void );
 
 	BYTE	m_bMoveSnd;			// sound a door makes while moving	
+
+	//modif de Julien
+	virtual void Blocked( CBaseEntity *pOther );
+
 };
 
 LINK_ENTITY_TO_CLASS( momentary_door, CMomentaryDoor );
@@ -1049,4 +1055,28 @@ void CMomentaryDoor::DoorMoveDone( void )
 {
 	STOP_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving) );
 	EMIT_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseArrived), 1, ATTN_NORM);
+}
+
+	//modif de Julien
+void CMomentaryDoor :: Blocked( CBaseEntity *pOther )
+{
+	if ( FBitSet ( pev->spawnflags, SF_MOMENT_DOOR_BLOCK ) )
+	{
+		edict_t *pentCherche = NULL;
+
+		for ( int i = 0 ; i < 5 ; i++ )
+		{
+			pentCherche = FIND_ENTITY_BY_TARGETNAME ( pentCherche, STRING( pev->target ));
+
+			if ( FClassnameIs( pentCherche, "momentary_rot_button" ) ) //"momentary_door" ) )
+			{
+				CBaseEntity* pDoor = CBaseEntity :: Instance ( pentCherche );
+				pDoor->pev->target = NULL;			
+			}
+		}
+
+		ClearBits ( pev->spawnflags, SF_MOMENT_DOOR_BLOCK );
+
+		FireTargets ( STRING(pev->netname), this, this, USE_ON, 0 );
+	}
 }

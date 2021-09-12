@@ -28,18 +28,21 @@
 
 enum shotgun_e {
 	SHOTGUN_IDLE = 0,
+	SHOTGUN_IDLE_DEEP,
+	SHOTGUN_DRAW,
 	SHOTGUN_FIRE,
 	SHOTGUN_FIRE2,
-	SHOTGUN_RELOAD,
-	SHOTGUN_PUMP,
 	SHOTGUN_START_RELOAD,
-	SHOTGUN_DRAW,
-	SHOTGUN_HOLSTER,
-	SHOTGUN_IDLE4,
-	SHOTGUN_IDLE_DEEP
+	SHOTGUN_RELOAD,
+	SHOTGUN_PUMP
 };
 
 LINK_ENTITY_TO_CLASS( weapon_shotgun, CShotgun );
+
+
+
+
+
 
 void CShotgun::Spawn( )
 {
@@ -86,6 +89,9 @@ int CShotgun::AddToPlayer( CBasePlayer *pPlayer )
 		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
+
+		m_pPlayer->TextAmmo( TA_SHOTGUN );
+
 		return TRUE;
 	}
 	return FALSE;
@@ -135,7 +141,7 @@ void CShotgun::PrimaryAttack()
 	}
 
 	m_pPlayer->m_iWeaponVolume = LOUD_GUN_VOLUME;
-	m_pPlayer->m_iWeaponFlash = NORMAL_GUN_FLASH;
+	m_pPlayer->Gunflash ();
 
 	m_iClip--;
 
@@ -206,7 +212,7 @@ void CShotgun::SecondaryAttack( void )
 	}
 
 	m_pPlayer->m_iWeaponVolume = LOUD_GUN_VOLUME;
-	m_pPlayer->m_iWeaponFlash = NORMAL_GUN_FLASH;
+	m_pPlayer->Gunflash ();
 
 	m_iClip -= 2;
 
@@ -235,12 +241,12 @@ void CShotgun::SecondaryAttack( void )
 #endif
 	{
 		// tuned for deathmatch
-		vecDir = m_pPlayer->FireBulletsPlayer( 8, vecSrc, vecAiming, VECTOR_CONE_DM_DOUBLESHOTGUN, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
+		vecDir = m_pPlayer->FireBulletsPlayer( 8, vecSrc, vecAiming, VECTOR_CONE_DM_DOUBLESHOTGUN, 2048, BULLET_PLAYER_BUCKSHOT_DOUBLE, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
 	}
 	else
 	{
 		// untouched default single player
-		vecDir = m_pPlayer->FireBulletsPlayer( 12, vecSrc, vecAiming, VECTOR_CONE_10DEGREES, 2048, BULLET_PLAYER_BUCKSHOT, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
+		vecDir = m_pPlayer->FireBulletsPlayer( 12, vecSrc, vecAiming, VECTOR_CONE_10DEGREES, 2048, BULLET_PLAYER_BUCKSHOT_DOUBLE, 0, 0, m_pPlayer->pev, m_pPlayer->random_seed );
 	}
 		
 	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usDoubleFire, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, 0, 0, 0, 0 );
@@ -356,17 +362,17 @@ void CShotgun::WeaponIdle( void )
 				iAnim = SHOTGUN_IDLE_DEEP;
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (60.0/12.0);// * RANDOM_LONG(2, 5);
 			}
-			else if (flRand <= 0.95)
+			else /*if (flRand <= 0.95)*/
 			{
 				iAnim = SHOTGUN_IDLE;
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (20.0/9.0);
 			}
-			else
+/*			else
 			{
 				iAnim = SHOTGUN_IDLE4;
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (20.0/9.0);
 			}
-			SendWeaponAnim( iAnim );
+*/			SendWeaponAnim( iAnim );
 		}
 	}
 }

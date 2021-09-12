@@ -22,6 +22,8 @@
 #include "player.h"
 #include "gamerules.h"
 
+extern void ClientDecal ( TraceResult *pTrace, Vector vecSrc, Vector vecEnd, int crowbar = 0 );
+
 
 #define	CROWBAR_BODYHIT_VOLUME 128
 #define	CROWBAR_WALLHIT_VOLUME 512
@@ -31,7 +33,7 @@ LINK_ENTITY_TO_CLASS( weapon_crowbar, CCrowbar );
 
 
 enum gauss_e {
-	CROWBAR_IDLE = 0,
+/*	CROWBAR_IDLE = 0,
 	CROWBAR_DRAW,
 	CROWBAR_HOLSTER,
 	CROWBAR_ATTACK1HIT,
@@ -40,6 +42,13 @@ enum gauss_e {
 	CROWBAR_ATTACK2HIT,
 	CROWBAR_ATTACK3MISS,
 	CROWBAR_ATTACK3HIT
+	*/						//modif de Julien : nouveau crowbar
+	CROWBAR_IDLE = 0,
+	CROWBAR_DRAW,
+	CROWBAR_ATTACK1HIT,
+	CROWBAR_ATTACK1MISS,
+	CROWBAR_ATTACK2HIT,
+	CROWBAR_ATTACK2MISS,
 };
 
 
@@ -86,6 +95,23 @@ int CCrowbar::GetItemInfo(ItemInfo *p)
 
 
 
+// modif de julien
+int CCrowbar::AddToPlayer( CBasePlayer *pPlayer )
+{
+	if ( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
+	{
+		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
+			WRITE_BYTE( m_iId );
+		MESSAGE_END();
+
+		m_pPlayer->TextAmmo( TA_CROWBAR );
+
+		return TRUE;
+	}
+	return FALSE;
+}
+
+
 BOOL CCrowbar::Deploy( )
 {
 	return DefaultDeploy( "models/v_crowbar.mdl", "models/p_crowbar.mdl", CROWBAR_DRAW, "crowbar" );
@@ -94,7 +120,7 @@ BOOL CCrowbar::Deploy( )
 void CCrowbar::Holster( int skiplocal /* = 0 */ )
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
-	SendWeaponAnim( CROWBAR_HOLSTER );
+//	SendWeaponAnim( CROWBAR_HOLSTER );
 }
 
 
@@ -155,7 +181,10 @@ void CCrowbar::PrimaryAttack()
 
 void CCrowbar::Smack( )
 {
-	DecalGunshot( &m_trHit, BULLET_PLAYER_CROWBAR );
+	//modif de Julien - décals client
+	//DecalGunshot( &m_trHit, BULLET_PLAYER_CROWBAR );
+	ClientDecal ( &m_trHit, m_vecDecalSrc, m_vecDecalEnd, 1+ (m_iSwing+1) % 2 );
+
 }
 
 
@@ -211,15 +240,15 @@ int CCrowbar::Swing( int fFirst )
 	}
 	else
 	{
-		switch( ((m_iSwing++) % 2) + 1 )
+		switch( ((m_iSwing++) % 2) /*+ 1*/ )
 		{
 		case 0:
 			SendWeaponAnim( CROWBAR_ATTACK1HIT ); break;
 		case 1:
 			SendWeaponAnim( CROWBAR_ATTACK2HIT ); break;
-		case 2:
+/*		case 2:
 			SendWeaponAnim( CROWBAR_ATTACK3HIT ); break;
-		}
+*/		}
 
 		// player "shoot" animation
 		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
@@ -305,7 +334,8 @@ int CCrowbar::Swing( int fFirst )
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
 #endif
 		m_flNextPrimaryAttack = GetNextAttackDelay(0.25);
-		
+		m_vecDecalSrc = vecSrc;
+		m_vecDecalEnd = vecEnd;
 		SetThink( &CCrowbar::Smack );
 		pev->nextthink = UTIL_WeaponTimeBase() + 0.2;
 

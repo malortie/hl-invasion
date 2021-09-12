@@ -35,6 +35,9 @@ extern DLL_GLOBAL int			g_iSkillLevel;
 
 extern Vector VecBModelOrigin( entvars_t* pevBModel );
 extern entvars_t *g_pevLastInflictor;
+//modif de Julien
+extern void ClientDecal ( TraceResult *pTrace, Vector vecSrc, Vector vecEnd, int crowbar = 0 );
+
 
 #define GERMAN_GIB_COUNT		4
 #define	HUMAN_GIB_COUNT			6
@@ -593,6 +596,13 @@ void CBaseMonster :: Killed( entvars_t *pevAttacker, int iGib )
 	unsigned int	cCount = 0;
 	BOOL			fDone = FALSE;
 
+	// modif de Julien - lance flammes
+
+	if ( pev->renderfx == kRenderFxGlowShell )
+		pev->renderfx = kRenderFxNone;
+	
+	//----
+
 	if ( HasMemory( bits_MEMORY_KILLED ) )
 	{
 		if ( ShouldGibMonster( iGib ) )
@@ -635,6 +645,9 @@ void CBaseMonster :: Killed( entvars_t *pevAttacker, int iGib )
 	//pev->enemy = ENT( pevAttacker );//why? (sjb)
 	
 	m_IdealMonsterState = MONSTERSTATE_DEAD;
+
+	// modif de Julien
+	pev->solid = SOLID_BBOX;	// ne pas bloquer les gibs
 }
 
 //
@@ -688,6 +701,13 @@ void CGib :: WaitTillLand ( void )
 
 	if ( pev->velocity == g_vecZero )
 	{
+		if ( m_instant == 1 )
+		{
+			pev->nextthink = gpGlobals->time + m_lifeTime;
+			SetThink ( &CGib::SUB_Remove );
+			return;
+		}
+
 		SetThink (&CGib::SUB_StartFadeOut);
 		pev->nextthink = gpGlobals->time + m_lifeTime;
 
@@ -910,11 +930,11 @@ int CBaseMonster :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker,
 	{
 		g_pevLastInflictor = pevInflictor;
 
-		if ( bitsDamageType & DMG_ALWAYSGIB )
+		if ( bitsDamageType & DMG_ALWAYSGIB && !(bitsDamageType & DMG_BULLET) )	// modif de Julien
 		{
 			Killed( pevAttacker, GIB_ALWAYS );
 		}
-		else if ( bitsDamageType & DMG_NEVERGIB )
+		else if ( bitsDamageType & DMG_NEVERGIB || bitsDamageType & DMG_BULLET )	// modif de Julien
 		{
 			Killed( pevAttacker, GIB_NEVER );
 		}
@@ -1075,7 +1095,7 @@ void RadiusDamage( Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacke
 			
 			UTIL_TraceLine ( vecSrc, vecSpot, dont_ignore_monsters, ENT(pevInflictor), &tr );
 
-			if ( tr.flFraction == 1.0 || tr.pHit == pEntity->edict() )
+			if ( tr.flFraction == 1.0 || tr.pHit == pEntity->edict() || FClassnameIs(tr.pHit, "info_tank_model") )	// modif de Julien
 			{// the explosion can 'see' this entity, so hurt them!
 				if (tr.fStartSolid)
 				{
@@ -1237,6 +1257,12 @@ BOOL CBaseEntity :: FVisible ( CBaseEntity *pEntity )
 	vecTargetOrigin = pEntity->EyePosition();
 
 	UTIL_TraceLine(vecLookerOrigin, vecTargetOrigin, ignore_monsters, ignore_glass, ENT(pev)/*pentIgnore*/, &tr);
+
+	
+	//modif de Julien pour le tank
+	if ( FClassnameIs ( pEntity->pev , "vehicle_tank" ) )
+		UTIL_TraceLine(vecLookerOrigin, vecTargetOrigin, ignore_monsters, ignore_glass, ENT(pEntity->pev), &tr);
+
 	
 	if (tr.flFraction != 1.0)
 	{
@@ -1369,7 +1395,7 @@ Go to the trouble of combining multiple pellets into a single damage call.
 This version is used by Monsters.
 ================
 */
-void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker )
+void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker, int iTraverseMur )
 {
 	static int tracerCount;
 	int tracer;
@@ -1419,6 +1445,10 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 				tracer = 1;
 			switch( iBulletType )
 			{
+            case BULLET_PLAYER_M16:			// modif. de Julien            
+			case BULLET_PLAYER_SNIPER:		// modif. de Julien   
+			case BULLET_PLAYER_IRGUN:		// modif. de Julien   
+				break;
 			case BULLET_MONSTER_MP5:
 			case BULLET_MONSTER_9MM:
 			case BULLET_MONSTER_12MM:
@@ -1445,7 +1475,8 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 				pEntity->TraceAttack(pevAttacker, iDamage, vecDir, &tr, DMG_BULLET | ((iDamage > 16) ? DMG_ALWAYSGIB : DMG_NEVERGIB) );
 				
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
-				DecalGunshot( &tr, iBulletType );
+			//	DecalGunshot( &tr, iBulletType );
+				ClientDecal ( &tr, vecSrc, vecEnd );
 			} 
 			else switch(iBulletType)
 			{
@@ -1454,7 +1485,8 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 				pEntity->TraceAttack(pevAttacker, gSkillData.monDmg9MM, vecDir, &tr, DMG_BULLET);
 				
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
-				DecalGunshot( &tr, iBulletType );
+//				DecalGunshot( &tr, iBulletType );
+				ClientDecal ( &tr, vecSrc, vecEnd );
 
 				break;
 
@@ -1462,7 +1494,8 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 				pEntity->TraceAttack(pevAttacker, gSkillData.monDmgMP5, vecDir, &tr, DMG_BULLET);
 				
 				TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
-				DecalGunshot( &tr, iBulletType );
+//				DecalGunshot( &tr, iBulletType );
+				ClientDecal ( &tr, vecSrc, vecEnd );
 
 				break;
 
@@ -1471,7 +1504,8 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 				if ( !tracer )
 				{
 					TEXTURETYPE_PlaySound(&tr, vecSrc, vecEnd, iBulletType);
-					DecalGunshot( &tr, iBulletType );
+//					DecalGunshot( &tr, iBulletType );
+					ClientDecal ( &tr, vecSrc, vecEnd );
 				}
 				break;
 			
@@ -1486,11 +1520,58 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 
 				break;
 			}
+
+			// tir a travers les murs
+
+			if ( iTraverseMur == 0 )
+			{
+				float distance;
+
+				switch(iBulletType)
+				{
+					default:
+					case BULLET_PLAYER_9MM:		
+					case BULLET_PLAYER_MP5:		
+					case BULLET_PLAYER_SNIPER :
+					case BULLET_PLAYER_M16 :
+					case BULLET_PLAYER_BUCKSHOT_DOUBLE:
+					case BULLET_PLAYER_BUCKSHOT:
+					case BULLET_PLAYER_357:
+						distance = 16;
+						break;
+					case BULLET_PLAYER_IRGUN :
+						distance = 32;
+						break;
+				}
+
+				// épaisseur maximum
+
+				vec3_t vecSource = vecSrc;
+				vec3_t vecTraceDir = (tr.vecEndPos - vecSource).Normalize();
+				vecSource = tr.vecEndPos + vecTraceDir * distance;
+				TraceResult trTir;
+
+				UTIL_TraceLine(vecSource, vecSource + vecTraceDir, dont_ignore_monsters, ENT(pev), &trTir);
+
+				if ( trTir.fStartSolid != 1 )
+				{
+					ApplyMultiDamage(pev, pevAttacker);
+					FireBullets ( 1, vecSource, vecTraceDir, vecSpread, flDistance, iBulletType, 0, 0, pev, 1 );
+				}
+			}
 		}
+
 		// make bullet trails
 		UTIL_BubbleTrail( vecSrc, tr.vecEndPos, (flDistance * tr.flFraction) / 64.0 );
 	}
 	ApplyMultiDamage(pev, pevAttacker);
+
+	//modif de Julien
+	if ( IsPlayer() )
+	{
+		if ( IsInGaz() == TRUE )
+			m_bFireInGaz = TRUE;
+	}
 }
 
 
@@ -1549,11 +1630,39 @@ Vector CBaseEntity::FireBulletsPlayer ( ULONG cShots, Vector vecSrc, Vector vecD
 			{
 			default:
 			case BULLET_PLAYER_9MM:		
-				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmg9MM, vecDir, &tr, DMG_BULLET); 
+				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmg9MM, vecDir, &tr, DMG_BULLET | DMG_NEVERGIB ); // modif de Julien
 				break;
 
 			case BULLET_PLAYER_MP5:		
 				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmgMP5, vecDir, &tr, DMG_BULLET); 
+				break;
+
+			// modif. de Julien
+            case BULLET_PLAYER_M16:		
+				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmgM16, vecDir, &tr, DMG_BULLET); 
+				break;
+
+			case BULLET_PLAYER_SNIPER:
+				{
+					// pour ne pas détruire l'apache en deux coups ...
+
+					float damage = gSkillData.plrDmgSniper;
+
+					if ( pEntity->MyMonsterPointer == NULL || FClassnameIs ( pEntity->edict(), "monster_apache" ) )
+						damage *= 0.3;
+
+					pEntity->TraceAttack(pevAttacker, damage, vecDir, &tr, DMG_BULLET); 
+					break;
+				}
+
+			case BULLET_PLAYER_IRGUN:		
+				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmgIRgun, vecDir, &tr, DMG_BULLET); 
+				break;
+
+            //fin modif.
+
+			case BULLET_PLAYER_BUCKSHOT_DOUBLE:	//modif de Julien - pour le demembrage du grunt
+				pEntity->TraceAttack(pevAttacker, gSkillData.plrDmgBuckshot, vecDir, &tr, DMG_BULLET | DMG_NEVERGIB ); 
 				break;
 
 			case BULLET_PLAYER_BUCKSHOT:	

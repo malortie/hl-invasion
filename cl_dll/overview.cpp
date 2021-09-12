@@ -4,7 +4,7 @@
 //
 // $NoKeywords: $
 //=============================================================================
-
+/*
 #include "hud.h"
 #include "cl_util.h"
 #include "cl_entity.h"
@@ -158,3 +158,4 @@ void CHudOverview::InitHUDData()
 //	gEngfuncs.Overview_SetDrawInset( 0 );
 }
 
+*/
