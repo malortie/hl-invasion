@@ -55,15 +55,15 @@
     <Filter Include="Source Files\_hl\cl_dll\hl">
       <UniqueIdentifier>{bd9d5958-4e67-4bff-bbd8-6ba6dfcdb720}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\cl_dll\invasion">
+      <UniqueIdentifier>{dca4f43d-3ac8-43c4-86e6-b051b92fc65b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\_hl\dlls\invasion">
+      <UniqueIdentifier>{f6a58846-8f44-449a-a58e-ba023c6d9ca6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\dlls\crossbow.cpp">
-      <Filter>Source Files\_hl\dlls</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\dlls\crowbar.cpp">
-      <Filter>Source Files\_hl\dlls</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dlls\egon.cpp">
       <Filter>Source Files\_hl\dlls</Filter>
     </ClCompile>
     <ClCompile Include="..\..\cl_dll\ev_hldm.cpp">
@@ -91,9 +91,6 @@
       <Filter>Source Files\_hl\dlls\wpn_shared</Filter>
     </ClCompile>
     <ClCompile Include="..\..\dlls\squeakgrenade.cpp">
-      <Filter>Source Files\_hl\dlls</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dlls\hornetgun.cpp">
       <Filter>Source Files\_hl\dlls</Filter>
     </ClCompile>
     <ClCompile Include="..\..\dlls\mp5.cpp">
@@ -306,6 +303,72 @@
     <ClCompile Include="..\..\public\interface.cpp">
       <Filter>Source Files\public</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\cl_dll\clientbriquet.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\clientfog.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\clientlflammes.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\hud_tank.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\hudradio.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\hudrpg.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\hudzoom.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\lensflare.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\nvg.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\particules.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\vgui_keypad.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\vgui_OrdiControl.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\vgui_OrdiMenu.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\vgui_radio.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\cl_dll\vgui_soin.cpp">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\briquet.cpp">
+      <Filter>Source Files\_hl\dlls\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\fgrenade.cpp">
+      <Filter>Source Files\_hl\dlls\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\fsniper.cpp">
+      <Filter>Source Files\_hl\dlls\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\irgun.cpp">
+      <Filter>Source Files\_hl\dlls\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\lflammes.cpp">
+      <Filter>Source Files\_hl\dlls\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\m16.cpp">
+      <Filter>Source Files\_hl\dlls\invasion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dlls\supergun.cpp">
+      <Filter>Source Files\_hl\dlls\invasion</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\cl_dll\kbutton.h">
@@ -427,6 +490,24 @@
     </ClInclude>
     <ClInclude Include="..\..\cl_dll\view.h">
       <Filter>Header Files\cl_dll</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cl_dll\vgui_keypad.h">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cl_dll\vgui_OrdiControl.h">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cl_dll\vgui_OrdiMenu.h">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cl_dll\vgui_radio.h">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\cl_dll\vgui_soin.h">
+      <Filter>Source Files\cl_dll\invasion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dlls\lflammes.h">
+      <Filter>Source Files\_hl\dlls\invasion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
