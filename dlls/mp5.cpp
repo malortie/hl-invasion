@@ -138,14 +138,14 @@ void CMP5::PrimaryAttack()
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound( );
-		m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
 	if (m_iClip <= 0)
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
@@ -280,13 +280,13 @@ void CMP5::WeaponIdle( void )
 	case 0:	
 	case 1:
 		iAnim = MP5_LONGIDLE;	
-		m_flTimeWeaponIdle = gpGlobals->time + 60 / 6.0;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 60 / 6.0;
 		break;
 	
 	default:
 	case 2:
 		iAnim = MP5_IDLE1;
-		m_flTimeWeaponIdle = gpGlobals->time + 50 / 13.0;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 50 / 13.0;
 		break;
 	}
 
