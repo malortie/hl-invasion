@@ -69,6 +69,7 @@ CFGrenade g_FGrenade;
 CFSniper g_FSniper;
 CIRgun g_IRgun;
 CLFlammes g_LFlammes;
+CM16 g_M16;
 
 /*
 ======================
@@ -621,6 +622,7 @@ void HUD_InitClientWeapons( void )
 	HUD_PrepEntity( &g_FSniper	, &player );
 	HUD_PrepEntity( &g_IRgun	, &player );
 	HUD_PrepEntity( &g_LFlammes	, &player );
+	HUD_PrepEntity( &g_M16, &player );
 }
 
 /*
@@ -740,6 +742,10 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 
 		case WEAPON_LFLAMMES:
 			pWeapon = &g_LFlammes;
+			break;
+
+		case WEAPON_M16:
+			pWeapon = &g_M16;
 			break;
 			break;
 	}

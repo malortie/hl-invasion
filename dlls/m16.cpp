@@ -30,27 +30,6 @@ enum m16_e
 };
 
 
-class CM16 : public CBasePlayerWeapon
-{
-public:
-	void Spawn( void );
-	void Precache( void );
-	int iItemSlot( void ) { return 3; }
-	int GetItemInfo(ItemInfo *p);
-	int AddToPlayer( CBasePlayer *pPlayer );
-
-	void PrimaryAttack( void );
-	void SecondaryAttack( void );
-	int SecondaryAmmoIndex( void );
-	BOOL Deploy( void );
-	void Reload( void );
-	void WeaponIdle( void );
-	float m_flNextAnimTime;
-	int m_iShell;
-
-private:
-	unsigned short m_usM16;
-};
 LINK_ENTITY_TO_CLASS( weapon_m16, CM16 );
 
 
