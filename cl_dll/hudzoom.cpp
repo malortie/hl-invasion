@@ -22,8 +22,8 @@ int CHudSniper :: Draw	( float flTime )
 	if ( gHUD.m_iFOV == 90 || gHUD.m_iFOV == 0 )
 		return 1;
 
-	static const CenterX = ScreenWidth / 2;
-	static const CenterY = ScreenHeight / 2;
+	static const int CenterX = ScreenWidth / 2;
+	static const int CenterY = ScreenHeight / 2;
 
 
 	if ( ScreenWidth >= 1024 )
