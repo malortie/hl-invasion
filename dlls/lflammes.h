@@ -35,6 +35,7 @@
 
 
 
+#ifndef CLIENT_DLL
 class CFlamme : public CPointEntity
 {
 public:
@@ -59,6 +60,7 @@ public:
 	int		m_bRestore;
 	float	m_flMonsterDamage;
 };
+#endif
 
 
 #endif // LFLAMMES_H

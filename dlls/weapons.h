@@ -1204,5 +1204,32 @@ private:
 	int m_iShell;
 
 };
+
+
+class CLFlammes : public CBasePlayerWeapon
+{
+public:
+	void Spawn(void);
+	void Precache(void);
+	int iItemSlot(void) { return 4; }
+	int GetItemInfo(ItemInfo* p);
+	int AddToPlayer(CBasePlayer* pPlayer);
+	void PrimaryAttack(void);
+	BOOL Deploy(void);
+	void Holster(int skiplocal = 0);
+	void Reload(void);
+	void WeaponIdle(void);
+
+	virtual BOOL IsUseable(void) { return TRUE; };
+
+	float m_flAttackReady;
+	float m_flSoundStartTime;
+
+#ifndef CLIENT_DLL
+	int		Save(CSave& save);
+	int		Restore(CRestore& restore);
+	static	TYPEDESCRIPTION m_SaveData[];
+#endif
+};
 };
 #endif // WEAPONS_H

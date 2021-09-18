@@ -22,7 +22,9 @@
 #include "lflammes.h"
 #include "decals.h"
 
-extern gmsgLFlammes;
+#ifndef CLIENT_DLL
+extern int gmsgLFlammes;
+#endif
 
 enum lflammes_e 
 {
@@ -36,6 +38,7 @@ enum lflammes_e
 
 
 
+#ifndef CLIENT_DLL
 LINK_ENTITY_TO_CLASS( monster_flamme, CFlamme );
 
 
@@ -48,6 +51,7 @@ TYPEDESCRIPTION	CFlamme::m_SaveData[] =
 	DEFINE_FIELD( CFlamme, m_flMonsterDamage, FIELD_FLOAT ),
 };
 //IMPLEMENT_SAVERESTORE( CFlamme, CPointEntity );
+#endif
 
 
 
@@ -55,38 +59,17 @@ TYPEDESCRIPTION	CFlamme::m_SaveData[] =
 // définition de classe
 
 
-class CLFlammes : public CBasePlayerWeapon
-{
-public:
-	void Spawn( void );
-	void Precache( void );
-	int iItemSlot( void ) { return 4; }
-	int GetItemInfo(ItemInfo *p);
-	int AddToPlayer( CBasePlayer *pPlayer );
-	void PrimaryAttack( void );
-	BOOL Deploy( void );
-	void Holster( int skiplocal = 0 );
-	void Reload( void );
-	void WeaponIdle( void );
-
-	virtual BOOL IsUseable ( void ) { return TRUE; };
-
-	float m_flAttackReady;
-	float m_flSoundStartTime;
-
-	int		Save( CSave &save );
-	int		Restore( CRestore &restore );
-	static	TYPEDESCRIPTION m_SaveData[];
-};
 LINK_ENTITY_TO_CLASS( weapon_lflammes, CLFlammes );
 
 
+#ifndef CLIENT_DLL
 TYPEDESCRIPTION	CLFlammes::m_SaveData[] = 
 {
 	DEFINE_FIELD( CLFlammes, m_flAttackReady, FIELD_TIME ),
 	DEFINE_FIELD( CLFlammes, m_flSoundStartTime, FIELD_TIME ),
 };
 IMPLEMENT_SAVERESTORE( CLFlammes, CBasePlayerWeapon );
+#endif
 
 
 
@@ -236,12 +219,14 @@ void CLFlammes::PrimaryAttack()
 
 		UTIL_MakeVectors ( m_pPlayer->pev->v_angle );
 
+#ifndef CLIENT_DLL
 		CFlamme *pFlamme = CFlamme::CreateFlamme(
 			m_pPlayer->GetGunPosition() + gpGlobals->v_forward*15 + gpGlobals->v_right*7 - gpGlobals->v_up * 6,
 			m_pPlayer->pev->v_angle 
 			);
 
 		pFlamme->pev->velocity = pFlamme->pev->velocity + m_pPlayer->pev->velocity;
+#endif
 
 		// son
 		float delta = gpGlobals->time - m_flSoundStartTime;
@@ -388,6 +373,7 @@ LINK_ENTITY_TO_CLASS( ammo_lflammes, CLFLammesAmmo );
 
 
 
+#ifndef CLIENT_DLL
 //---------------------------------------------------------
 // flammes
 
@@ -833,3 +819,4 @@ int CFlamme :: Restore( CRestore &restore )		// s execute lors du chargement rap
 	
 	return status;
 }
+#endif
