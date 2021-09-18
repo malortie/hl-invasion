@@ -1227,7 +1227,8 @@ public:
 	int m_iShell;
 
 private:
-	unsigned short m_usFSniper;		//pour prï¿½cacher l'event
+	unsigned short m_usFSniper;		//pour précacher l'event
+};
 
 
 class CIRgun : public CBasePlayerWeapon
