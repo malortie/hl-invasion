@@ -725,7 +725,7 @@ void CRpg::Holster( int skiplocal /* = 0 */ )
 	m_fInReload = FALSE;// cancel any reload in progress.
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 
 	// fermeture du hud rpg
 
@@ -1066,7 +1066,7 @@ void CRpg::WeaponIdle( void )
 		return;
 
 	int iAnim;
-	switch ( RANDOM_LONG( 0, 6 ) )
+	switch ( UTIL_SharedRandomLong( m_pPlayer->random_seed, 0, 6 ) )
 	{
 	case 0:
 		iAnim = RPG_FIDGET;
