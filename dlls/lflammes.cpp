@@ -160,7 +160,7 @@ BOOL CLFlammes::Deploy( )
 void CLFlammes::Holster( int skiplocal  )
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
-	m_flTimeWeaponIdle = gpGlobals->time + 10 + RANDOM_FLOAT ( 0, 5 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10 + RANDOM_FLOAT ( 0, 5 );
 }
 
 
@@ -175,7 +175,7 @@ void CLFlammes::PrimaryAttack()
 	// don't fire underwater
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
-		m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
@@ -236,8 +236,8 @@ void CLFlammes::PrimaryAttack()
 
 	}
 
-	m_flTimeWeaponIdle = gpGlobals->time + 0.1;
-	m_flNextPrimaryAttack = gpGlobals->time + 0.02;
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.1;
+	m_flNextPrimaryAttack = GetNextAttackDelay(0.02);
 
 
 }
@@ -264,7 +264,7 @@ void CLFlammes::WeaponIdle( void )
 
 	m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
 
-	if (m_flTimeWeaponIdle > gpGlobals->time)
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
 	// anim fermeture
