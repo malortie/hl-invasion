@@ -117,7 +117,7 @@ int CHudTank :: Draw	( float flTime )
 			g = g + ( m_flPain / TANK_PAIN_TIME ) * ( 255 - g );
 			b = b + ( m_flPain / TANK_PAIN_TIME ) * ( 255 - b );
 
-			m_flPain = std::max ( 0, m_flPain - gHUD.m_flTimeDelta );
+			m_flPain = std::max ( 0.0f, m_flPain - static_cast<float>(gHUD.m_flTimeDelta) );
 		}
 
 		if ( m_flPain < 0 )
@@ -127,7 +127,7 @@ int CHudTank :: Draw	( float flTime )
 			g = g + ( -m_flPain / TANK_PAIN_TIME ) * ( 0 - g );
 			b = b + ( -m_flPain / TANK_PAIN_TIME ) * ( 0 - b );
 
-			m_flPain = std::min ( 0, m_flPain + gHUD.m_flTimeDelta );
+			m_flPain = std::min ( 0.0f, m_flPain + static_cast<float>( gHUD.m_flTimeDelta ) );
 		}
 
 		ScaleColors(r, g, b, 200 );

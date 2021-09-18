@@ -68,7 +68,7 @@ int CHudFog :: Draw	( float flTime )
 {
 	if ( Fade == 1 )
 	{
-		fadetime = std::min ( maxfadetime, fadetime + gHUD.m_flTimeDelta );
+		fadetime = std::min ( maxfadetime, fadetime + static_cast<float>( gHUD.m_flTimeDelta ) );
 
 		if ( fadetime >= maxfadetime )
 			Fade = 0;

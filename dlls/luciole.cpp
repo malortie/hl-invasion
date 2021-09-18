@@ -705,8 +705,8 @@ void CLuciole :: RunTask ( Task_t *pTask )
 
 			float speed = pev->velocity.Length() * flRatio;
 
-			speed = std::max ( 100, speed );
-			speed = std::min ( speed, 250 );
+			speed = std::max ( 100.0f, speed );
+			speed = std::min ( speed, 250.0f );
 
 			pev->velocity = (m_vecRoute - pev->origin).Normalize() * speed;
 
@@ -1043,8 +1043,8 @@ void CLuciole::MoveExecute( CBaseEntity *pTargetEnt, const Vector &vecDir, float
 
 	m_velocity = m_velocity * 0.8 + m_flGroundSpeed * vecDir * 0.5;
 
-	m_velocity = m_velocity.Normalize() * std::max ( m_velocity.Length(), 100 );
-	m_velocity = m_velocity.Normalize() * std::min ( 300, m_velocity.Length() );
+	m_velocity = m_velocity.Normalize() * std::max ( m_velocity.Length(), 100.0f );
+	m_velocity = m_velocity.Normalize() * std::min ( 300.0f, m_velocity.Length() );
 
 	UTIL_MoveToOrigin ( ENT(pev), pev->origin + m_velocity, m_velocity.Length() * flInterval, MOVE_STRAFE );
 	

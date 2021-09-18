@@ -1596,7 +1596,7 @@ void CTankCharger :: ChargerThink ( void )
 	{
 		CTankBSP *pBsp = (CTankBSP*)CBaseEntity::Instance(tr.pHit);
 
-		pBsp->pev->health = std::min ( pBsp->pev->health + TANK_RECHARGE, TANK_LIFE );
+		pBsp->pev->health = std::min ( pBsp->pev->health + TANK_RECHARGE, static_cast<float>(TANK_LIFE) );
 
 		// rafraichissement de l'affichage
 		if ( pBsp->m_pTankModel->bTankOn == TRUE )

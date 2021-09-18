@@ -576,7 +576,7 @@ float	CBasePlayer :: SetArmor	( float flValue, int repartition )
 
 				if ( m_flArmor [j] == flmin && flDistribue < flValue )
 				{
-					float flDonne = std::min ( 1, (flValue - flDistribue) );
+					float flDonne = std::min ( 1.0f, (flValue - flDistribue) );
 					flDonne = std::min ( flDonne, (float)MAX_MEMBER_ARMOR - m_flArmor [j] );
 
 					// donne !

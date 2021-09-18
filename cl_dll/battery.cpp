@@ -237,7 +237,7 @@ int CHudBattery::Draw(float flTime)
 			g = g + ( m_flPain[i] / ARMOR_PAIN_TIME ) * ( 255 - g );
 			b = b + ( m_flPain[i] / ARMOR_PAIN_TIME ) * ( 255 - b );
 
-			m_flPain[i] = std::max ( 0, m_flPain[i] - gHUD.m_flTimeDelta );
+			m_flPain[i] = std::max ( 0.0f, m_flPain[i] - static_cast<float>( gHUD.m_flTimeDelta ) );
 		}
 
 		if ( m_flPain[i] < 0 )
@@ -247,7 +247,7 @@ int CHudBattery::Draw(float flTime)
 			g = g + ( -m_flPain[i] / ARMOR_PAIN_TIME ) * ( 0 - g );
 			b = b + ( -m_flPain[i] / ARMOR_PAIN_TIME ) * ( 0 - b );
 
-			m_flPain[i] = std::min ( 0, m_flPain[i] + gHUD.m_flTimeDelta );
+			m_flPain[i] = std::min ( 0.0f, m_flPain[i] + static_cast<float>( gHUD.m_flTimeDelta ) );
 		}
 
 		ScaleColors ( r,g,b, 200 );

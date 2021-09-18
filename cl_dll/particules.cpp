@@ -299,7 +299,7 @@ int CHudParticules :: Draw	( float flTime )
 		{
 			if ( m_pParticules [ iIndex ].deathtime - flTime < 4.5 )
 			{
-				m_pParticules[iIndex].velocity = m_pParticules[iIndex].velocity.Normalize() * std::max( 0, m_pParticules[iIndex].velocity.Length() - 10 * delta );
+				m_pParticules[iIndex].velocity = m_pParticules[iIndex].velocity.Normalize() * std::max( 0.0f, m_pParticules[iIndex].velocity.Length() - 10 * delta );
 			}
 			else if ( m_pParticules [ iIndex ].deathtime - flTime < 6)
 			{
@@ -314,7 +314,7 @@ int CHudParticules :: Draw	( float flTime )
 			{
 				m_pParticules [ iIndex ].angles.y -=  delta * 0.3 / 2.5;
 
-				m_pParticules [ iIndex ].angles.y = std::max ( 0, m_pParticules [ iIndex ].angles.y );
+				m_pParticules [ iIndex ].angles.y = std::max ( 0.0f, m_pParticules [ iIndex ].angles.y );
 			}
 		}
 
@@ -357,7 +357,7 @@ int CHudParticules :: Draw	( float flTime )
 			if ( m_pDecals[iDecal].iRndSensX < 8 )
 			{
 				m_pDecals[iDecal].iRndSensX	+= 16 * delta;
-				m_pDecals[iDecal].iRndSensY = m_pDecals[iDecal].iRndSensX = std::min ( 8, m_pDecals[iDecal].iRndSensX );
+				m_pDecals[iDecal].iRndSensY = m_pDecals[iDecal].iRndSensX = std::min ( 8.0f, m_pDecals[iDecal].iRndSensX );
 			}
 			continue;
 		}
@@ -367,7 +367,7 @@ int CHudParticules :: Draw	( float flTime )
 			if ( m_pDecals[iDecal].iRndSensX < 3 )
 			{
 				m_pDecals[iDecal].iRndSensX	+= 3 * delta;
-				m_pDecals[iDecal].iRndSensY = m_pDecals[iDecal].iRndSensX = std::min ( 3, m_pDecals[iDecal].iRndSensX );
+				m_pDecals[iDecal].iRndSensY = m_pDecals[iDecal].iRndSensX = std::min ( 3.0f, m_pDecals[iDecal].iRndSensX );
 			}
 			continue;
 		}

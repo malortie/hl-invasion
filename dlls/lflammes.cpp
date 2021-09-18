@@ -600,7 +600,7 @@ void EXPORT CFlamme :: FlameThink ( void )
 		// vitesse
 
 		if ( gpGlobals->time - m_flBirthTime > 1 )
-			pev->velocity = pev->velocity.Normalize() * std::min ( 50, pev->velocity.Length() );
+			pev->velocity = pev->velocity.Normalize() * std::min ( 50.0f, pev->velocity.Length() );
 
 		// destruction
 
@@ -676,7 +676,7 @@ void EXPORT CFlamme :: FlameThink ( void )
 		ratio = (gpGlobals->time - m_flBirthTime) / 0.5;
 
 	if ( gpGlobals->time - m_flBirthTime > 2.5 && m_iMode == FLAMME_LIBRE )
-		ratio = std::min( 0, 1 - (gpGlobals->time - m_flBirthTime - 2.5));
+		ratio = std::min( 0.0f, 1 - (gpGlobals->time - m_flBirthTime - 2.5f));
 
 	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );
 		WRITE_BYTE(TE_DLIGHT);
@@ -803,7 +803,7 @@ void CFlamme :: FlameTouch( CBaseEntity *pOther )
 
 	if ( pOther && pOther->IsBSPModel() )
 	{
-		pev->velocity = pev->velocity.Normalize() * std::min ( 30, pev->velocity.Length() );
+		pev->velocity = pev->velocity.Normalize() * std::min ( 30.0f, pev->velocity.Length() );
 		UTIL_DecalTrace( &trace, DECAL_SCORCH1 + RANDOM_LONG(0,1) );
 	}
 }
