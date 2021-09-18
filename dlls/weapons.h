@@ -1254,5 +1254,34 @@ public:
 private:
 	unsigned short m_usM16;
 };
+
+
+class CSuperGun : public CBasePlayerWeapon
+{
+public:
+	/*	int		Save( CSave &save );
+		int		Restore( CRestore &restore );
+		static	TYPEDESCRIPTION m_SaveData[];
+	*/
+	void Spawn(void);
+	void Precache(void);
+	int iItemSlot(void) { return 4; }
+	int GetItemInfo(ItemInfo* p);
+	int AddToPlayer(CBasePlayer* pPlayer);
+
+	BOOL Deploy(void);
+	void Holster(int skiplocal = 0);
+
+	void PrimaryAttack(void);
+	void SecondaryAttack(void);
+	void Reload(void);
+	void WeaponIdle(void);
+
+	void Shoot(int mode);
+
+private:
+	unsigned short m_usSG;
+
 };
+
 #endif // WEAPONS_H

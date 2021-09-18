@@ -34,33 +34,6 @@ enum supergun_e {
 	SG_RELOAD
 };
 
-class CSuperGun : public CBasePlayerWeapon
-{
-public:
-/*	int		Save( CSave &save );
-	int		Restore( CRestore &restore );
-	static	TYPEDESCRIPTION m_SaveData[];
-*/
-	void Spawn( void );
-	void Precache( void );
-	int iItemSlot( void ) { return 4; }
-	int GetItemInfo(ItemInfo *p);
-	int AddToPlayer( CBasePlayer *pPlayer );
-
-	BOOL Deploy( void );
-	void Holster( int skiplocal = 0 );
-
-	void PrimaryAttack( void );
-	void SecondaryAttack( void );
-	void Reload( void );
-	void WeaponIdle( void );
-
-	void Shoot ( int mode );
-
-private:
-	unsigned short m_usSG;
-
-};
 LINK_ENTITY_TO_CLASS( weapon_supergun, CSuperGun );
 
 /*
@@ -79,6 +52,7 @@ IMPLEMENT_SAVERESTORE( CGauss, CBasePlayerWeapon );
 //--------------------------------------------------------------------------
 
 
+#ifndef CLIENT_DLL
 class CSGBall : public CBaseMonster
 {
 public :
@@ -274,6 +248,7 @@ void CSGBall::ExplodeTouch( CBaseEntity *pOther )
 
 	UTIL_Remove( this );
 }
+#endif
 
 
 //--------------------------------------------------------------------------
@@ -405,6 +380,7 @@ void CSuperGun::PrimaryAttack()
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
 
+#ifndef CLIENT_DLL
 	// flash
 
 	CSprite *pMuzzle = CSprite::SpriteCreate ( "sprites/blueflare1.spr"/*"sprites/animglow01.spr"*/, Vector(0,0,0), TRUE );
@@ -416,6 +392,7 @@ void CSuperGun::PrimaryAttack()
 //	pMuzzle->pev->frame = RANDOM_LONG(3,6);
 	pMuzzle->SetThink ( &CSprite::SUB_Remove );
 	pMuzzle->pev->nextthink = gpGlobals->time + 0.075;
+#endif
 
 
 	SendWeaponAnim( SG_SHOOT1 );
@@ -464,6 +441,7 @@ void CSuperGun::SecondaryAttack()
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
 
+#ifndef CLIENT_DLL
 	// flash
 
 	CSprite *pMuzzle = CSprite::SpriteCreate ( "sprites/blueflare1.spr", Vector(0,0,0), TRUE );
@@ -472,6 +450,7 @@ void CSuperGun::SecondaryAttack()
 	pMuzzle->SetTransparency ( kRenderTransAdd, 128, 128, 220, 250, kRenderFxNone );
 	pMuzzle->SetThink ( &CSprite::SUB_Remove );
 	pMuzzle->pev->nextthink = gpGlobals->time + 0.2;
+#endif
 
 	SendWeaponAnim( SG_BIGSHOOT );
 
@@ -494,12 +473,14 @@ void CSuperGun::SecondaryAttack()
 	Point [7] = m_pPlayer->GetGunPosition() + gpGlobals->v_forward * 15 + gpGlobals->v_right * 6 - gpGlobals->v_up * 9;
 
 
+#ifndef CLIENT_DLL
 	for ( int i=0; i<iProjectiles; i++ )
 	{
 
 		CSGBall :: CreateSGBall ( Point[i],
 			m_pPlayer->pev->v_angle, m_pPlayer->pev );
 	}
+#endif
 
 
 	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 3,6 );
@@ -515,11 +496,13 @@ void CSuperGun :: Shoot ( int mode )
 
 	UTIL_MakeVectors ( m_pPlayer->pev->v_angle );
 
+#ifndef CLIENT_DLL
 	CSGBall :: CreateSGBall (
 		m_pPlayer->GetGunPosition() + gpGlobals->v_forward * 15 
 		+ gpGlobals->v_right * 8
 		- gpGlobals->v_up * 8,
 		m_pPlayer->pev->v_angle, m_pPlayer->pev );
+#endif
 }
 
 
