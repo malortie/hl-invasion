@@ -21,7 +21,7 @@
 // Fonctions externes
 //========================================
 
-extern void EnvSmokeCreate( const Vector &center, int m_iScale, float m_fFrameRate, int m_iTime, int m_iEndTime );
+extern void EnvSmokeCreate( const Vector &center, int m_iScale, int m_iFrameRate, int m_iTime, int m_iEndTime );
 
 extern int gmsgTankView;
 

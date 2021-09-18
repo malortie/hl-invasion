@@ -2297,7 +2297,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int	m_iScale;
-	float m_fFrameRate;
+	int m_fFrameRate;
 	int m_iTime;
 	int m_iEndTime;
 };
@@ -2305,7 +2305,7 @@ public:
 TYPEDESCRIPTION CEnvSmoke::m_SaveData[] =
 {
 	DEFINE_FIELD( CEnvSmoke, m_iScale, FIELD_INTEGER ),
-	DEFINE_FIELD( CEnvSmoke, m_fFrameRate, FIELD_FLOAT ),
+	DEFINE_FIELD( CEnvSmoke, m_fFrameRate, FIELD_INTEGER ),
 	DEFINE_FIELD( CEnvSmoke, m_iTime, FIELD_INTEGER ),
 	DEFINE_FIELD( CEnvSmoke, m_iEndTime, FIELD_TIME ),
 };
@@ -2323,7 +2323,7 @@ void CEnvSmoke::KeyValue( KeyValueData *pkvd )
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iFrameRate"))
 	{
-		m_fFrameRate = std::atof(pkvd->szValue);
+		m_fFrameRate = std::atoi(pkvd->szValue);
 		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iTime"))
@@ -2369,7 +2369,7 @@ void CEnvSmoke::SmokeThink( void )
 		WRITE_COORD( pev->origin.z );
 		WRITE_SHORT( g_sModelIndexSmoke );
 		WRITE_BYTE( m_iScale * 10 ); // scale * 10
-		WRITE_BYTE( RANDOM_FLOAT ( m_fFrameRate + 5, m_fFrameRate ) ); // framerate
+		WRITE_BYTE( RANDOM_LONG ( m_fFrameRate + 5, m_fFrameRate ) ); // framerate
 	MESSAGE_END();
 
 }
@@ -2385,7 +2385,7 @@ void CEnvSmoke::SmokeThink( void )
 
 
 
-void EnvSmokeCreate( const Vector &center, int m_iScale, float m_fFrameRate, int m_iTime, int m_iEndTime )
+void EnvSmokeCreate( const Vector &center, int m_iScale, int m_iFrameRate, int m_iTime, int m_iEndTime )
 {
 
 	// imite un keyvalue
@@ -2400,8 +2400,8 @@ void EnvSmokeCreate( const Vector &center, int m_iScale, float m_fFrameRate, int
 	kvd.szValue = buf;
 	pSmoke->KeyValue( &kvd );
 
-	std::sprintf( buf, "%3d", m_fFrameRate );
-	kvd.szKeyName = "m_fFrameRate";
+	std::sprintf( buf, "%3d", m_iFrameRate );
+	kvd.szKeyName = "m_iFrameRate";
 	kvd.szValue = buf;
 	pSmoke->KeyValue( &kvd );
 
