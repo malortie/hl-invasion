@@ -1648,7 +1648,7 @@ Vector CBaseEntity::FireBulletsPlayer ( ULONG cShots, Vector vecSrc, Vector vecD
 
 					float damage = gSkillData.plrDmgSniper;
 
-					if ( pEntity->MyMonsterPointer == NULL || FClassnameIs ( pEntity->edict(), "monster_apache" ) )
+					if ( pEntity->MyMonsterPointer() == NULL || FClassnameIs ( pEntity->edict(), "monster_apache" ) )
 						damage *= 0.3;
 
 					pEntity->TraceAttack(pevAttacker, damage, vecDir, &tr, DMG_BULLET); 
