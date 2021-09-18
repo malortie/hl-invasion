@@ -145,7 +145,7 @@ BOOL CBriquet::Deploy( )
 void CBriquet::Holster( int skiplocal  )
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
-	m_flTimeWeaponIdle = gpGlobals->time + 10 + RANDOM_FLOAT ( 0, 5 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10 + RANDOM_FLOAT ( 0, 5 );
 
 #ifndef CLIENT_DLL
 	// éteint la flamme
@@ -180,13 +180,13 @@ void CBriquet::PrimaryAttack()
 			SendWeaponAnim( BRIQUET_ETEINT );
 
 			m_bActif = 0;
-			m_flTimeWeaponIdle = gpGlobals->time + 1;
-			m_flNextPrimaryAttack = gpGlobals->time + 0.3;
+			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1;
+			m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 		}
 		else
 		{
 			PlayEmptySound( );
-			m_flNextPrimaryAttack = gpGlobals->time + 0.2;
+			m_flNextPrimaryAttack = GetNextAttackDelay(0.2);
 		}
 		return;
 	}
@@ -211,8 +211,8 @@ void CBriquet::PrimaryAttack()
 		SendWeaponAnim( BRIQUET_ETEINT );
 
 		m_bActif = 0;
-		m_flTimeWeaponIdle = gpGlobals->time + 1;
-		m_flNextPrimaryAttack = gpGlobals->time + 0.3;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 
 
 		return;
@@ -223,8 +223,8 @@ void CBriquet::PrimaryAttack()
 	if ( RANDOM_FLOAT(0,1) < 0.33 )
 	{
 		SendWeaponAnim( BRIQUET_ALLUME );
-		m_flTimeWeaponIdle = gpGlobals->time + BRIQUET_ALLUME_TIME;
-		m_flNextPrimaryAttack = gpGlobals->time + 1;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + BRIQUET_ALLUME_TIME;
+		m_flNextPrimaryAttack = GetNextAttackDelay(1);
 
 		m_bActif = 1;
 
@@ -240,7 +240,7 @@ void CBriquet::PrimaryAttack()
 	else
 	{
 		SendWeaponAnim( BRIQUET_ALLUME_ESSAIE );
-		m_flTimeWeaponIdle = gpGlobals->time + BRIQUET_ALLUME_ESSAIE_TIME;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + BRIQUET_ALLUME_ESSAIE_TIME;
 
 #ifndef CLIENT_DLL
 		CSprite *pEtincelle = CSprite :: SpriteCreate (	BRIQUET_ETINCELLES_SPRITE, Vector (0,0,0), FALSE );
@@ -252,7 +252,7 @@ void CBriquet::PrimaryAttack()
 		pEtincelle->pev->nextthink = gpGlobals->time + 0.05;
 #endif
 
-		m_flNextPrimaryAttack = gpGlobals->time + 0.3;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 	}
 
 
@@ -324,7 +324,7 @@ void CBriquet::WeaponIdle( void )
 		PrimaryAttack();
 
 
-	if (m_flTimeWeaponIdle > gpGlobals->time)
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
 	
