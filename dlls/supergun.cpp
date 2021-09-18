@@ -355,7 +355,7 @@ void CSuperGun::PrimaryAttack()
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound( );
-		m_flNextSecondaryAttack = m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextSecondaryAttack = m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
@@ -402,7 +402,7 @@ void CSuperGun::PrimaryAttack()
 	int iskin = (int)( (SUPERGUN_MAX_CLIP - m_iClip) * 10 / SUPERGUN_MAX_CLIP );
 	PLAYBACK_EVENT_FULL( 0, m_pPlayer->edict(), m_usSG, 0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, iskin, 1, 0, 0 );
 
-	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 1,4 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 1,4 );
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.1;
 }
 
@@ -414,7 +414,7 @@ void CSuperGun::SecondaryAttack()
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound( );
-		m_flNextSecondaryAttack = m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextSecondaryAttack = m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
@@ -483,7 +483,7 @@ void CSuperGun::SecondaryAttack()
 #endif
 
 
-	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 3,6 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 3,6 );
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 31 / 20;
 
 }
@@ -510,11 +510,11 @@ void CSuperGun::WeaponIdle( void )
 {
 	ResetEmptySound( );
 
-	if (m_flTimeWeaponIdle > gpGlobals->time)
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
 	SendWeaponAnim( SG_IDLE );
-	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
 }
 
 
