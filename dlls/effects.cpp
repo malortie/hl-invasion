@@ -2349,7 +2349,7 @@ void CEnvSmoke::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 {
 	m_iEndTime = gpGlobals->time + m_iTime;
 
-	SetThink( SmokeThink );
+	SetThink( &CEnvSmoke::SmokeThink );
 	pev->nextthink = gpGlobals->time + 0.1;
 }
 
@@ -2359,7 +2359,7 @@ void CEnvSmoke::SmokeThink( void )
 	pev->nextthink = gpGlobals->time + 0.5;
 
 	if ( gpGlobals->time > m_iEndTime )
-		SetThink ( SUB_Remove );
+		SetThink ( &CEnvSmoke::SUB_Remove );
 
 	
 	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, pev->origin );

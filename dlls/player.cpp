@@ -5690,7 +5690,7 @@ void	CBasePlayer :: TextAmmo	( TEXT_AMMMO ta_text )
 
 		pRadio->m_iHead = INFOCOMBI;
 
-		pRadio->SetThink ( SUB_Remove );
+		pRadio->SetThink ( &CRadiomsg::SUB_Remove );
 		pRadio->pev->nextthink = gpGlobals->time + 0.1;
 
 		pRadio->Use ( this, this, USE_ON, 0 );

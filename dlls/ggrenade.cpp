@@ -454,14 +454,14 @@ CGrenade * CGrenade :: ShootFrag( entvars_t *pevOwner, Vector vecStart, Vector v
 	if ( mode == 1 )
 	{
 		SET_MODEL(ENT(pGrenade->pev), "models/w_fgrenade.mdl");
-		pGrenade->SetTouch( FragTouch );
-		pGrenade->SetThink( FragThink );
+		pGrenade->SetTouch( &CGrenade::FragTouch );
+		pGrenade->SetThink( &CGrenade::FragThink );
 		pGrenade->pev->nextthink = gpGlobals->time + 0.1;
 	}
 	else
 	{
 		SET_MODEL(ENT(pGrenade->pev), "models/w_frag.mdl");
-		pGrenade->SetThink( Detonate );
+		pGrenade->SetThink( &CGrenade::Detonate );
 		pGrenade->pev->nextthink = gpGlobals->time + RANDOM_FLOAT( 2,3 );
 		pGrenade->pev->solid = SOLID_NOT;
 
@@ -509,7 +509,7 @@ void CGrenade :: FragTouch( CBaseEntity *pOther )
 	}
 
 	SetTouch( NULL );
-	SetThink( Detonate );
+	SetThink( &CGrenade::Detonate );
 	pev->nextthink = gpGlobals->time + 0.1;
 
 }

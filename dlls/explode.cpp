@@ -130,7 +130,7 @@ void CEnvExplosion::Spawn( void )
 	// modif de Julien
 	if ( FStrEq(STRING(gpGlobals->mapname), "l3m2") || FStrEq(STRING(gpGlobals->mapname), "L3M2") )
 	{
-		SetThink ( SUB_Remove );
+		SetThink ( &CEnvExplosion::SUB_Remove );
 		pev->nextthink = gpGlobals->time +0.1;
 		return;
 	}
@@ -341,7 +341,7 @@ void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwne
 
 	CEnvExplosion *pExp = (CEnvExplosion*) pExplosion;
 
-	pExp->SetThink ( pExp->ExplodeDelay );
+	pExp->SetThink ( &CEnvExplosion::ExplodeDelay );
 	pExp->pev->nextthink = gpGlobals->time + flDelay;
 
 
@@ -375,7 +375,7 @@ void CEnvShower::Spawn( void )
 	pev->solid = SOLID_NOT;
 	pev->effects |= EF_NODRAW;
 
-	SetUse ( UseShower );
+	SetUse ( &CEnvShower::UseShower );
 }
 
 void CEnvShower :: UseShower ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
