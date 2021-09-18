@@ -184,7 +184,7 @@ void CM16::SecondaryAttack(void)
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound( );
-		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
+		m_flNextSecondaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
