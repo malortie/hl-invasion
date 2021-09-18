@@ -112,7 +112,7 @@ void CIRgun::Holster( int skiplocal /* = 0 */ )
 	m_fInReload = FALSE;// cancel any reload in progress.
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
-	m_flTimeWeaponIdle = gpGlobals->time + 10 + RANDOM_FLOAT ( 0, 5 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10 + RANDOM_FLOAT ( 0, 5 );
 }
 
 void CIRgun::PrimaryAttack()
@@ -121,7 +121,7 @@ void CIRgun::PrimaryAttack()
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound( );
-		m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
@@ -132,7 +132,7 @@ void CIRgun::PrimaryAttack()
 		else
 		{
 			EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/357_cock1.wav", 0.8, ATTN_NORM);
-			m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+			m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		}
 
 		return;
@@ -160,8 +160,8 @@ void CIRgun::PrimaryAttack()
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
-	m_flNextPrimaryAttack = gpGlobals->time + 0.5;
-	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 10, 15 );
+	m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
 }
 
 
@@ -175,7 +175,7 @@ void CIRgun::SecondaryAttack( void )
 		m_pPlayer->NVGTurnOff ();
 		
 	pev->nextthink = gpGlobals->time + 0.1;
-	m_flNextSecondaryAttack = gpGlobals->time + 0.5;
+	m_flNextSecondaryAttack = GetNextAttackDelay(0.5);
 }
 
 
@@ -195,7 +195,7 @@ void CIRgun::WeaponIdle( void )
 
 	m_pPlayer->GetAutoaimVector( AUTOAIM_10DEGREES );
 
-	if (m_flTimeWeaponIdle > gpGlobals->time)
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
 	int iAnim;
