@@ -166,21 +166,21 @@ void CFSniper::PrimaryAttack()
 
 void CFSniper::SecondaryAttack(void)
 {
-	if ( m_pPlayer->m_iFOV == 0 )
+	if ( m_pPlayer->pev->fov == 0 )
 	{
-		m_pPlayer->m_iFOV = 45 ;
+		m_pPlayer->pev->fov = m_pPlayer->m_iFOV = 45 ;
 	}
 
 	else if ( m_flNextSecondaryAttack + 0.2 < UTIL_WeaponTimeBase() )
 	{
-		m_pPlayer->m_iFOV = 0;
+		m_pPlayer->pev->fov = m_pPlayer->m_iFOV = 0;
 		pev->nextthink = gpGlobals->time + 0.3;
 		m_flNextSecondaryAttack = GetNextAttackDelay(0.3);
 		return;
 	}
 
-	else if ( m_pPlayer->m_iFOV > 10 )
-		m_pPlayer->m_iFOV -= 1.5;
+	else if ( m_pPlayer->pev->fov > 10 )
+		m_pPlayer->pev->fov = m_pPlayer->m_iFOV -= 1.5;
 
 	pev->nextthink = gpGlobals->time + 0.03;
 	m_flNextSecondaryAttack = GetNextAttackDelay(0.03);
@@ -190,8 +190,8 @@ void CFSniper :: Holster( int skiplocal /* = 0 */ )
 {
 	m_fInReload = FALSE;// cancel any reload in progress.
 
-	if ( m_pPlayer->m_iFOV !=0 )
-		m_pPlayer->m_iFOV =0;
+	if ( m_pPlayer->pev->fov !=0 )
+		m_pPlayer->pev->fov = m_pPlayer->m_iFOV =0;
 }
 
 
@@ -199,7 +199,7 @@ void CFSniper :: Holster( int skiplocal /* = 0 */ )
 
 void CFSniper::Reload( void )
 {
-	m_pPlayer->m_iFOV = 0; //champ de vision normal pendant le rechargement
+	m_pPlayer->pev->fov = m_pPlayer->m_iFOV = 0; //champ de vision normal pendant le rechargement
 
 	DefaultReload( FSNIPER_MAX_CLIP, FSNIPER_RELOAD, 69 / 19.0 );
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 69 / 19.0;
