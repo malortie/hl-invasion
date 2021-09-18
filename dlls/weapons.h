@@ -1180,6 +1180,15 @@ public:
 	virtual int	Restore(CRestore& restore);
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
+
+	virtual BOOL UseDecrement(void)
+	{
+#if defined( CLIENT_WEAPONS )
+		return TRUE;
+#else
+		return FALSE;
+#endif
+	}
 };
 
 
@@ -1203,6 +1212,14 @@ public:
 	int AddToPlayer(CBasePlayer* pPlayer);
 
 
+	virtual BOOL UseDecrement(void)
+	{
+#if defined( CLIENT_WEAPONS )
+		return TRUE;
+#else
+		return FALSE;
+#endif
+	}
 };
 
 
@@ -1222,6 +1239,15 @@ public:
 
 	int GetItemInfo(ItemInfo* p);
 	int iItemSlot(void) { return 4; }	//position de l'arme dans le hud
+
+	virtual BOOL UseDecrement(void)
+	{
+#if defined( CLIENT_WEAPONS )
+		return TRUE;
+#else
+		return FALSE;
+#endif
+	}
 
 	float m_flNextAnimTime;
 	int m_iShell;
@@ -1245,6 +1271,15 @@ public:
 	void Holster( int skiplocal = 0 );
 	void Reload( void );
 	void WeaponIdle( void );
+
+	virtual BOOL UseDecrement(void)
+	{
+#if defined( CLIENT_WEAPONS )
+		return TRUE;
+#else
+		return FALSE;
+#endif
+	}
 
 private:
 	unsigned short m_usFireIRgun;
@@ -1277,6 +1312,15 @@ public:
 	int		Restore(CRestore& restore);
 	static	TYPEDESCRIPTION m_SaveData[];
 #endif
+
+	virtual BOOL UseDecrement(void)
+	{
+#if defined( CLIENT_WEAPONS )
+		return TRUE;
+#else
+		return FALSE;
+#endif
+	}
 };
 
 
@@ -1297,6 +1341,15 @@ public:
 	void WeaponIdle(void);
 	float m_flNextAnimTime;
 	int m_iShell;
+
+	virtual BOOL UseDecrement(void)
+	{
+#if defined( CLIENT_WEAPONS )
+		return TRUE;
+#else
+		return FALSE;
+#endif
+	}
 
 private:
 	unsigned short m_usM16;
@@ -1325,6 +1378,15 @@ public:
 	void WeaponIdle(void);
 
 	void Shoot(int mode);
+
+	virtual BOOL UseDecrement(void)
+	{
+#if defined( CLIENT_WEAPONS )
+		return TRUE;
+#else
+		return FALSE;
+#endif
+	}
 
 private:
 	unsigned short m_usSG;
