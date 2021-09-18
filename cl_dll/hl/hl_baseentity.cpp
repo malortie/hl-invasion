@@ -242,6 +242,9 @@ int CBaseMonster::Save( class CSave & ) { return 1; }
 void CBaseMonster :: Gunflash ( void ) {};
 void CBasePlayer :: TextAmmo ( TEXT_AMMMO ta_text ) {};
 
+// HL: Invasion - other stubs.
+void CBasePlayer::NVGTurnOn(void) {}
+void CBasePlayer::NVGTurnOff(void) {}
 
 
 int TrainSpeed(int iSpeed, int iMax) { 	return 0; }

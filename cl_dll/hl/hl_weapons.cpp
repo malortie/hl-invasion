@@ -67,6 +67,7 @@ CTripmine g_Tripmine;
 CBriquet g_Briquet;
 CFGrenade g_FGrenade;
 CFSniper g_FSniper;
+CIRgun g_IRgun;
 
 /*
 ======================
@@ -617,6 +618,7 @@ void HUD_InitClientWeapons( void )
 	HUD_PrepEntity( &g_Briquet	, &player );
 	HUD_PrepEntity( &g_FGrenade	, &player );
 	HUD_PrepEntity( &g_FSniper	, &player );
+	HUD_PrepEntity( &g_IRgun	, &player );
 }
 
 /*
@@ -728,6 +730,10 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 
 		case WEAPON_FSNIPER:
 			pWeapon = &g_FSniper;
+			break;
+
+		case WEAPON_IRGUN:
+			pWeapon = &g_IRgun;
 			break;
 			break;
 	}

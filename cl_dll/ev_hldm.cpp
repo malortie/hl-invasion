@@ -1391,7 +1391,7 @@ void EV_FireIRgun( event_args_t *args )
 	
 	VectorCopy( forward, vecAiming );
 
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, 8192, BULLET_PLAYER_IRGUN, 0, &tracerCount[idx-1] );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_IRGUN, 0, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 
 	if ( EV_IsLocal( idx ) )
 	{

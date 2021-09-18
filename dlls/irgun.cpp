@@ -27,26 +27,6 @@ enum irgun_e {
 	IRGUN_RELOAD
 };
 
-class CIRgun : public CBasePlayerWeapon
-{
-public:
-	void Spawn( void );
-	void Precache( void );
-	int iItemSlot( void ) { return 2; }
-	int GetItemInfo(ItemInfo *p);
-	int AddToPlayer( CBasePlayer *pPlayer );
-	void PrimaryAttack( void );
-	void SecondaryAttack( void );
-	BOOL Deploy( void );
-	void Holster( int skiplocal = 0 );
-	void Reload( void );
-	void WeaponIdle( void );
-
-private:
-	unsigned short m_usFireIRgun;
-	int m_iShell;
-
-};
 LINK_ENTITY_TO_CLASS( weapon_irgun, CIRgun );
 
 int CIRgun::GetItemInfo(ItemInfo *p)
