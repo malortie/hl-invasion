@@ -724,7 +724,8 @@ DECLARE_MESSAGE(m_Particules, ClientDecal);	//modif de Julien 7/7/01
 
 int CHudParticules :: Init( void )
 {
-	for ( int i = 0; i < MAX_PARTICULES ; i ++ )
+	int i;
+	for ( i = 0; i < MAX_PARTICULES ; i ++ )
 	{
 		RemoveParticule ( i );
 	}
@@ -754,8 +755,8 @@ int CHudParticules :: Init( void )
 
 int CHudParticules :: VidInit( void )
 {
-
-	for ( int i = 0; i < MAX_PARTICULES ; i ++ )
+	int i;
+	for ( i = 0; i < MAX_PARTICULES ; i ++ )
 	{
 		RemoveParticule ( i );
 	}

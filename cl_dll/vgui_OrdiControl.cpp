@@ -120,8 +120,8 @@ COrdiControlPanel :: COrdiControlPanel(int iTrans, int iRemoveMe, int x,int y,in
 	// boutons
 
 	int posY = XRES(60);
-
-	for ( int i = 0; i < 4 ; i++ )
+	int i;
+	for ( i = 0; i < 4 ; i++ )
 	{
 		char sz[16];
 		std::sprintf( sz, "Tapis %i", i+1 );

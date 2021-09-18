@@ -561,7 +561,8 @@ void GetOrdiText ( const char *textname, char *messagename, Font *pRadioFont, in
 
 		std::fseek ( myfile, startoffset, SEEK_SET );
 
-		for ( int i=0; i<(int)(stopoffset-startoffset); i++ )
+		int i;
+		for ( i=0; i<(int)(stopoffset-startoffset); i++ )
 		{
 			char copie = std::getc ( myfile );
 

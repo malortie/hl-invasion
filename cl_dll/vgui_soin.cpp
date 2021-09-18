@@ -180,7 +180,8 @@ CSoin :: CSoin(int iTrans, int iRemoveMe, int x,int y,int wide,int tall) : CMenu
 	m_pDigit [5] = new CImageLabel( "bout0", COLONE1, LIGNE5 );
 	m_pDigit [6] = new CImageLabel( "bout0", COLONE2, LIGNE5 );
 
-	for ( int i=0; i<7; i++ )
+	int i;
+	for ( i=0; i<7; i++ )
 	{
 		m_pDigit [i]->setParent ( m_pWindow );
 		m_pDigit [i]->addInputSignal ( new CHandler_Soin ( this, i ) );

@@ -84,7 +84,8 @@ int	GetRadiomsgText ( int iszMessage )
 
 		std::fseek ( myfile, startoffset, SEEK_SET );
 
-		for ( int i=0; i<(int)(stopoffset-startoffset); i++ )
+		int i;
+		for ( i=0; i<(int)(stopoffset-startoffset); i++ )
 		{
 			messagetext [i] = std::getc ( myfile );
 		}

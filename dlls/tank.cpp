@@ -1132,8 +1132,8 @@ void CTank :: DeadThink ( void )
 
 
 	// sprites de feu
-
-	for ( int i=0; i<4; i++ )
+	int i;
+	for ( i=0; i<4; i++ )
 	{
 		CSprite *pSpr = CSprite::SpriteCreate ( SPRITE_FEU, Vector(pev->origin.x,pev->origin.y,pev->origin.z + 100), TRUE );
 		pSpr->SetScale ( SPRITE_FEU_SCALE );
@@ -1184,8 +1184,8 @@ void CTank :: TankDeath ( void )
 
 
 	// sprites de feu - explosion
-
-	for ( int i=0; i<20; i++ )
+	int i;
+	for ( i=0; i<20; i++ )
 	{
 		CSprite *pSpr = CSprite::SpriteCreate ( SPRITE_FEU, Vector(pev->origin.x,pev->origin.y,pev->origin.z + 50), TRUE );
 		pSpr->SetScale ( SPRITE_FEU_SCALE*2 );

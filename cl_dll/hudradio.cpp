@@ -61,8 +61,8 @@ int CHudRadio :: MsgFunc_RadioMsg( const char *pszName, int iSize, void *pbuf )
 	int len			= READ_LONG ();
 
 	// initialisation de la chaine de caracteres
-
-	for ( int i=0; i<256; i++ )
+	int i;
+	for ( i=0; i<256; i++ )
 		m_cText [i] = '\0';
 
 	for ( i=0; i<len; i++ )

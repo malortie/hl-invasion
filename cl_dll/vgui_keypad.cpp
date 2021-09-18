@@ -239,7 +239,8 @@ CKeypad :: CKeypad(int iTrans, int iRemoveMe, int x,int y,int wide,int tall) : C
 
 void CKeypad::Initialize( void )
 {
-	for (int i=0; i<4; i++ )
+	int i;
+	for ( i=0; i<4; i++ )
 	{
 		if ( m_pDigit[i] != NULL )
 		{
