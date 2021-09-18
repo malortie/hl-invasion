@@ -221,7 +221,7 @@ void CGlock::WeaponIdle( void )
 	{
 		int iAnim;
 
-		switch ( RANDOM_LONG( 0, 4 ) )
+		switch ( UTIL_SharedRandomLong( m_pPlayer->random_seed, 0, 4 ) )
 		{
 		case 0 :
 			iAnim = GLOCK_IDLE1;
