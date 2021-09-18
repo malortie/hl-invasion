@@ -706,8 +706,8 @@ BOOL CRpg::Deploy( )
 
 	BOOL bResult = DefaultDeploy( "models/v_rpg.mdl", "models/p_rpg.mdl", RPG_DRAW, "rpg" );
 
-	m_flNextPrimaryAttack = gpGlobals->time + 8 / 5.0;
-	m_flTimeWeaponIdle = gpGlobals->time + 8 / 5.0;
+	m_flNextPrimaryAttack = GetNextAttackDelay(8 / 5.0);
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 8 / 5.0;
 
 	return bResult;
 }
@@ -725,7 +725,7 @@ void CRpg::Holster( int skiplocal /* = 0 */ )
 	m_fInReload = FALSE;// cancel any reload in progress.
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
-	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
 
 	// fermeture du hud rpg
 
@@ -757,7 +757,7 @@ void CRpg::PrimaryAttack()
 			if ( m_iAmmoType != AMMO_ROCKET )
 			{
 				m_bLoaded = FALSE;
-				m_flTimeWeaponIdle = gpGlobals->time - 0.1;
+				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() - 0.1;
 			}
 			m_iAmmoType = AMMO_ROCKET;
 		}
@@ -766,7 +766,7 @@ void CRpg::PrimaryAttack()
 			if ( m_iAmmoType != AMMO_ELECTRO )
 			{
 				m_bLoaded = FALSE;
-				m_flTimeWeaponIdle = gpGlobals->time - 0.1;
+				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() - 0.1;
 			}
 			m_iAmmoType = AMMO_ELECTRO;
 		}
@@ -775,7 +775,7 @@ void CRpg::PrimaryAttack()
 			if ( m_iAmmoType != AMMO_NUCLEAR )
 			{
 				m_bLoaded = FALSE;
-				m_flTimeWeaponIdle = gpGlobals->time - 0.1;
+				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() - 0.1;
 			}
 			m_iAmmoType = AMMO_NUCLEAR;
 		}
@@ -788,7 +788,7 @@ void CRpg::PrimaryAttack()
 			UpdateCrosshair ( RPG_CROSSHAIR_NORMAL );
 
 				
-		m_flNextPrimaryAttack = gpGlobals->time + 0.3;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 	}
 
 	// tir
@@ -875,8 +875,8 @@ void CRpg::PrimaryAttack()
 
 		// prochaine attaque
 		
-		m_flNextPrimaryAttack = gpGlobals->time + 1.5;
-		m_flTimeWeaponIdle = gpGlobals->time + 1.5;		// weaponidle () declenche le rechargement
+		m_flNextPrimaryAttack = GetNextAttackDelay(1.5);
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.5;		// weaponidle () declenche le rechargement
 	}
 	else
 	{
@@ -938,7 +938,7 @@ void CRpg::SecondaryAttack()
 	
 	PlayStateSound ();
 
-	m_flNextSecondaryAttack = gpGlobals->time + 0.2;
+	m_flNextSecondaryAttack = GetNextAttackDelay(0.2);
 }
 
 
@@ -953,7 +953,7 @@ void CRpg::SecondaryAttack()
 
 void CRpg::Reload( void )
 {
-	if ( m_cActiveRockets < 0 || m_flTimeWeaponIdle > gpGlobals->time ) // weaponidle () declenche le rechargement
+	if ( m_cActiveRockets < 0 || m_flTimeWeaponIdle > UTIL_WeaponTimeBase() ) // weaponidle () declenche le rechargement
 		return;
 
 	if (	(m_iAmmoType == AMMO_ROCKET		&& m_iAmmoRocket	== 0) ||
@@ -992,8 +992,8 @@ void CRpg::Reload( void )
 
 	// validation du rechargement
 
-	m_flTimeWeaponIdle = gpGlobals->time + 10;
-	m_flNextPrimaryAttack = gpGlobals->time + 10;
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10;
+	m_flNextPrimaryAttack = GetNextAttackDelay(10);
 
 }
 
@@ -1010,7 +1010,7 @@ void CRpg::WeaponIdle( void )
 		else
 			UpdateCrosshair ( RPG_CROSSHAIR_NORMAL );
 
-		m_flTimeWeaponIdle = gpGlobals->time - 0.1;		// pour charger une anim et changer le bodygroup
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() - 0.1;		// pour charger une anim et changer le bodygroup
 		m_bRpgUpdate = 0;		// weaponidle, ca rafraichit, et c'est déjà pas mal
 	}
 
@@ -1023,7 +1023,7 @@ void CRpg::WeaponIdle( void )
 
 	// rechargement
 
-	if ( m_flTimeWeaponIdle < gpGlobals->time && m_bLoaded == FALSE && m_flReloadTime == -1 )	// -1 = pas en cours de rechargement
+	if ( m_flTimeWeaponIdle < UTIL_WeaponTimeBase() && m_bLoaded == FALSE && m_flReloadTime == -1 )	// -1 = pas en cours de rechargement
 	{
 		Reload ();
 		return;			// pour ne pas lancer d anim idle
@@ -1033,14 +1033,14 @@ void CRpg::WeaponIdle( void )
 	{
 		m_bLoaded				= TRUE;
 		m_flReloadTime			= -1;
-		m_flNextPrimaryAttack	= gpGlobals->time;
-		m_flTimeWeaponIdle		= gpGlobals->time;
+		m_flNextPrimaryAttack	= GetNextAttackDelay(0);
+		m_flTimeWeaponIdle		= UTIL_WeaponTimeBase();
 	}
 
 	
 	// ajustement du bodygroup
 
-	if ( m_flTimeWeaponIdle <= gpGlobals->time )
+	if ( m_flTimeWeaponIdle <= UTIL_WeaponTimeBase() )
 	{
 		int ibody;
 		switch ( m_iAmmoType )
@@ -1062,7 +1062,7 @@ void CRpg::WeaponIdle( void )
 
 	// animations idle
 
-	if (m_flTimeWeaponIdle > gpGlobals->time)
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
 	int iAnim;
@@ -1070,12 +1070,12 @@ void CRpg::WeaponIdle( void )
 	{
 	case 0:
 		iAnim = RPG_FIDGET;
-		m_flTimeWeaponIdle = gpGlobals->time + 15 / 4.0;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 15 / 4.0;
 		break;
 	
 	default:
 		iAnim = RPG_IDLE;
-		m_flTimeWeaponIdle = gpGlobals->time + 15 / 3.0;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 15 / 3.0;
 		break;
 	}
 	SendWeaponAnim( iAnim );
