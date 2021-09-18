@@ -209,14 +209,14 @@ void CFGrenade::WeaponIdle( void )
 			return;
 		}
 
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat ( m_pPlayer->random_seed, 10, 15 );
 		return;
 	}
 
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
 		int iAnim;
-		float flRand = RANDOM_FLOAT(0, 1);
+		float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
 		if (flRand <= 0.75)
 		{
 			iAnim = FGRENADE_IDLE;
