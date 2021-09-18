@@ -135,14 +135,14 @@ void CM16::PrimaryAttack()
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound( );
-		m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
 	if (m_iClip <= 0)
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 	
@@ -167,12 +167,12 @@ void CM16::PrimaryAttack()
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
 
-	m_flNextPrimaryAttack = m_flNextPrimaryAttack + 0.1;
-	if (m_flNextPrimaryAttack < gpGlobals->time)
-		m_flNextPrimaryAttack = gpGlobals->time + 0.1;
+	m_flNextPrimaryAttack = GetNextAttackDelay(0.1);
+	if (m_flNextPrimaryAttack < UTIL_WeaponTimeBase())
+		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.1;
 	
 	
-	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
 
 }
 
@@ -184,7 +184,7 @@ void CM16::SecondaryAttack(void)
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound( );
-		m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
@@ -198,7 +198,7 @@ void CM16::SecondaryAttack(void)
 	m_pPlayer->m_iWeaponFlash = BRIGHT_GUN_FLASH;
 
 	m_pPlayer->m_iExtraSoundTypes = bits_SOUND_DANGER;
-	m_pPlayer->m_flStopExtraSoundTime = gpGlobals->time + 0.2;
+	m_pPlayer->m_flStopExtraSoundTime = UTIL_WeaponTimeBase() + 0.2;
 			
 	m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType]--;
 
@@ -220,9 +220,9 @@ void CM16::SecondaryAttack(void)
 							gpGlobals->v_forward * 800 );
 	
 
-	m_flNextPrimaryAttack = gpGlobals->time + 1;
-	m_flNextSecondaryAttack = gpGlobals->time + 1;
-	m_flTimeWeaponIdle = gpGlobals->time + 5;// idle pretty soon after shooting.
+	m_flNextPrimaryAttack = GetNextAttackDelay(1);
+	m_flNextSecondaryAttack = GetNextAttackDelay(1);
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 5;// idle pretty soon after shooting.
 
 	if (!m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType])
 		// HEV suit - indicate out of ammo condition
@@ -247,7 +247,7 @@ void CM16::WeaponIdle( void )
 
 	m_pPlayer->GetAutoaimVector( AUTOAIM_5DEGREES );
 
-	if (m_flTimeWeaponIdle > gpGlobals->time)
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
 	int iAnim;
@@ -256,13 +256,13 @@ void CM16::WeaponIdle( void )
 	case 0:
 	case 1:
 		iAnim = M16_LONGIDLE;
-		m_flTimeWeaponIdle = gpGlobals->time + 70 / 14.0;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 70 / 14.0;
 		break;
 	
 	default:
 	case 2:
 		iAnim = M16_IDLE1;
-		m_flTimeWeaponIdle = gpGlobals->time + 62 / 8.0;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 62 / 8.0;
 		break;
 	}
 
