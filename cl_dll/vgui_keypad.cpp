@@ -165,7 +165,7 @@ void	CHandler_Keypad :: mousePressed(MouseCode code,Panel* panel)
 		std::sprintf ( buf, "%i", number );
 
 
-		p->m_pDigit [pos]-> m_pTGA = LoadTGA(buf);
+		p->m_pDigit [pos]-> m_pTGA = LoadTGAForRes(buf);
 		p->m_pDigit [pos]->setImage( p->m_pDigit [pos]->m_pTGA );
 
 
@@ -244,7 +244,7 @@ void CKeypad::Initialize( void )
 	{
 		if ( m_pDigit[i] != NULL )
 		{
-			m_pDigit [i]-> m_pTGA = LoadTGA("");
+			m_pDigit [i]-> m_pTGA = LoadTGAForRes("");
 			m_pDigit [i]->setImage( 	m_pDigit [i]->m_pTGA );
 		}
 
