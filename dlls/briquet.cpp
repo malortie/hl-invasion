@@ -145,7 +145,7 @@ BOOL CBriquet::Deploy( )
 void CBriquet::Holster( int skiplocal  )
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10 + RANDOM_FLOAT ( 0, 5 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10 + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 0, 5 );
 
 #ifndef CLIENT_DLL
 	// éteint la flamme
@@ -220,7 +220,7 @@ void CBriquet::PrimaryAttack()
 
 	// 33% de chances de l'allumer
 
-	if ( RANDOM_FLOAT(0,1) < 0.33 )
+	if ( UTIL_SharedRandomFloat( m_pPlayer->random_seed,0,1) < 0.33 )
 	{
 		SendWeaponAnim( BRIQUET_ALLUME );
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + BRIQUET_ALLUME_TIME;
@@ -337,7 +337,7 @@ void CBriquet::WeaponIdle( void )
 	else
 		iAnim = BRIQUET_IDLE;
 
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT( 5, 12 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 5, 12 );
 
 
 	SendWeaponAnim( iAnim );
