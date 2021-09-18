@@ -275,7 +275,7 @@ void CMP5::WeaponIdle( void )
 		return;
 
 	int iAnim;
-	switch ( RANDOM_LONG( 0, 2 ) )
+	switch ( UTIL_SharedRandomLong( m_pPlayer->random_seed, 0, 2 ) )
 	{
 	case 0:	
 	case 1:
