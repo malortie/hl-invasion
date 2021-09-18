@@ -185,7 +185,7 @@ void CShotgun::PrimaryAttack()
 		m_flPumpTime = gpGlobals->time + 0.5;
 
 	m_flNextPrimaryAttack = GetNextAttackDelay(0.75);
-	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.75;
+	m_flNextSecondaryAttack = GetNextAttackDelay(0.75);
 	if (m_iClip != 0)
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 5.0;
 	else
@@ -259,11 +259,11 @@ void CShotgun::SecondaryAttack( void )
 		m_flPumpTime = gpGlobals->time + 0.95;
 
 	m_flNextPrimaryAttack = GetNextAttackDelay(1.5);
-	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.5;
+	m_flNextSecondaryAttack = GetNextAttackDelay(1.5);
 	if (m_iClip != 0)
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 6.0;
 	else
-		m_flTimeWeaponIdle = 1.5;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.5;
 
 	m_fInSpecialReload = 0;
 
@@ -287,7 +287,7 @@ void CShotgun::Reload( void )
 		m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.6;
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.6;
 		m_flNextPrimaryAttack = GetNextAttackDelay(1.0);
-		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.0;
+		m_flNextSecondaryAttack = GetNextAttackDelay(1.0);
 		return;
 	}
 	else if (m_fInSpecialReload == 1)
