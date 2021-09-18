@@ -172,7 +172,7 @@ void CM16::PrimaryAttack()
 		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.1;
 	
 	
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 
 }
 
@@ -207,7 +207,7 @@ void CM16::SecondaryAttack(void)
 	// player "shoot" animation
 	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 
-	if ( RANDOM_LONG(0,1) )
+	if ( UTIL_SharedRandomLong( m_pPlayer->random_seed,0,1) )
 		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/glauncher.wav", 0.8, ATTN_NORM);
 	else
 		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/glauncher2.wav", 0.8, ATTN_NORM);
@@ -251,7 +251,7 @@ void CM16::WeaponIdle( void )
 		return;
 
 	int iAnim;
-	switch ( RANDOM_LONG( 0, 2 ) )
+	switch ( UTIL_SharedRandomLong( m_pPlayer->random_seed, 0, 2 ) )
 	{
 	case 0:
 	case 1:
