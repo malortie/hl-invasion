@@ -647,30 +647,6 @@ public:
 //
 // CHudRPG
 
-enum
-{
-	RPG_CROSSHAIR_NORMAL = 0,
-	RPG_CROSSHAIR_EMPTY,
-	RPG_CROSSHAIR_PROCESS,
-	RPG_CROSSHAIR_LOCKED,
-};
-
-enum
-{
-	RPG_TEXT_TOUCHE = 4,
-	RPG_TEXT_MANQUE,
-};
-
-
-
-#define RPG_MENU_ROCKET_SELECTED		( 1 << 0 )
-#define RPG_MENU_ROCKET_EMPTY			( 1 << 1 )
-#define RPG_MENU_ELECTRO_SELECTED		( 1 << 2 )
-#define RPG_MENU_ELECTRO_EMPTY			( 1 << 3 )
-#define RPG_MENU_NUCLEAR_SELECTED		( 1 << 4 )
-#define RPG_MENU_NUCLEAR_EMPTY			( 1 << 5 )
-#define RPG_MENU_ACTIVE					( 1 << 6 )
-#define RPG_MENU_CLOSE					( 1 << 7 )
 
 
 // definition de la classe

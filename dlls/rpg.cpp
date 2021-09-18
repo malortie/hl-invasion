@@ -729,9 +729,9 @@ void CRpg::Holster( int skiplocal /* = 0 */ )
 
 	// fermeture du hud rpg
 
-	m_iMenuState |= RPG_CLOSE;
+	m_iMenuState |= RPG_MENU_CLOSE;
 	UpdateMenu ();
-	m_iMenuState &= ~RPG_CLOSE;
+	m_iMenuState &= ~RPG_MENU_CLOSE;
 
 }
 

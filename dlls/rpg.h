@@ -39,7 +39,7 @@ enum
 #define RPG_MENU_NUCLEAR_SELECTED		( 1 << 4 )
 #define RPG_MENU_NUCLEAR_EMPTY			( 1 << 5 )
 #define RPG_MENU_ACTIVE					( 1 << 6 )
-#define RPG_CLOSE						( 1 << 7 )
+#define RPG_MENU_CLOSE					( 1 << 7 )
 #define RPG_NEUTRE						( 1 << 8 )
 
 // munitions

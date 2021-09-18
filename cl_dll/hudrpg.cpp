@@ -15,6 +15,7 @@
 #include "const.h"
 #include "parsemsg.h"
 #include "eventscripts.h"
+#include "rpg.h"
 
 
 
