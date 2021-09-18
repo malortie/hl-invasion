@@ -48,42 +48,16 @@ enum briquet_e
 // définition de classe
 
 
-class CBriquet : public CBasePlayerWeapon
-{
-public:
-	void Spawn( void );
-	void Precache( void );
-
-	int iItemSlot( void ) { return 1; }
-	int GetItemInfo(ItemInfo *p);
-
-	int AddToPlayer( CBasePlayer *pPlayer );
-	BOOL Deploy( void );
-	void Holster( int skiplocal = 0 );
-
-	void PrimaryAttack( void );
-	void Reload( void );
-	void WeaponIdle( void );
-
-	BOOL ShouldWeaponIdle( void ) { return TRUE; };
-
-	int		m_bActif;
-	float	m_flNextLight;
-	BOOL	m_bTransition;
-
-	virtual int	Save	( CSave &save );
-	virtual int	Restore	( CRestore &restore );
-	static	TYPEDESCRIPTION m_SaveData[];
-
-};
 LINK_ENTITY_TO_CLASS( weapon_briquet, CBriquet );
 
+#ifndef CLIENT_DLL
 TYPEDESCRIPTION CBriquet::m_SaveData[] =
 {
 	DEFINE_FIELD( CBriquet, m_bActif, FIELD_INTEGER ),
 	DEFINE_FIELD( CBriquet, m_flNextLight, FIELD_TIME ),
 	DEFINE_FIELD( CBriquet, m_bTransition, FIELD_BOOLEAN ),
 };
+#endif
 
 // IMPLEMENT_SAVERESTORE( CBriquet, CBasePlayerWeapon );
 
@@ -173,10 +147,12 @@ void CBriquet::Holster( int skiplocal  )
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
 	m_flTimeWeaponIdle = gpGlobals->time + 10 + RANDOM_FLOAT ( 0, 5 );
 
+#ifndef CLIENT_DLL
 	// éteint la flamme
 	MESSAGE_BEGIN( MSG_ONE, gmsgBriquetSwitch, NULL, m_pPlayer->pev );
 		WRITE_BYTE ( 0 );						// 0 == off, 1 == on
 	MESSAGE_END();
+#endif
 
 }
 
@@ -194,10 +170,12 @@ void CBriquet::PrimaryAttack()
 	{
 		if ( m_bActif == 1 )
 		{
+#ifndef CLIENT_DLL
 			// éteint la flamme
 			MESSAGE_BEGIN( MSG_ONE, gmsgBriquetSwitch, NULL, m_pPlayer->pev );
 				WRITE_BYTE ( 0 );						// 0 == off, 1 == on
 			MESSAGE_END();
+#endif
 
 			SendWeaponAnim( BRIQUET_ETEINT );
 
@@ -223,10 +201,12 @@ void CBriquet::PrimaryAttack()
 
 	if ( m_bActif == 1 )
 	{
+#ifndef CLIENT_DLL
 		// éteint la flamme
 		MESSAGE_BEGIN( MSG_ONE, gmsgBriquetSwitch, NULL, m_pPlayer->pev );
 			WRITE_BYTE ( 0 );						// 0 == off, 1 == on
 		MESSAGE_END();
+#endif
 
 		SendWeaponAnim( BRIQUET_ETEINT );
 
@@ -248,9 +228,11 @@ void CBriquet::PrimaryAttack()
 
 		m_bActif = 1;
 
+#ifndef CLIENT_DLL
 		MESSAGE_BEGIN( MSG_ONE, gmsgBriquetSwitch, NULL, m_pPlayer->pev );
 			WRITE_BYTE ( 1 );						// 0 == off, 1 == on
 		MESSAGE_END();
+#endif
 
 
 	}
@@ -260,6 +242,7 @@ void CBriquet::PrimaryAttack()
 		SendWeaponAnim( BRIQUET_ALLUME_ESSAIE );
 		m_flTimeWeaponIdle = gpGlobals->time + BRIQUET_ALLUME_ESSAIE_TIME;
 
+#ifndef CLIENT_DLL
 		CSprite *pEtincelle = CSprite :: SpriteCreate (	BRIQUET_ETINCELLES_SPRITE, Vector (0,0,0), FALSE );
 
 		pEtincelle->SetAttachment ( m_pPlayer->edict(), 1 );
@@ -267,6 +250,7 @@ void CBriquet::PrimaryAttack()
 		pEtincelle->SetScale( 0.05 );
 		pEtincelle->SetThink ( &CSprite::SUB_Remove );
 		pEtincelle->pev->nextthink = gpGlobals->time + 0.05;
+#endif
 
 		m_flNextPrimaryAttack = gpGlobals->time + 0.3;
 	}
@@ -298,9 +282,11 @@ void CBriquet::WeaponIdle( void )
 
 	if ( m_bTransition == TRUE )
 	{
+#ifndef CLIENT_DLL
 		MESSAGE_BEGIN( MSG_ONE, gmsgBriquetSwitch, NULL, m_pPlayer->pev );
 		WRITE_BYTE ( m_bActif == 1 ? 1 : 0 );
 		MESSAGE_END();
+#endif
 
 		m_bTransition = FALSE;
 	}
@@ -313,6 +299,7 @@ void CBriquet::WeaponIdle( void )
 	{
 		m_flNextLight = UTIL_WeaponTimeBase() + 0.15;
 
+#ifndef CLIENT_DLL
 		Vector vecSrc = m_pPlayer->Center ();
 
 		MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, vecSrc );
@@ -327,6 +314,7 @@ void CBriquet::WeaponIdle( void )
 			WRITE_BYTE( 3 );		// time * 10
 			WRITE_BYTE( 0 );		// decay * 0.1
 		MESSAGE_END( );
+#endif
 
 	}
 
@@ -356,6 +344,7 @@ void CBriquet::WeaponIdle( void )
 }
 
 
+#ifndef CLIENT_DLL
 //--------------------------------------------------------------------------
 // restoration de la flamme à la sauvegarde
 
@@ -380,4 +369,5 @@ int CBriquet::Restore( CRestore &restore )		// s execute lors du chargement rapi
 	
 	return status;
 }
+#endif
 

@@ -1104,4 +1104,35 @@ private:
 };
 */
 
+// HL: Invasion weapons.
+
+class CBriquet : public CBasePlayerWeapon
+{
+public:
+	void Spawn(void);
+	void Precache(void);
+
+	int iItemSlot(void) { return 1; }
+	int GetItemInfo(ItemInfo* p);
+
+	int AddToPlayer(CBasePlayer* pPlayer);
+	BOOL Deploy(void);
+	void Holster(int skiplocal = 0);
+
+	void PrimaryAttack(void);
+	void Reload(void);
+	void WeaponIdle(void);
+
+	BOOL ShouldWeaponIdle(void) { return TRUE; };
+
+	int		m_bActif;
+	float	m_flNextLight;
+	BOOL	m_bTransition;
+
+#ifndef CLIENT_DLL
+	virtual int	Save(CSave& save);
+	virtual int	Restore(CRestore& restore);
+	static	TYPEDESCRIPTION m_SaveData[];
+#endif
+};
 #endif // WEAPONS_H
