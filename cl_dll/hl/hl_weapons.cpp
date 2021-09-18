@@ -66,6 +66,7 @@ CTripmine g_Tripmine;
 // HL: Invasion weapons
 CBriquet g_Briquet;
 CFGrenade g_FGrenade;
+CFSniper g_FSniper;
 
 /*
 ======================
@@ -615,6 +616,7 @@ void HUD_InitClientWeapons( void )
 	HUD_PrepEntity( &g_Tripmine	, &player );
 	HUD_PrepEntity( &g_Briquet	, &player );
 	HUD_PrepEntity( &g_FGrenade	, &player );
+	HUD_PrepEntity( &g_FSniper	, &player );
 }
 
 /*
@@ -722,6 +724,10 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 
 		case WEAPON_FGRENADE:
 			pWeapon = &g_FGrenade;
+			break;
+
+		case WEAPON_FSNIPER:
+			pWeapon = &g_FSniper;
 			break;
 			break;
 	}

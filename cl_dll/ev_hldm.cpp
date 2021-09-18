@@ -1321,7 +1321,7 @@ void EV_FireFSniper( event_args_t *args )
 	EV_GetGunPosition( args, vecSrc, origin );
 	VectorCopy( forward, vecAiming );
 
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, Vector(0,0,0)/*VECTOR_CONE_1DEGREES*/, 8192, BULLET_PLAYER_SNIPER, 1, &tracerCount[idx-1] );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_SNIPER, 1, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 
 	if ( EV_IsLocal( idx ) )
 	{

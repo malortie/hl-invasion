@@ -1158,4 +1158,29 @@ public:
 
 
 };
+
+
+class CFSniper : public CBasePlayerWeapon
+{
+public:
+	void Spawn(void);
+	void Precache(void);
+	int AddToPlayer(CBasePlayer* pPlayer);
+
+	void PrimaryAttack(void);
+	void SecondaryAttack(void);
+	void Holster(int skiplocal = 0);
+	void Reload(void);
+	void WeaponIdle(void);
+	BOOL Deploy(void);
+
+	int GetItemInfo(ItemInfo* p);
+	int iItemSlot(void) { return 4; }	//position de l'arme dans le hud
+
+	float m_flNextAnimTime;
+	int m_iShell;
+
+private:
+	unsigned short m_usFSniper;		//pour pr�cacher l'event
+};
 #endif // WEAPONS_H
