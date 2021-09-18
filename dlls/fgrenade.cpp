@@ -138,14 +138,14 @@ void CFGrenade::PrimaryAttack()
 	m_flThrowFg = 1;
 	SendWeaponAnim( FGRENADE_PINPULL );
 
-	m_flTimeWeaponIdle = gpGlobals->time + 0.5;
-	m_flNextPrimaryAttack = gpGlobals->time + 0xFF;
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
+	m_flNextPrimaryAttack = GetNextAttackDelay(0xFF);
 }
 
 
 void CFGrenade::WeaponIdle( void )
 {
-	if (m_flTimeWeaponIdle > gpGlobals->time)
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
 	if (m_flThrowFg == 1)
@@ -180,8 +180,8 @@ void CFGrenade::WeaponIdle( void )
 		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 
 		m_flThrowFg = 2;
-		m_flNextPrimaryAttack = gpGlobals->time + 0.5;
-		m_flTimeWeaponIdle = gpGlobals->time + 0.5;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
 
 		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
 
@@ -190,7 +190,7 @@ void CFGrenade::WeaponIdle( void )
 			// just threw last grenade
 			// set attack times in the future, and weapon idle in the future so we can see the whole throw
 			// animation, weapon idle will automatically retire the weapon for us.
-			m_flTimeWeaponIdle = m_flNextSecondaryAttack = m_flNextPrimaryAttack = gpGlobals->time + 0.5;// ensure that the animation can finish playing
+			m_flTimeWeaponIdle = m_flNextSecondaryAttack = m_flNextPrimaryAttack = GetNextAttackDelay(0.5);// ensure that the animation can finish playing
 		}
 		return;
 	}
@@ -209,7 +209,7 @@ void CFGrenade::WeaponIdle( void )
 			return;
 		}
 
-		m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 10, 15 );
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
 		return;
 	}
 
@@ -220,12 +220,12 @@ void CFGrenade::WeaponIdle( void )
 		if (flRand <= 0.75)
 		{
 			iAnim = FGRENADE_IDLE;
-			m_flTimeWeaponIdle = gpGlobals->time + 21 / 5.0;// how long till we do this again.
+			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 21 / 5.0;// how long till we do this again.
 		}
 		else 
 		{
 			iAnim = FGRENADE_FIDGET;
-			m_flTimeWeaponIdle = gpGlobals->time + 7 / 6.0;
+			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 7 / 6.0;
 		}
 
 		SendWeaponAnim( iAnim );
