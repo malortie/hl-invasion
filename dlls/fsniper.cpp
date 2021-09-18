@@ -121,14 +121,14 @@ void CFSniper::PrimaryAttack()
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound( );
-		m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
 	if (m_iClip <= 0)
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = gpGlobals->time + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 	
@@ -156,10 +156,10 @@ void CFSniper::PrimaryAttack()
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
 
-	m_flNextPrimaryAttack = gpGlobals->time + 52 / 25.0;
+	m_flNextPrimaryAttack = GetNextAttackDelay(52 / 25.0);
 	
 	
-	m_flTimeWeaponIdle = gpGlobals->time + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
 
 }
 
@@ -171,11 +171,11 @@ void CFSniper::SecondaryAttack(void)
 		m_pPlayer->m_iFOV = 45 ;
 	}
 
-	else if ( m_flNextSecondaryAttack + 0.2 < gpGlobals->time )
+	else if ( m_flNextSecondaryAttack + 0.2 < UTIL_WeaponTimeBase() )
 	{
 		m_pPlayer->m_iFOV = 0;
 		pev->nextthink = gpGlobals->time + 0.3;
-		m_flNextSecondaryAttack = gpGlobals->time + 0.3;
+		m_flNextSecondaryAttack = GetNextAttackDelay(0.3);
 		return;
 	}
 
@@ -183,7 +183,7 @@ void CFSniper::SecondaryAttack(void)
 		m_pPlayer->m_iFOV -= 1.5;
 
 	pev->nextthink = gpGlobals->time + 0.03;
-	m_flNextSecondaryAttack = gpGlobals->time + 0.03;
+	m_flNextSecondaryAttack = GetNextAttackDelay(0.03);
 }
 
 void CFSniper :: Holster( int skiplocal /* = 0 */ )
@@ -215,7 +215,7 @@ void CFSniper::WeaponIdle( void )
 
 	m_pPlayer->GetAutoaimVector( AUTOAIM_5DEGREES );
 
-	if (m_flTimeWeaponIdle > gpGlobals->time)
+	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
 	int iAnim;
@@ -225,19 +225,19 @@ void CFSniper::WeaponIdle( void )
 	case 1:
 	case 2:
 		iAnim = FSNIPER_LONGIDLE;
-		m_flTimeWeaponIdle = gpGlobals->time + 25 / 4.0;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 25 / 4.0;
 		break;
 	
 	default:
 	case 3:
 	case 4:
 		iAnim = FSNIPER_IDLE1;
-		m_flTimeWeaponIdle = gpGlobals->time + 24 / 9.0;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 24 / 9.0;
 		break;
 
 	case 5:
 		iAnim = FSNIPER_FIDGET;
-		m_flTimeWeaponIdle = gpGlobals->time + 50 / 13.0;
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 50 / 13.0;
 		break;
 	}
 
