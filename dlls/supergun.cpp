@@ -328,7 +328,7 @@ BOOL CSuperGun::Deploy( )
 	BOOL bResult = DefaultDeploy( "models/v_supergun.mdl", "models/p_gauss.mdl", SG_DRAW, "supergun" );
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 2, 5 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 2, 5 );
 	return bResult;
 }
 
@@ -402,7 +402,7 @@ void CSuperGun::PrimaryAttack()
 	int iskin = (int)( (SUPERGUN_MAX_CLIP - m_iClip) * 10 / SUPERGUN_MAX_CLIP );
 	PLAYBACK_EVENT_FULL( 0, m_pPlayer->edict(), m_usSG, 0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, iskin, 1, 0, 0 );
 
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 1,4 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 1,4 );
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.1;
 }
 
@@ -483,7 +483,7 @@ void CSuperGun::SecondaryAttack()
 #endif
 
 
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 3,6 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 3,6 );
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 31 / 20;
 
 }
@@ -514,7 +514,7 @@ void CSuperGun::WeaponIdle( void )
 		return;
 
 	SendWeaponAnim( SG_IDLE );
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 }
 
 
