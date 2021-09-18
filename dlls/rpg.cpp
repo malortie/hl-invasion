@@ -816,6 +816,7 @@ void CRpg::PrimaryAttack()
 		SendWeaponAnim( RPG_FIRE );
 		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 
+#ifndef CLIENT_DLL
 		// roquette
 
 		UTIL_MakeVectors( m_pPlayer->pev->v_angle );
@@ -836,6 +837,7 @@ void CRpg::PrimaryAttack()
 
 		UTIL_MakeVectors( m_pPlayer->pev->v_angle );// RpgRocket::Create stomps on globals, so remake.
 		pRocket->pev->velocity = pRocket->pev->velocity + gpGlobals->v_forward * DotProduct( m_pPlayer->pev->velocity, gpGlobals->v_forward );
+#endif
 
 		// munitions
 
@@ -1168,20 +1170,24 @@ void CRpg :: PlayStateSound ( void )
 void CRpg :: UpdateCrosshair ( int crosshair )
 {
 
+#ifndef CLIENT_DLL
 	MESSAGE_BEGIN( MSG_ONE, gmsgRpgViseur, NULL, m_pPlayer->pev );
 		WRITE_BYTE( crosshair );
 	MESSAGE_END();
+#endif
 }
 
 
 void CRpg :: UpdateMenu ( void )
 {
+#ifndef CLIENT_DLL
 	MESSAGE_BEGIN( MSG_ONE, gmsgRpgMenu, NULL, m_pPlayer->pev );
 		WRITE_BYTE( m_iMenuState );
 		WRITE_BYTE( m_iAmmoRocket );
 		WRITE_BYTE( m_iAmmoElectro );
 		WRITE_BYTE( m_iAmmoNuclear );
 	MESSAGE_END();
+#endif
 
 }
 

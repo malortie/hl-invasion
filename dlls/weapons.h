@@ -757,6 +757,9 @@ public:
 	
 	static CLaserSpot *CreateSpot( void );
 };
+*/
+
+class CRpgRocket;
 
 class CRpg : public CBasePlayerWeapon
 {
@@ -783,11 +786,8 @@ public:
 	void SecondaryAttack( void );
 	void WeaponIdle( void );
 
-	void UpdateSpot( void );
 	BOOL ShouldWeaponIdle( void ) { return TRUE; };
 
-	CLaserSpot *m_pSpot;
-	int m_fSpotActive;
 	int m_cActiveRockets;// how many missiles in flight from this launcher right now?
 
 	virtual BOOL UseDecrement( void )
@@ -799,17 +799,48 @@ public:
 #endif
 	}
 
-private:
-	unsigned short m_usRpg;
+	//modif de Julien
+	void UpdateEntityTarget ( void );
+	void UpdateCrosshair ( int crosshair );
+	void UpdateMenu ( void );
+	void PlayStateSound ( void );
+
+	int ExtractAmmo( CBasePlayerWeapon *pWeapon );
+	int ExtractClipAmmo( CBasePlayerWeapon *pWeapon );
+	int GiveAmmo( int iAmount, char *szName, int iMax );
+
+	BOOL AddAmmo ( CBasePlayerWeapon *pWeapon, int iAmmoType, int iNombre );
+	virtual void ItemTouch ( CBaseEntity *pOther );
+
+	CBaseEntity *m_pEntityTarget;
+	CBaseEntity *m_pEntityLocked;
+	CRpgRocket	*pRocket;
+
+	int m_iMenuState;
+
+	float m_flLockTime;
+	float m_flReloadTime;
+
+	int m_iAmmoType;
+	int m_iAmmoRocket;
+	int m_iAmmoElectro;
+	int m_iAmmoNuclear;
+
+	BOOL m_bLoaded;
+	BOOL m_bRpgUpdate;
+
+	float	m_flLastBip;
 
 };
 
 class CRpgRocket : public CGrenade
 {
 public:
+#ifndef CLIENT_DLL
 	int		Save( CSave &save );
 	int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
+#endif
 	void Spawn( void );
 	void Precache( void );
 	void EXPORT FollowThink( void );
@@ -817,11 +848,26 @@ public:
 	void EXPORT RocketTouch( CBaseEntity *pOther );
 	static CRpgRocket *CreateRpgRocket( Vector vecOrigin, Vector vecAngles, CBaseEntity *pOwner, CRpg *pLauncher );
 
+	void EXPORT ElectroThink ( void );
+
+	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
+	void Killed( entvars_t *pevAttacker, int iGib );
+	
 	int m_iTrail;
 	float m_flIgniteTime;
 	CRpg *m_pLauncher;// pointer back to the launcher that fired me. 
+
+	//modif de Julien
+	CBaseEntity *m_pTargetMonster;
+	
+	int		m_iRocketType;
+	float	m_flDiskTime;
+	float	m_flLastRadius;
+
+	int		m_iDiskTexture;
+	short	m_sNuclearSprite;
+
 };
-*/
 
 class CGauss : public CBasePlayerWeapon
 {
