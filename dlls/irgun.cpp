@@ -112,7 +112,7 @@ void CIRgun::Holster( int skiplocal /* = 0 */ )
 	m_fInReload = FALSE;// cancel any reload in progress.
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10 + RANDOM_FLOAT ( 0, 5 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10 + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 0, 5 );
 }
 
 void CIRgun::PrimaryAttack()
@@ -161,7 +161,7 @@ void CIRgun::PrimaryAttack()
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
 	m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 }
 
 
@@ -199,12 +199,12 @@ void CIRgun::WeaponIdle( void )
 		return;
 
 	int iAnim;
-	float flRand = RANDOM_FLOAT(0, 1);
+	float flRand = UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 1);
 
 	if (flRand <= 0.4 || m_pPlayer->bNvgOn == TRUE )
 	{
 		iAnim = IRGUN_IDLE_IR;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT( 3, 6 );
+		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed,  3, 6 );
 	}
 	else if (flRand <= 0.8)
 	{
