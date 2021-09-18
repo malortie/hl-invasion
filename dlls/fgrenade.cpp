@@ -34,27 +34,6 @@ enum fgrenade_e
 };
 
 
-class CFGrenade : public CBasePlayerWeapon
-{
-public:
-	void Spawn( void );
-	void Precache( void );
-
-	void PrimaryAttack( void );
-	BOOL CanHolster( void );
-	void Holster( int skiplocal = 0 );
-	void WeaponIdle( void );
-	BOOL Deploy( void );
-
-	int GetItemInfo(ItemInfo *p);
-	int iItemSlot( void ) { return 5; }	//position de l'arme dans le hud
-
-	float m_flThrowFg;
-
-	int AddToPlayer( CBasePlayer *pPlayer );
-
-
-};
 
 LINK_ENTITY_TO_CLASS( weapon_fgrenade , CFGrenade );
 
