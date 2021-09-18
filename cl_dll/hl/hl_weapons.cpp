@@ -56,16 +56,12 @@ CGlock g_Glock;
 CCrowbar g_Crowbar;
 CPython g_Python;
 CMP5 g_Mp5;
-CCrossbow g_Crossbow;
 CShotgun g_Shotgun;
 CRpg g_Rpg;
 CGauss g_Gauss;
-CEgon g_Egon;
-CHgun g_HGun;
 CHandGrenade g_HandGren;
 CSatchel g_Satchel;
 CTripmine g_Tripmine;
-CSqueak g_Snark;
 
 // HL: Invasion weapons
 CBriquet g_Briquet;
@@ -611,16 +607,11 @@ void HUD_InitClientWeapons( void )
 	HUD_PrepEntity( &g_Crowbar	, &player );
 	HUD_PrepEntity( &g_Python	, &player );
 	HUD_PrepEntity( &g_Mp5	, &player );
-	HUD_PrepEntity( &g_Crossbow	, &player );
 	HUD_PrepEntity( &g_Shotgun	, &player );
 	HUD_PrepEntity( &g_Rpg	, &player );
-	HUD_PrepEntity( &g_Gauss	, &player );
-	HUD_PrepEntity( &g_Egon	, &player );
-	HUD_PrepEntity( &g_HGun	, &player );
 	HUD_PrepEntity( &g_HandGren	, &player );
 	HUD_PrepEntity( &g_Satchel	, &player );
 	HUD_PrepEntity( &g_Tripmine	, &player );
-	HUD_PrepEntity( &g_Snark	, &player );
 	HUD_PrepEntity( &g_Briquet	, &player );
 }
 
@@ -703,28 +694,12 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 			pWeapon = &g_Mp5;
 			break;
 
-		case WEAPON_CROSSBOW:
-			pWeapon = &g_Crossbow;
-			break;
-
 		case WEAPON_SHOTGUN:
 			pWeapon = &g_Shotgun;
 			break;
 
 		case WEAPON_RPG:
 			pWeapon = &g_Rpg;
-			break;
-
-		case WEAPON_GAUSS:
-			pWeapon = &g_Gauss;
-			break;
-
-		case WEAPON_EGON:
-			pWeapon = &g_Egon;
-			break;
-
-		case WEAPON_HORNETGUN:
-			pWeapon = &g_HGun;
 			break;
 
 		case WEAPON_HANDGRENADE:
@@ -739,8 +714,6 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 			pWeapon = &g_Tripmine;
 			break;
 
-		case WEAPON_SNARK:
-			pWeapon = &g_Snark;
 		case WEAPON_BRIQUET:
 			pWeapon = &g_Briquet;
 			break;
