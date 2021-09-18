@@ -160,7 +160,7 @@ BOOL CLFlammes::Deploy( )
 void CLFlammes::Holster( int skiplocal  )
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10 + RANDOM_FLOAT ( 0, 5 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 10 + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 0, 5 );
 }
 
 
@@ -282,15 +282,15 @@ void CLFlammes::WeaponIdle( void )
 	{
 		m_flAttackReady = 0;
 
-		switch ( RANDOM_LONG(0,1) )
+		switch ( UTIL_SharedRandomLong(m_pPlayer->random_seed,0,1) )
 		{
 		case 1:
 		default:
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT( 5, 10 );
+			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 5, 10 );
 			SendWeaponAnim( LFLAMMES_IDLE );
 			break;
 		case 0:
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT( 10,12 );
+			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10,12 );
 			SendWeaponAnim( LFLAMMES_LONGIDLE );
 			break;
 		}
