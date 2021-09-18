@@ -159,7 +159,7 @@ void CFSniper::PrimaryAttack()
 	m_flNextPrimaryAttack = GetNextAttackDelay(52 / 25.0);
 	
 	
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT ( 10, 15 );
+	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 10, 15 );
 
 }
 
@@ -219,7 +219,7 @@ void CFSniper::WeaponIdle( void )
 		return;
 
 	int iAnim;
-	switch ( RANDOM_LONG( 0, 5 ) )
+	switch ( UTIL_SharedRandomLong( m_pPlayer->random_seed, 0, 5 ) )
 	{
 	case 0:
 	case 1:
