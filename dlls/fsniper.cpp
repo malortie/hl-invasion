@@ -132,9 +132,6 @@ void CFSniper::PrimaryAttack()
 		return;
 	}
 	
-	PLAYBACK_EVENT( 0, m_pPlayer->edict(), m_usFSniper );
-	//avec un délai pour l ejection de la cartouche
-	PLAYBACK_EVENT_FULL ( 0, m_pPlayer->edict(), m_usFSniper, 27 / 25.0, (float *)&g_vecZero, (float *)&g_vecZero, 0, 0, 0, 0, 1, 0 );
 
 
 	m_pPlayer->m_iWeaponVolume = NORMAL_GUN_VOLUME;
@@ -147,8 +144,20 @@ void CFSniper::PrimaryAttack()
 
 	Vector vecSrc	 = m_pPlayer->GetGunPosition( );
 	Vector vecAiming = m_pPlayer->GetAutoaimVector( AUTOAIM_8DEGREES );
-	
-	m_pPlayer->FireBullets( 1, vecSrc, vecAiming, Vector ( 0, 0, 0 )/*VECTOR_CONE_1DEGREES*/, 8192, BULLET_PLAYER_SNIPER, 1 );
+	Vector vecDir;
+	vecDir = m_pPlayer->FireBulletsPlayer( 1, vecSrc, vecAiming, Vector ( 0, 0, 0 )/*VECTOR_CONE_1DEGREES*/, 8192, BULLET_PLAYER_SNIPER, 1, 0, m_pPlayer->pev, m_pPlayer->random_seed );
+
+	int flags;
+#if defined( CLIENT_WEAPONS )
+	flags = FEV_NOTHOST;
+#else
+	flags = 0;
+#endif
+
+	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usFSniper, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, 0, 0, 0, 0 );
+
+	//avec un délai pour l ejection de la cartouche
+	PLAYBACK_EVENT_FULL ( flags, m_pPlayer->edict(), m_usFSniper, 27 / 25.0, (float *)&g_vecZero, (float *)&g_vecZero, 0, 0, 0, 0, 1, 0 );
 
 	
 	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
