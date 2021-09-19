@@ -1186,21 +1186,34 @@ void EV_FireMP5( event_args_t *args )
 //		 MP5 END
 //======================
 
+enum supergun_e {
+	SG_IDLE = 0,
+	SG_SHOOT1,
+	SG_BIGSHOOT,
+	SG_DRAW,
+	SG_RELOAD
+};
 
 //modif de Julien
 
 void EV_FireSG( event_args_t *args )
 {
 	int idx;
+	vec3_t origin;
+
 	idx = args->entindex;
+	VectorCopy(args->origin, origin);
 
 	if ( args->iparam2 == 1 )
 	{
 		// tir
 		if ( EV_IsLocal( idx ) )
 		{
+			gEngfuncs.pEventAPI->EV_WeaponAnimation( SG_SHOOT1, 0 );
 			V_PunchAxis( 0, gEngfuncs.pfnRandomFloat( 8,10 ) );
 		}
+
+		gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "turret/tu_fire1.wav", 1, ATTN_NORM, 0, 100 );
 	}
 
 	cl_entity_t *pViewmodel = GetViewEntity();

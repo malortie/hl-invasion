@@ -395,12 +395,17 @@ void CSuperGun::PrimaryAttack()
 #endif
 
 
-	SendWeaponAnim( SG_SHOOT1 );
+  int flags;
+#if defined( CLIENT_WEAPONS )
+	flags = FEV_NOTHOST;
+#else
+	flags = 0;
+#endif
 
 	Shoot ( 0 );
 
 	int iskin = (int)( (SUPERGUN_MAX_CLIP - m_iClip) * 10 / SUPERGUN_MAX_CLIP );
-	PLAYBACK_EVENT_FULL( 0, m_pPlayer->edict(), m_usSG, 0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, iskin, 1, 0, 0 );
+	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usSG, 0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, iskin, 1, 0, 0 );
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + UTIL_SharedRandomFloat( m_pPlayer->random_seed, 1,4 );
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.1;
@@ -491,7 +496,6 @@ void CSuperGun::SecondaryAttack()
 
 void CSuperGun :: Shoot ( int mode )
 {
-	EMIT_SOUND ( m_pPlayer->edict(), CHAN_WEAPON, "turret/tu_fire1.wav", 1.0, ATTN_NORM );
 	//CBaseMonster *pBall = (CBaseMonster*)Create( "controller_energy_ball", m_pPlayer->GetGunPosition(), m_pPlayer->pev->v_angle, edict() );
 
 	UTIL_MakeVectors ( m_pPlayer->pev->v_angle );
