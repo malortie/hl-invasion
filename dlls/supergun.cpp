@@ -344,8 +344,15 @@ void CSuperGun :: Reload ( void )
 {
 	DefaultReload( SUPERGUN_MAX_CLIP, SG_RELOAD, 69 / 25.0 );
 	
+	int flags;
+#if defined( CLIENT_WEAPONS )
+	flags = FEV_NOTHOST;
+#else
+	flags = 0;
+#endif
+	
 	int iskin = 0;
-	PLAYBACK_EVENT_FULL( 0, m_pPlayer->edict(), m_usSG, 1, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, iskin, 0, 0, 0 );
+	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usSG, 1, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, iskin, 0, 0, 0 );
 }
 
 
