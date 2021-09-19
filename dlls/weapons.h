@@ -1353,6 +1353,7 @@ public:
 
 private:
 	unsigned short m_usM16;
+	unsigned short m_usM162;
 };
 
 

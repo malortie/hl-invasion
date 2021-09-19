@@ -73,6 +73,7 @@ enum m16_e
 	M16_RELOAD,
 	M16_DEPLOY,
 	M16_FIRE1,
+	M16_LAUNCH,
 };
 
 //modif de Julien

@@ -64,6 +64,7 @@ void EV_FireShotGunDouble( struct event_args_s *args  );
 void EV_FireMP5( struct event_args_s *args  );
 
 void EV_FireM16( struct event_args_s *args  );	//modif de julien
+void EV_FireM162( struct event_args_s *args  );
 void EV_FireFSniper( struct event_args_s *args  );	//modif de julien
 void EV_FireIRgun( struct event_args_s *args  );	//modif de julien
 void EV_FireSG( struct event_args_s *args  );	//modif de julien
@@ -1261,6 +1262,33 @@ void EV_FireM16( event_args_t *args )
 		V_PunchAxis( 0, gEngfuncs.pfnRandomFloat( -4, 4 ) );
 	}
 
+}
+
+// We only predict the animation and sound
+// The grenade is still launched from the server.
+void EV_FireM162( event_args_t *args )
+{
+	int idx;
+	vec3_t origin;
+	
+	idx = args->entindex;
+	VectorCopy( args->origin, origin );
+
+	if ( EV_IsLocal( idx ) )
+	{
+		gEngfuncs.pEventAPI->EV_WeaponAnimation( M16_LAUNCH, 2 );
+		V_PunchAxis( 0, -10 );
+	}
+	
+	switch( gEngfuncs.pfnRandomLong( 0, 1 ) )
+	{
+	case 0:
+		gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "weapons/glauncher.wav", 1, ATTN_NORM, 0, 94 + gEngfuncs.pfnRandomLong( 0, 0xf ) );
+		break;
+	case 1:
+		gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "weapons/glauncher2.wav", 1, ATTN_NORM, 0, 94 + gEngfuncs.pfnRandomLong( 0, 0xf ) );
+		break;
+	}
 }
 
 //modif de Julien

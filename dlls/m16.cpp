@@ -82,6 +82,7 @@ void CM16::Precache( void )
 
 
 	m_usM16 = PRECACHE_EVENT( 1, "events/m16.sc" );
+	m_usM162 = PRECACHE_EVENT( 1, "events/m162.sc" );
 
 }
 
@@ -203,15 +204,8 @@ void CM16::SecondaryAttack(void)
 			
 	m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType]--;
 
-	SendWeaponAnim( M16_LAUNCH );
-
 	// player "shoot" animation
 	m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
-
-	if ( UTIL_SharedRandomLong( m_pPlayer->random_seed,0,1) )
-		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/glauncher.wav", 0.8, ATTN_NORM);
-	else
-		EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "weapons/glauncher2.wav", 0.8, ATTN_NORM);
  
 	UTIL_MakeVectors( m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle );
 
@@ -219,8 +213,16 @@ void CM16::SecondaryAttack(void)
 	CGrenade::ShootContact( m_pPlayer->pev, 
 							m_pPlayer->pev->origin + m_pPlayer->pev->view_ofs + gpGlobals->v_forward * 16, 
 							gpGlobals->v_forward * 800 );
-	
 
+	int flags;
+#if defined( CLIENT_WEAPONS )
+	flags = FEV_NOTHOST;
+#else
+	flags = 0;
+#endif
+
+	PLAYBACK_EVENT( flags, m_pPlayer->edict(), m_usM162 );
+	
 	m_flNextPrimaryAttack = GetNextAttackDelay(1);
 	m_flNextSecondaryAttack = GetNextAttackDelay(1);
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 5;// idle pretty soon after shooting.
@@ -229,7 +231,6 @@ void CM16::SecondaryAttack(void)
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
-	m_pPlayer->pev->punchangle.x -= 10;
 
 }
 
