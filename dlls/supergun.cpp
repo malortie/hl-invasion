@@ -286,6 +286,7 @@ void CSuperGun::Precache( void )
 	PRECACHE_SOUND("debris/beamstart14.wav");
 
 	m_usSG = PRECACHE_EVENT( 1, "events/supergun.sc" );
+	m_usSG2 = PRECACHE_EVENT( 1, "events/supergun2.sc" );
 
 	UTIL_PrecacheOther ( "sg_ball" );
 }
@@ -464,12 +465,14 @@ void CSuperGun::SecondaryAttack()
 	pMuzzle->pev->nextthink = gpGlobals->time + 0.2;
 #endif
 
-	SendWeaponAnim( SG_BIGSHOOT );
+  int flags;
+#if defined( CLIENT_WEAPONS )
+	flags = FEV_NOTHOST;
+#else
+	flags = 0;
+#endif
 
-	// sons
-	EMIT_SOUND ( m_pPlayer->edict(), CHAN_WEAPON, "weapons/gauss2.wav", 1.0, ATTN_NORM );
-	EMIT_SOUND ( m_pPlayer->edict(), CHAN_ITEM, "debris/beamstart14.wav", 1.0, ATTN_NORM );
-
+	PLAYBACK_EVENT_FULL( flags, m_pPlayer->edict(), m_usSG2, 0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, 0, 0, 0, 0 );
 
 	UTIL_MakeVectors ( m_pPlayer->pev->v_angle );
 

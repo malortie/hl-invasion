@@ -68,6 +68,7 @@ void EV_FireM162( struct event_args_s *args  );
 void EV_FireFSniper( struct event_args_s *args  );	//modif de julien
 void EV_FireIRgun( struct event_args_s *args  );	//modif de julien
 void EV_FireSG( struct event_args_s *args  );	//modif de julien
+void EV_FireSG2( struct event_args_s *args  );
 
 void EV_FirePython( struct event_args_s *args  );
 void EV_FireGauss( struct event_args_s *args  );
@@ -1219,6 +1220,23 @@ void EV_FireSG( event_args_t *args )
 	cl_entity_t *pViewmodel = GetViewEntity();
 	pViewmodel->curstate.skin = args->iparam1;
 
+}
+
+void EV_FireSG2( event_args_t *args )
+{
+	int idx;
+	vec3_t origin;
+
+	idx = args->entindex;
+	VectorCopy(args->origin, origin);
+
+	if ( EV_IsLocal( idx ) )
+	{
+		gEngfuncs.pEventAPI->EV_WeaponAnimation( SG_BIGSHOOT, 0 );
+	}
+
+	gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "weapons/gauss2.wav", 1, ATTN_NORM, 0, 100 );
+	gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_ITEM, "debris/beamstart14.wav", 1, ATTN_NORM, 0, 100 );
 }
 
 void EV_FireM16( event_args_t *args )

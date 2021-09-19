@@ -1391,6 +1391,7 @@ public:
 
 private:
 	unsigned short m_usSG;
+	unsigned short m_usSG2;
 
 };
 
