@@ -466,7 +466,7 @@ void CHudLFlammes :: DrawFlammes ( void )
 
 		// taille du sprite
 
-		float fldist;
+		float fldist = 0.0f;
 		
 		if ( p->imode == FLAMME_LIBRE )
 		{
