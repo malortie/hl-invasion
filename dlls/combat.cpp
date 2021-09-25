@@ -1530,17 +1530,11 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 				switch(iBulletType)
 				{
 					default:
-					case BULLET_PLAYER_9MM:		
-					case BULLET_PLAYER_MP5:		
-					case BULLET_PLAYER_SNIPER :
-					case BULLET_PLAYER_M16 :
-					case BULLET_PLAYER_BUCKSHOT_DOUBLE:
+					case BULLET_MONSTER_9MM:
+					case BULLET_MONSTER_MP5:
+					case BULLET_MONSTER_12MM:
 					case BULLET_PLAYER_BUCKSHOT:
-					case BULLET_PLAYER_357:
 						distance = 16;
-						break;
-					case BULLET_PLAYER_IRGUN :
-						distance = 32;
 						break;
 				}
 
