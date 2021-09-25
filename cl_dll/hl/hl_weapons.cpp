@@ -864,6 +864,26 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 		 ( ( CRpg * )player.m_pActiveItem)->m_fSpotActive = (int)from->client.vuser2[ 1 ];
 		 ( ( CRpg * )player.m_pActiveItem)->m_cActiveRockets = (int)from->client.vuser2[ 2 ];
 	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_FSNIPER )
+	{
+		player.ammo_fsniper = (int)from->client.vuser2.y;
+	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_IRGUN )
+	{
+		player.ammo_irgun = (int)from->client.vuser2.y;
+	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_LFLAMMES )
+	{
+		player.ammo_oeufs = (int)from->client.vuser2.y;
+	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_M16 )
+	{
+		player.ammo_m16 = (int)from->client.vuser2.y;
+	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_SUPERGUN )
+	{
+		player.ammo_chewinggum = (int)from->client.vuser2.y;
+	}
 	
 	// Don't go firing anything if we have died or are spectating
 	// Or if we don't have a weapon model deployed
@@ -931,6 +951,26 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 	{
 		 from->client.vuser2[ 1 ] = ( ( CRpg * )player.m_pActiveItem)->m_fSpotActive;
 		 from->client.vuser2[ 2 ] = ( ( CRpg * )player.m_pActiveItem)->m_cActiveRockets;
+	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_FSNIPER )
+	{
+		to->client.vuser2.y = player.ammo_fsniper;
+	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_IRGUN )
+	{
+		to->client.vuser2.y = player.ammo_irgun;
+	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_LFLAMMES )
+	{
+		to->client.vuser2.y = player.ammo_oeufs;
+	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_M16 )
+	{
+		to->client.vuser2.y = player.ammo_m16;
+	}
+	else if ( player.m_pActiveItem->m_iId == WEAPON_SUPERGUN )
+	{
+		to->client.vuser2.y = player.ammo_chewinggum;
 	}
 
 	// Make sure that weapon animation matches what the game .dll is telling us

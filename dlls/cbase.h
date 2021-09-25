@@ -356,6 +356,14 @@ public:
 	int ammo_uranium;
 	int ammo_hornets;
 	int ammo_argrens;
+
+	// HL: Invasion ammo count variables.
+	int ammo_chewinggum;
+	int ammo_fsniper;
+	int ammo_irgun;
+	int ammo_m16;
+	int ammo_oeufs;
+
 	//Special stuff for grenades and satchels.
 	float m_flStartThrow;
 	float m_flReleaseThrow;

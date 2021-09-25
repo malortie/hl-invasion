@@ -1439,6 +1439,13 @@ void CBasePlayer::TabulateAmmo()
 	ammo_rockets = AmmoInventory( GetAmmoIndex( "rockets" ) );
 	ammo_uranium = AmmoInventory( GetAmmoIndex( "uranium" ) );
 	ammo_hornets = AmmoInventory( GetAmmoIndex( "Hornets" ) );
+
+	// HL: Invasion ammo count variables.
+	ammo_chewinggum = AmmoInventory( GetAmmoIndex( "chewinggum" ) );
+	ammo_fsniper = AmmoInventory( GetAmmoIndex( "fsniper" ) );
+	ammo_irgun = AmmoInventory( GetAmmoIndex( "irgun" ) );
+	ammo_m16 = AmmoInventory( GetAmmoIndex( "m16" ) );
+	ammo_oeufs = AmmoInventory( GetAmmoIndex( "oeufs" ) );
 }
 
 

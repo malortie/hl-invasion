@@ -1941,6 +1941,26 @@ void UpdateClientData ( const edict_t *ent, int sendweapons, struct clientdata_s
 						cd->vuser2.y = ( ( CRpg * )pl->m_pActiveItem)->m_fSpotActive;
 						cd->vuser2.z = ( ( CRpg * )pl->m_pActiveItem)->m_cActiveRockets;
 					}
+					else if ( pl->m_pActiveItem->m_iId == WEAPON_FSNIPER )
+					{
+						cd->vuser2.y = pl->ammo_fsniper;
+					}
+					else if ( pl->m_pActiveItem->m_iId == WEAPON_IRGUN )
+					{
+						cd->vuser2.y = pl->ammo_irgun;
+					}
+					else if ( pl->m_pActiveItem->m_iId == WEAPON_LFLAMMES )
+					{
+						cd->vuser2.y = pl->ammo_oeufs;
+					}
+					else if ( pl->m_pActiveItem->m_iId == WEAPON_M16 )
+					{
+						cd->vuser2.y = pl->ammo_m16;
+					}
+					else if ( pl->m_pActiveItem->m_iId == WEAPON_SUPERGUN )
+					{
+						cd->vuser2.y = pl->ammo_chewinggum;
+					}
 				}
 			}
 		}
