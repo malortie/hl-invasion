@@ -192,6 +192,8 @@ void CHudLFlammes :: ClearFlammes ( void )
 		m_pFlammes = m_pFlammes->pNext;
 		delete p;
 	}
+
+	m_pFlammes = NULL;
 }
 
 
@@ -589,6 +591,8 @@ void CHudLFlammes :: DrawFlammes ( void )
 
 int CHudLFlammes :: Init( void )
 {
+	m_pFlammes = NULL;
+
 	ClearFlammes ();
 
 	HOOK_MESSAGE( LFlammes );
