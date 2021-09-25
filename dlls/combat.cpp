@@ -1725,6 +1725,13 @@ Vector CBaseEntity::FireBulletsPlayer ( ULONG cShots, Vector vecSrc, Vector vecD
 	}
 	ApplyMultiDamage(pev, pevAttacker);
 
+	//modif de Julien
+	if ( IsPlayer() )
+	{
+		if ( IsInGaz() == TRUE )
+			m_bFireInGaz = TRUE;
+	}
+
 	return Vector( x * vecSpread.x, y * vecSpread.y, 0.0 );
 }
 
