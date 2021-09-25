@@ -498,7 +498,7 @@ void CHudLFlammes :: DrawFlammes ( void )
 
 		// frame
 		
-		int frame;
+		int frame = 0;
 
 		if ( p->imode == FLAMME_LIBRE )
 		{
