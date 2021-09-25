@@ -515,7 +515,7 @@ void CHudLFlammes :: DrawFlammes ( void )
 		// transparence
 
 		float flTrans = 0.0f;
-		float flratio;
+		float flratio = 0.0f;
 
 		if ( p->imode == FLAMME_ATTACHEE )
 		{
