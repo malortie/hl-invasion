@@ -1584,7 +1584,7 @@ Go to the trouble of combining multiple pellets into a single damage call.
 This version is used by Players, uses the random seed generator to sync client and server side shots.
 ================
 */
-Vector CBaseEntity::FireBulletsPlayer ( ULONG cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker, int shared_rand )
+Vector CBaseEntity::FireBulletsPlayer ( ULONG cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker, int shared_rand, int iTraverseMur )
 {
 	static int tracerCount;
 	TraceResult tr;
@@ -1685,7 +1685,47 @@ Vector CBaseEntity::FireBulletsPlayer ( ULONG cShots, Vector vecSrc, Vector vecD
 
 				break;
 			}
+
+			// tir a travers les murs
+
+			if ( iTraverseMur == 0 )
+			{
+				float distance;
+
+				switch(iBulletType)
+				{
+					default:
+					case BULLET_PLAYER_9MM:		
+					case BULLET_PLAYER_MP5:		
+					case BULLET_PLAYER_SNIPER :
+					case BULLET_PLAYER_M16 :
+					case BULLET_PLAYER_BUCKSHOT_DOUBLE:
+					case BULLET_PLAYER_BUCKSHOT:
+					case BULLET_PLAYER_357:
+						distance = 16;
+						break;
+					case BULLET_PLAYER_IRGUN :
+						distance = 32;
+						break;
+				}
+
+				// épaisseur maximum
+
+				vec3_t vecSource = vecSrc;
+				vec3_t vecTraceDir = (tr.vecEndPos - vecSource).Normalize();
+				vecSource = tr.vecEndPos + vecTraceDir * distance;
+				TraceResult trTir;
+
+				UTIL_TraceLine(vecSource, vecSource + vecTraceDir, dont_ignore_monsters, ENT(pev), &trTir);
+
+				if ( trTir.fStartSolid != 1 )
+				{
+					ApplyMultiDamage(pev, pevAttacker);
+					FireBulletsPlayer ( 1, vecSource, vecTraceDir, vecSpread, flDistance, iBulletType, 0, 0, pev, shared_rand, 1 );
+				}
+			}
 		}
+
 		// make bullet trails
 		UTIL_BubbleTrail( vecSrc, tr.vecEndPos, (flDistance * tr.flFraction) / 64.0 );
 	}

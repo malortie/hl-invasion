@@ -886,7 +886,7 @@ void EV_HLDM_FireBullets( int idx, float *forward, float *right, float *up, int 
 				gEngfuncs.pEventAPI->EV_PopPMStates();
 
 				if ( trTir.startsolid != 1 )
-					EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSource, forward, vecSpread, 8192, iBulletType, 0, &tracerCount[idx-1], 1 );
+					EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSource, forward, 8192, iBulletType, 0, &tracerCount[idx-1], flSpreadX, flSpreadY, 1 );
 			}
 
 		}
