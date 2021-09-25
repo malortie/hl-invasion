@@ -340,12 +340,14 @@ void CHudLFlammes :: DrawFlammes ( void )
 						m_pFlammes = p->pNext,
 
 						delete p;
+						p = m_pFlammes; // Current flame was deleted. Set p to next flame.
 						break;
 					}
 					else
 					{
 						q->pNext = p->pNext;
 						delete p;
+						p = q->pNext; // Current flame was deleted. Set p to next flame.
 
 						break;
 					}
@@ -355,6 +357,10 @@ void CHudLFlammes :: DrawFlammes ( void )
 				r = r->pNext;
 			}
 		}
+
+		// Skip if current flame was deleted in the destruction code above.
+		if ( p == NULL )
+			continue;
 
 		// application des vecteurs vitesse
 
