@@ -638,7 +638,7 @@ void CLuciole :: RunTask ( Task_t *pTask )
 
 							// bloqué par de petits obstacles - on tente de monter ou descendre un peu
 
-							TraceResult trEvite [2];
+							TraceResult trEvite [4];
 
 							UTIL_MakeVectors ( pev->angles );
 
