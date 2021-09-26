@@ -1015,6 +1015,22 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 		if ( pWeapon == &g_Python && bIsMultiplayer() )
 			 body = 1;
 		
+		// HL: Invasion - Show the correct Rpg bodygroup.
+		if ( pWeapon == &g_Rpg )
+		{
+			switch ( g_Rpg.m_iAmmoType )
+			{
+			case AMMO_ROCKET:
+				body = RPG_WEAPON_ROCKET; break;
+			case AMMO_ELECTRO:
+				body = RPG_WEAPON_ELECTRO; break;
+			case AMMO_NUCLEAR:
+				body = RPG_WEAPON_NUCLEAR; break;
+			}
+			if ( g_Rpg.m_chargeReady == FALSE )
+				body = RPG_WEAPON_EMPTY;
+		}
+
 		// Force a fixed anim down to viewmodel
 		HUD_SendWeaponAnim( to->client.weaponanim, body, 1 );
 	}

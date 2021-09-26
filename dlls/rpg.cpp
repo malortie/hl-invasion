@@ -704,7 +704,7 @@ BOOL CRpg::Deploy( )
 
 	// animation
 
-	BOOL bResult = DefaultDeploy( "models/v_rpg.mdl", "models/p_rpg.mdl", RPG_DRAW, "rpg" );
+	BOOL bResult = DefaultDeploy( "models/v_rpg.mdl", "models/p_rpg.mdl", RPG_DRAW, "rpg", UseDecrement(), pev->body );
 
 	m_flNextPrimaryAttack = GetNextAttackDelay(8 / 5.0);
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 8 / 5.0;
@@ -813,7 +813,7 @@ void CRpg::PrimaryAttack()
 
 		// animations
 
-		SendWeaponAnim( RPG_FIRE );
+		SendWeaponAnim( RPG_FIRE, UseDecrement(), pev->body );
 		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 
 #ifndef CLIENT_DLL
@@ -988,7 +988,7 @@ void CRpg::Reload( void )
 		break;
 	}
 
-	SendWeaponAnim( iAnim );
+	SendWeaponAnim( iAnim, UseDecrement(), pev->body );
 
 	// validation du rechargement
 
@@ -1078,7 +1078,7 @@ void CRpg::WeaponIdle( void )
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 15 / 3.0;
 		break;
 	}
-	SendWeaponAnim( iAnim );
+	SendWeaponAnim( iAnim, UseDecrement(), pev->body );
 }
 
 
