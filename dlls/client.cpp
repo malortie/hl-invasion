@@ -1938,8 +1938,13 @@ void UpdateClientData ( const edict_t *ent, int sendweapons, struct clientdata_s
 					
 					if ( pl->m_pActiveItem->m_iId == WEAPON_RPG )
 					{
-						cd->vuser2.y = ( ( CRpg * )pl->m_pActiveItem)->m_fSpotActive;
 						cd->vuser2.z = ( ( CRpg * )pl->m_pActiveItem)->m_cActiveRockets;
+
+						CRpg* pRpg = ( CRpg * )pl->m_pActiveItem;
+						if ( pRpg )
+						{
+							cd->vuser2.y = pRpg->m_iAmmoType;
+						}
 					}
 					else if ( pl->m_pActiveItem->m_iId == WEAPON_FSNIPER )
 					{

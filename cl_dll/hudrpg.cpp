@@ -337,3 +337,21 @@ wrect_t CreateWrect ( int left, int top, int right, int bottom )
 
 	return rec;
 };
+
+int HudRPG_GetMenuState( void )
+{
+	return gHUD.m_RPG.m_iMenuState;
+}
+
+int HudRPG_GetAmmoCount( int iAmmoType )
+{
+	switch ( iAmmoType )
+	{
+	case AMMO_ROCKET:
+		return gHUD.m_RPG.m_iAmmo1;
+	case AMMO_ELECTRO:
+		return gHUD.m_RPG.m_iAmmo2;
+	case AMMO_NUCLEAR:
+		return gHUD.m_RPG.m_iAmmo3;
+	}
+}

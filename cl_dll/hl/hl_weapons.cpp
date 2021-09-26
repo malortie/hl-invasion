@@ -30,6 +30,7 @@
 #include "../hud_iface.h"
 #include "../com_weapons.h"
 #include "../demo.h"
+#include "rpg.h"
 
 extern globalvars_t *gpGlobals;
 extern int g_iUser1;
@@ -73,6 +74,9 @@ CIRgun g_IRgun;
 CLFlammes g_LFlammes;
 CM16 g_M16;
 CSuperGun g_SuperGun;
+
+int HudRPG_GetMenuState( void );
+int HudRPG_GetAmmoCount( int iAmmoType );
 
 /*
 ======================
@@ -863,8 +867,21 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 
 	if ( player.m_pActiveItem->m_iId == WEAPON_RPG )
 	{
-		 ( ( CRpg * )player.m_pActiveItem)->m_fSpotActive = (int)from->client.vuser2[ 1 ];
 		 ( ( CRpg * )player.m_pActiveItem)->m_cActiveRockets = (int)from->client.vuser2[ 2 ];
+
+		CRpg* pRpg = ( CRpg * )player.m_pActiveItem;
+		if ( pRpg )
+		{
+			pRpg->m_iAmmoType = (int)from->client.vuser2.y;
+
+			// There is no way to properly sync these variables without using a custom delta.lst.
+			// These variables are always updated from the server when the RPG menu selection changes,
+			// so use them directly from the CHudRPG.
+			pRpg->m_iMenuState = HudRPG_GetMenuState();
+			pRpg->m_iAmmoRocket = HudRPG_GetAmmoCount( AMMO_ROCKET );
+			pRpg->m_iAmmoElectro = HudRPG_GetAmmoCount( AMMO_ELECTRO );
+			pRpg->m_iAmmoNuclear = HudRPG_GetAmmoCount( AMMO_NUCLEAR );
+		}
 	}
 	else if ( player.m_pActiveItem->m_iId == WEAPON_FSNIPER )
 	{
@@ -952,8 +969,13 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 
 	if ( player.m_pActiveItem->m_iId == WEAPON_RPG )
 	{
-		 from->client.vuser2[ 1 ] = ( ( CRpg * )player.m_pActiveItem)->m_fSpotActive;
 		 to->client.vuser2[ 2 ] = ( ( CRpg * )player.m_pActiveItem)->m_cActiveRockets;
+
+		CRpg* pRpg = ( CRpg * )player.m_pActiveItem;
+		if ( pRpg )
+		{
+			to->client.vuser2.y = pRpg->m_iAmmoType;
+		}
 	}
 	else if ( player.m_pActiveItem->m_iId == WEAPON_FSNIPER )
 	{
