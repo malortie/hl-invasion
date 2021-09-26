@@ -974,17 +974,17 @@ void CRpg::Reload( void )
 	{
 	case AMMO_ROCKET:
 		iAnim = RPG_RELOAD_ROCKET;
-		m_flStartThrow = gpGlobals->time + 2;
+		m_flStartThrow = gpGlobals->time + 36 / 15.0;
 		break;
 
 	case AMMO_ELECTRO:
 		iAnim = RPG_RELOAD_ELECTRO;
-		m_flStartThrow = gpGlobals->time + 4;
+		m_flStartThrow = gpGlobals->time + 56 / 15.0;
 		break;
 
 	case AMMO_NUCLEAR:
 		iAnim = RPG_RELOAD_NUCLEAR;
-		m_flStartThrow = gpGlobals->time + 6;
+		m_flStartThrow = gpGlobals->time + 80 / 14.0;
 		break;
 	}
 
