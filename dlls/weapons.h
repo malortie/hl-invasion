@@ -819,14 +819,14 @@ public:
 	int m_iMenuState;
 
 	float m_flLockTime;
-	float m_flReloadTime;
+//	float m_flReloadTime; // Is now m_flStartThrow
 
 	int m_iAmmoType;
 	int m_iAmmoRocket;
 	int m_iAmmoElectro;
 	int m_iAmmoNuclear;
 
-	BOOL m_bLoaded;
+//	BOOL m_bLoaded; // Is now m_chargeReady
 	BOOL m_bRpgUpdate;
 
 	float	m_flLastBip;

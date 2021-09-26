@@ -62,9 +62,9 @@ TYPEDESCRIPTION	CRpg::m_SaveData[] =
 	DEFINE_FIELD( CRpg, m_iAmmoElectro, FIELD_INTEGER ),
 	DEFINE_FIELD( CRpg, m_iAmmoNuclear, FIELD_INTEGER ),
 	DEFINE_FIELD( CRpg, m_iMenuState, FIELD_INTEGER ),
-	DEFINE_FIELD( CRpg, m_bLoaded, FIELD_BOOLEAN ),
+	DEFINE_FIELD( CRpg, m_chargeReady, FIELD_INTEGER ),
 	DEFINE_FIELD( CRpg, m_bRpgUpdate, FIELD_BOOLEAN ),
-	DEFINE_FIELD( CRpg, m_flReloadTime, FIELD_FLOAT ),
+	DEFINE_FIELD( CRpg, m_flStartThrow, FIELD_TIME ),
 	DEFINE_FIELD( CRpg, m_flLastBip, FIELD_TIME ),
 };
 
@@ -609,8 +609,8 @@ void CRpg::Spawn( )
 	m_iClip = 1;				// empeche le declenchement du rechargement par la classe mere
 
 	m_iAmmoType = AMMO_ROCKET;
-	m_bLoaded = TRUE;			//pas de rechargement la premiere fois
-	m_flReloadTime = -1;		// -1 = pas en cours de rechargement
+	m_chargeReady = TRUE;			//pas de rechargement la premiere fois
+	m_flStartThrow = -1;		// -1 = pas en cours de rechargement
 	pev->body = RPG_WEAPON_ROCKET;
 
 	m_iMenuState = 0;
@@ -700,7 +700,7 @@ BOOL CRpg::Deploy( )
 	else
 		UpdateCrosshair ( RPG_CROSSHAIR_NORMAL );
 
-	m_flReloadTime = -1;		// -1 = pas en cours de rechargement
+	m_flStartThrow = -1;		// -1 = pas en cours de rechargement
 
 	// animation
 
@@ -756,7 +756,7 @@ void CRpg::PrimaryAttack()
 		{
 			if ( m_iAmmoType != AMMO_ROCKET )
 			{
-				m_bLoaded = FALSE;
+				m_chargeReady = FALSE;
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() - 0.1;
 			}
 			m_iAmmoType = AMMO_ROCKET;
@@ -765,7 +765,7 @@ void CRpg::PrimaryAttack()
 		{
 			if ( m_iAmmoType != AMMO_ELECTRO )
 			{
-				m_bLoaded = FALSE;
+				m_chargeReady = FALSE;
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() - 0.1;
 			}
 			m_iAmmoType = AMMO_ELECTRO;
@@ -774,7 +774,7 @@ void CRpg::PrimaryAttack()
 		{
 			if ( m_iAmmoType != AMMO_NUCLEAR )
 			{
-				m_bLoaded = FALSE;
+				m_chargeReady = FALSE;
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() - 0.1;
 			}
 			m_iAmmoType = AMMO_NUCLEAR;
@@ -793,7 +793,7 @@ void CRpg::PrimaryAttack()
 
 	// tir
 
-	else if ( m_bLoaded == TRUE &&
+	else if ( m_chargeReady == TRUE &&
 			   ((m_iAmmoType == AMMO_ROCKET		&& m_iAmmoRocket	!= 0) ||
 				(m_iAmmoType == AMMO_ELECTRO	&& m_iAmmoElectro	!= 0) ||
 				(m_iAmmoType == AMMO_NUCLEAR	&& m_iAmmoNuclear	!= 0)  )
@@ -841,7 +841,7 @@ void CRpg::PrimaryAttack()
 
 		// munitions
 
-		m_bLoaded = FALSE;
+		m_chargeReady = FALSE;
 
 		if ( m_iAmmoType == AMMO_ROCKET )		// A FAIRE  : continuer de remplacer les masks par iammotype
 		{
@@ -974,17 +974,17 @@ void CRpg::Reload( void )
 	{
 	case AMMO_ROCKET:
 		iAnim = RPG_RELOAD_ROCKET;
-		m_flReloadTime = gpGlobals->time + 2;
+		m_flStartThrow = gpGlobals->time + 2;
 		break;
 
 	case AMMO_ELECTRO:
 		iAnim = RPG_RELOAD_ELECTRO;
-		m_flReloadTime = gpGlobals->time + 4;
+		m_flStartThrow = gpGlobals->time + 4;
 		break;
 
 	case AMMO_NUCLEAR:
 		iAnim = RPG_RELOAD_NUCLEAR;
-		m_flReloadTime = gpGlobals->time + 6;
+		m_flStartThrow = gpGlobals->time + 6;
 		break;
 	}
 
@@ -1023,16 +1023,16 @@ void CRpg::WeaponIdle( void )
 
 	// rechargement
 
-	if ( m_flTimeWeaponIdle < UTIL_WeaponTimeBase() && m_bLoaded == FALSE && m_flReloadTime == -1 )	// -1 = pas en cours de rechargement
+	if ( m_flTimeWeaponIdle < UTIL_WeaponTimeBase() && m_chargeReady == FALSE && m_flStartThrow == -1 )	// -1 = pas en cours de rechargement
 	{
 		Reload ();
 		return;			// pour ne pas lancer d anim idle
 	}
 
-	else if ( m_bLoaded == FALSE && m_flReloadTime != -1 && m_flReloadTime < gpGlobals->time )
+	else if ( m_chargeReady == FALSE && m_flStartThrow != -1 && m_flStartThrow < gpGlobals->time )
 	{
-		m_bLoaded				= TRUE;
-		m_flReloadTime			= -1;
+		m_chargeReady			= TRUE;
+		m_flStartThrow			= -1;
 		m_flNextPrimaryAttack	= GetNextAttackDelay(0);
 		m_flTimeWeaponIdle		= UTIL_WeaponTimeBase();
 	}
@@ -1052,7 +1052,7 @@ void CRpg::WeaponIdle( void )
 		case AMMO_NUCLEAR:
 			ibody = RPG_WEAPON_NUCLEAR; break;
 		}
-		if ( m_bLoaded == FALSE )
+		if ( m_chargeReady == FALSE )
 			ibody = RPG_WEAPON_EMPTY;
 		
 		pev->body = ibody;
