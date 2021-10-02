@@ -77,6 +77,7 @@ CSuperGun g_SuperGun;
 
 int HudRPG_GetMenuState( void );
 int HudRPG_GetAmmoCount( int iAmmoType );
+bool HudTank_GetPlayerInTank( void );
 
 /*
 ======================
@@ -349,7 +350,7 @@ void CBasePlayerWeapon::ItemPostFrame( void )
 		m_fInReload = FALSE;
 	}
 
-	if ((m_pPlayer->pev->button & IN_ATTACK2) && (m_flNextSecondaryAttack <= 0.0))
+	if ((m_pPlayer->pev->button & IN_ATTACK2) && (m_flNextSecondaryAttack <= 0.0) && m_pPlayer->m_iDrivingTank==FALSE )
 	{
 		if ( pszAmmo2() && !m_pPlayer->m_rgAmmo[SecondaryAmmoIndex()] )
 		{
@@ -359,7 +360,7 @@ void CBasePlayerWeapon::ItemPostFrame( void )
 		SecondaryAttack();
 		m_pPlayer->pev->button &= ~IN_ATTACK2;
 	}
-	else if ((m_pPlayer->pev->button & IN_ATTACK) && (m_flNextPrimaryAttack <= 0.0))
+	else if ((m_pPlayer->pev->button & IN_ATTACK) && (m_flNextPrimaryAttack <= 0.0) && m_pPlayer->m_iDrivingTank==FALSE )
 	{
 		if ( (m_iClip == 0 && pszAmmo1()) || (iMaxClip() == -1 && !m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] ) )
 		{
@@ -859,6 +860,11 @@ void HUD_WeaponsPostThink( local_state_s *from, local_state_s *to, usercmd_t *cm
 	player.ammo_rockets		= (int)from->client.ammo_rockets;
 
 	
+	// HL: Invasion - Sync the tank driving status.
+	// This variable is always updated from the server when the player enters/leaves a tank,
+	// so use it directly from CHudTank.
+	player.m_iDrivingTank = static_cast<BOOL>(HudTank_GetPlayerInTank());
+
 	// Point to current weapon object
 	if ( from->client.m_iId )
 	{

@@ -220,3 +220,7 @@ int CHudTank :: VidInit( void )
 }
 
 
+bool HudTank_GetPlayerInTank( void )
+{
+	return gHUD.m_HudTank.m_iPlayerInTank;
+}
