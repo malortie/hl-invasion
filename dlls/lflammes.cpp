@@ -65,7 +65,7 @@ LINK_ENTITY_TO_CLASS( weapon_lflammes, CLFlammes );
 #ifndef CLIENT_DLL
 TYPEDESCRIPTION	CLFlammes::m_SaveData[] = 
 {
-	DEFINE_FIELD( CLFlammes, m_flAttackReady, FIELD_TIME ),
+	DEFINE_FIELD( CLFlammes, m_flStartThrow, FIELD_TIME ),
 	DEFINE_FIELD( CLFlammes, m_flSoundStartTime, FIELD_TIME ),
 };
 IMPLEMENT_SAVERESTORE( CLFlammes, CBasePlayerWeapon );
@@ -85,7 +85,7 @@ void CLFlammes::Spawn( )
 	SET_MODEL(ENT(pev), "models/w_lflammes.mdl");
 
 	m_iDefaultAmmo = LFLAMMES_DEFAULT_GIVE;
-	m_flAttackReady = 0;
+	m_flStartThrow = 0;
 	m_flSoundStartTime = 0;
 
 	pev->sequence = 1;
@@ -190,17 +190,17 @@ void CLFlammes::PrimaryAttack()
 
 	// lancement de l'attaque
 
-	if ( m_flAttackReady == 0 )
+	if ( m_flStartThrow == 0 )
 	{
 		SendWeaponAnim( LFLAMMES_OPEN );
-		m_flAttackReady = gpGlobals->time + 0.25;
+		m_flStartThrow = gpGlobals->time + 0.25;
 	}
 
 	// lancement de l'anim shoot
 
-	else if ( m_flAttackReady < gpGlobals->time && m_flAttackReady != -1 )
+	else if ( m_flStartThrow < gpGlobals->time && m_flStartThrow != -1 )
 	{
-		m_flAttackReady = -1;
+		m_flStartThrow = -1;
 		SendWeaponAnim( LFLAMMES_FIRE );
 
 		// son
@@ -210,7 +210,7 @@ void CLFlammes::PrimaryAttack()
 
 	// tir
 
-	if ( m_flAttackReady == -1 )
+	if ( m_flStartThrow == -1 )
 	{
 		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
 
@@ -269,18 +269,18 @@ void CLFlammes::WeaponIdle( void )
 
 	// anim fermeture
 
-	if ( m_flAttackReady == -1 )
+	if ( m_flStartThrow == -1 )
 	{
 		SendWeaponAnim( LFLAMMES_CLOSE );
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
-		m_flAttackReady = 0;
+		m_flStartThrow = 0;
 
 		// son
 		STOP_SOUND ( edict(), CHAN_WEAPON, "garg/gar_flamerun1.wav" );
 	}
 	else
 	{
-		m_flAttackReady = 0;
+		m_flStartThrow = 0;
 
 		switch ( UTIL_SharedRandomLong(m_pPlayer->random_seed,0,1) )
 		{

@@ -1304,7 +1304,7 @@ public:
 
 	virtual BOOL IsUseable(void) { return TRUE; };
 
-	float m_flAttackReady;
+//	float m_flAttackReady; // Is now m_flStartThrow
 	float m_flSoundStartTime;
 
 #ifndef CLIENT_DLL
