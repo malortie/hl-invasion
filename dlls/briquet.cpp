@@ -297,7 +297,7 @@ void CBriquet::WeaponIdle( void )
 
 	if ( m_bActif == 1 && gpGlobals->time > m_flNextLight )
 	{
-		m_flNextLight = UTIL_WeaponTimeBase() + 0.15;
+		m_flNextLight = gpGlobals->time + 0.15;
 
 #ifndef CLIENT_DLL
 		Vector vecSrc = m_pPlayer->Center ();
