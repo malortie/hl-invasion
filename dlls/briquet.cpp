@@ -53,7 +53,7 @@ LINK_ENTITY_TO_CLASS( weapon_briquet, CBriquet );
 #ifndef CLIENT_DLL
 TYPEDESCRIPTION CBriquet::m_SaveData[] =
 {
-	DEFINE_FIELD( CBriquet, m_bActif, FIELD_INTEGER ),
+	DEFINE_FIELD( CBriquet, m_fInAttack, FIELD_INTEGER ),
 	DEFINE_FIELD( CBriquet, m_flNextLight, FIELD_TIME ),
 	DEFINE_FIELD( CBriquet, m_bTransition, FIELD_BOOLEAN ),
 };
@@ -136,7 +136,7 @@ BOOL CBriquet::Deploy( )
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + BRIQUET_DRAW_TIME;
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.5;
 
-	m_bActif = 0;
+	m_fInAttack = 0;
 
 	return bResult;
 }
@@ -168,7 +168,7 @@ void CBriquet::PrimaryAttack()
 	// sous l'eau
 	if (m_pPlayer->pev->waterlevel >= 2)
 	{
-		if ( m_bActif == 1 )
+		if ( m_fInAttack == 1 )
 		{
 #ifndef CLIENT_DLL
 			// éteint la flamme
@@ -179,7 +179,7 @@ void CBriquet::PrimaryAttack()
 
 			SendWeaponAnim( BRIQUET_ETEINT );
 
-			m_bActif = 0;
+			m_fInAttack = 0;
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1;
 			m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 		}
@@ -199,7 +199,7 @@ void CBriquet::PrimaryAttack()
 
 	// déjà allumé
 
-	if ( m_bActif == 1 )
+	if ( m_fInAttack == 1 )
 	{
 #ifndef CLIENT_DLL
 		// éteint la flamme
@@ -210,7 +210,7 @@ void CBriquet::PrimaryAttack()
 
 		SendWeaponAnim( BRIQUET_ETEINT );
 
-		m_bActif = 0;
+		m_fInAttack = 0;
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1;
 		m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 
@@ -226,7 +226,7 @@ void CBriquet::PrimaryAttack()
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + BRIQUET_ALLUME_TIME;
 		m_flNextPrimaryAttack = GetNextAttackDelay(1);
 
-		m_bActif = 1;
+		m_fInAttack = 1;
 
 #ifndef CLIENT_DLL
 		MESSAGE_BEGIN( MSG_ONE, gmsgBriquetSwitch, NULL, m_pPlayer->pev );
@@ -284,7 +284,7 @@ void CBriquet::WeaponIdle( void )
 	{
 #ifndef CLIENT_DLL
 		MESSAGE_BEGIN( MSG_ONE, gmsgBriquetSwitch, NULL, m_pPlayer->pev );
-		WRITE_BYTE ( m_bActif == 1 ? 1 : 0 );
+		WRITE_BYTE ( m_fInAttack == 1 ? 1 : 0 );
 		MESSAGE_END();
 #endif
 
@@ -295,7 +295,7 @@ void CBriquet::WeaponIdle( void )
 
 	// lumière
 
-	if ( m_bActif == 1 && gpGlobals->time > m_flNextLight )
+	if ( m_fInAttack == 1 && gpGlobals->time > m_flNextLight )
 	{
 		m_flNextLight = gpGlobals->time + 0.15;
 
@@ -320,7 +320,7 @@ void CBriquet::WeaponIdle( void )
 
 	// eau
 
-	if ( m_pPlayer->pev->waterlevel >= 2 && m_bActif == 1)
+	if ( m_pPlayer->pev->waterlevel >= 2 && m_fInAttack == 1)
 		PrimaryAttack();
 
 
@@ -331,7 +331,7 @@ void CBriquet::WeaponIdle( void )
 
 	int iAnim;
 
-	if ( m_bActif == 1 )
+	if ( m_fInAttack == 1 )
 		iAnim = BRIQUET_ALLUME_IDLE;
 
 	else

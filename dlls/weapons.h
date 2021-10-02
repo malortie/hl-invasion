@@ -1171,7 +1171,7 @@ public:
 
 	BOOL ShouldWeaponIdle(void) { return TRUE; };
 
-	int		m_bActif;
+//	int		m_bActif; // Is now m_fInAttack
 	float	m_flNextLight;
 	BOOL	m_bTransition;
 
