@@ -541,23 +541,23 @@ void IN_MLookUp (void)
 // modif de Julien
 
 void IN_BatteryDown ( void )
-{}
-
-void IN_BatteryUp ( void )
 {
 	if ( gHUD.m_flTimeDelta > 0 )
 		gEngfuncs.pfnClientCmd("battery" );
 }
 
-
-void IN_MedkitDown ( void )
+void IN_BatteryUp ( void )
 {}
 
-void IN_MedkitUp ( void )
+
+void IN_MedkitDown ( void )
 {
 	if ( gHUD.m_flTimeDelta > 0 )
 		gEngfuncs.pfnClientCmd("medkit" );
 }
+
+void IN_MedkitUp ( void )
+{}
 
 
 // modif de julien
