@@ -38,6 +38,13 @@ enum fgrenade_e
 LINK_ENTITY_TO_CLASS( weapon_fgrenade , CFGrenade );
 
 
+#ifndef CLIENT_DLL
+TYPEDESCRIPTION CFGrenade::m_SaveData[] =
+{
+	DEFINE_FIELD( CFGrenade, m_fInAttack, FIELD_INTEGER ),
+};
+IMPLEMENT_SAVERESTORE( CFGrenade, CBasePlayerWeapon );
+#endif
 
 //============================================
 //
@@ -107,7 +114,7 @@ BOOL CFGrenade :: Deploy( )
 BOOL CFGrenade :: CanHolster( void )
 {
 	// can only holster hand grenades when not primed!
-	return ( m_flThrowFg != 1 );
+	return ( m_fInAttack != 1 );
 }
 
 void CFGrenade::Holster( int skiplocal  )
@@ -135,7 +142,7 @@ void CFGrenade::PrimaryAttack()
 	if ( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] == 0 )
 		return;
 
-	m_flThrowFg = 1;
+	m_fInAttack = 1;
 	SendWeaponAnim( FGRENADE_PINPULL );
 
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
@@ -148,7 +155,7 @@ void CFGrenade::WeaponIdle( void )
 	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
 		return;
 
-	if (m_flThrowFg == 1)
+	if (m_fInAttack == 1)
 	{
 		Vector angThrow = m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle;
 
@@ -179,7 +186,7 @@ void CFGrenade::WeaponIdle( void )
 		// player "shoot" animation
 		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 
-		m_flThrowFg = 2;
+		m_fInAttack = 2;
 		m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
 
@@ -194,10 +201,10 @@ void CFGrenade::WeaponIdle( void )
 		}
 		return;
 	}
-	else if (m_flThrowFg == 2)
+	else if (m_fInAttack == 2)
 	{
 		// we've finished the throw, restart.
-		m_flThrowFg = 0;
+		m_fInAttack = 0;
 
 		if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 		{

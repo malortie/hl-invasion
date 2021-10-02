@@ -1195,6 +1195,13 @@ public:
 class CFGrenade : public CBasePlayerWeapon
 {
 public:
+
+#ifndef CLIENT_DLL
+	virtual int	Save(CSave& save);
+	virtual int	Restore(CRestore& restore);
+	static	TYPEDESCRIPTION m_SaveData[];
+#endif
+
 	void Spawn(void);
 	void Precache(void);
 
@@ -1207,7 +1214,7 @@ public:
 	int GetItemInfo(ItemInfo* p);
 	int iItemSlot(void) { return 5; }	//position de l'arme dans le hud
 
-	float m_flThrowFg;
+//	float m_flThrowFg; // Is now m_fInAttack
 
 	int AddToPlayer(CBasePlayer* pPlayer);
 
