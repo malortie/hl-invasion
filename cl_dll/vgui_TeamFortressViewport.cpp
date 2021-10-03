@@ -2531,7 +2531,7 @@ int TeamFortressViewport::MsgFunc_VGUIordi(const char *pszName, int iSize, void 
 			// Close the Command Menu if it's open
 			HideCommandMenu();
 
-			pNewMenu->SetMenuID( 9 );
+			pNewMenu->SetMenuID( MENU_ORDIMENU );
 			pNewMenu->SetActive( true );
 
 			// See if another menu is visible, and if so, cache this one for display once the other one's finished
