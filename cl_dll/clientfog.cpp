@@ -97,7 +97,7 @@ void CHudFog :: DrawFog ( void )
 	else if ( !(m_iFlags & HUD_ACTIVE) )
 		return;
 
-	float fldist;
+	float fldist = 0.0f;
 
 	if ( Fade == 1 && bActive == 1 )
 		fldist = FOG_DISTANCE_INFINIE * ( maxfadetime - fadetime ) / maxfadetime;
