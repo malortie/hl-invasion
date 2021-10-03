@@ -639,6 +639,8 @@ public:
 
 	int		Fade;
 	int		bActive;
+
+	float   density;
 };
 
 

@@ -54,6 +54,11 @@ int CHudFog::MsgFunc_Fog( const char *pszName, int iSize, void *pbuf )
 	fogcolor.y	= READ_COORD();
 	fogcolor.z	= READ_COORD();
 
+	// Calculate an appropriate fog density.
+	density = std::abs(maxdist - mindist);
+	if (density != 0)
+		density = 1 / density;
+
 	m_iFlags |= HUD_ACTIVE;
 	return 1;
 }
@@ -89,6 +94,7 @@ void CHudFog :: DrawFog ( void )
 		}
 		else
 		{
+			gEngfuncs.pTriAPI->FogParams ( density, 0 );
 			gEngfuncs.pTriAPI->Fog ( fogcolor, mindist, maxdist, 1 );
 		}
 		return;
@@ -98,13 +104,20 @@ void CHudFog :: DrawFog ( void )
 		return;
 
 	float fldist = 0.0f;
+	float fadeDensity = 0.0f;
 
 	if ( Fade == 1 && bActive == 1 )
+	{
 		fldist = FOG_DISTANCE_INFINIE * ( maxfadetime - fadetime ) / maxfadetime;
-
+		fadeDensity = density * ( fadetime / maxfadetime ); // Fade from transparent to denser.
+	}
 	else if ( Fade == 1 && bActive == 0 )
+	{
 		fldist = FOG_DISTANCE_INFINIE * fadetime / maxfadetime;
+		fadeDensity = density * ( ( maxfadetime - fadetime ) / maxfadetime ); // Fade from denser to transparent.
+	}
 
+	gEngfuncs.pTriAPI->FogParams ( fadeDensity, 0 );
 	gEngfuncs.pTriAPI->Fog ( fogcolor, mindist + fldist, maxdist + fldist, 1 );
 }
 
