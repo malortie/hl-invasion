@@ -141,7 +141,8 @@ void EV_HLDM_EjectParticules ( Vector vecOrigin, Vector vecNormal, char chTextur
 																0.75, spriteSmoke, kRenderGlow, kRenderFxNoDissipation,
 																240, 5, FTENT_SPRANIMATE   );
 
-		tSmoke->entity.curstate.framerate = 20 / 1.3;
+		if ( tSmoke )
+			tSmoke->entity.curstate.framerate = 20 / 1.3;
 		
 
 
