@@ -2172,6 +2172,11 @@ void TeamFortressViewport::UpdateCursorState()
 	// Need cursor if any VGUI window is up
 	if ( m_pSpectatorPanel->m_menuVisible || m_pCurrentMenu || m_pTeamMenu->isVisible() || m_pServerBrowser->isVisible() || GetClientVoiceMgr()->IsInSquelchMode() )
 	{
+		// Radio messages are non interactive, but still considered as VGUI menu with mouse input. 
+		// Prevent them from stealing mouse input.
+		if ( m_pCurrentMenu && m_pCurrentMenu->GetMenuID() == MENU_RADIO )
+			return;
+
 		g_iVisibleMouse = true;
 		App::getInstance()->setCursorOveride( App::getInstance()->getScheme()->getCursor(Scheme::scu_arrow) );
 		return;
