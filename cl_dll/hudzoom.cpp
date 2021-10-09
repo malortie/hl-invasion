@@ -14,11 +14,14 @@
 #include "const.h"
 #include "entity_state.h"
 #include "cl_entity.h"
+#include "triangleapi.h"
 
 
 
 int CHudSniper :: Draw	( float flTime )
 {
+	return 1; // New draw code is now in DrawScope().
+
 	if ( gHUD.m_iFOV == 90 || gHUD.m_iFOV == 0 )
 		return 1;
 
@@ -207,8 +210,8 @@ int CHudSniper :: Draw	( float flTime )
 int CHudSniper :: Init( void )
 {
 
-	if ( ScreenWidth >= 1024 )
-	{
+//	if ( ScreenWidth >= 1024 )
+//	{
 		
 		m_sprHG	= SPR_Load("sprites/fsniper/fsniper_1024_up_l.spr");
 		m_sprH	= SPR_Load("sprites/fsniper/fsniper_1024_up.spr");
@@ -225,15 +228,15 @@ int CHudSniper :: Init( void )
 		m_sprBlack	= SPR_Load("sprites/fsniper/fsniper_black.spr");
 
 
-		m_wrc1024.left = 0;
-		m_wrc1024.top = 0;
-		m_wrc1024.right = 256;
-		m_wrc1024.bottom = 256;
+//		m_wrc1024.left = 0;
+//		m_wrc1024.top = 0;
+//		m_wrc1024.right = 256;
+//		m_wrc1024.bottom = 256;
 
-	}
+//	}
 
-	else /* if ( ScreenWidth <= 640 )*/
-	{
+//	else /* if ( ScreenWidth <= 640 )*/
+/*	{
 
 		m_sprHG	= SPR_Load("sprites/fsniper/fsniper_640_up_l.spr");
 		m_sprHD = SPR_Load("sprites/fsniper/fsniper_640_up_r.spr");
@@ -254,7 +257,7 @@ int CHudSniper :: Init( void )
 		m_wrc640Viseur.top		= 0;
 		m_wrc640Viseur.right	= 32;
 		m_wrc640Viseur.bottom	= 32;
-	}
+	}*/
 
 
 	m_iFlags |= HUD_ACTIVE;
@@ -269,8 +272,8 @@ int CHudSniper :: Init( void )
 int CHudSniper :: VidInit( void )
 {
 
-	if ( ScreenWidth >= 1024 )
-	{
+//	if ( ScreenWidth >= 1024 )
+//	{
 		
 		m_sprHG	= SPR_Load("sprites/fsniper/fsniper_1024_up_l.spr");
 		m_sprH	= SPR_Load("sprites/fsniper/fsniper_1024_up.spr");
@@ -287,15 +290,15 @@ int CHudSniper :: VidInit( void )
 		m_sprBlack	= SPR_Load("sprites/fsniper/fsniper_black.spr");
 
 
-		m_wrc1024.left = 0;
-		m_wrc1024.top = 0;
-		m_wrc1024.right = 256;
-		m_wrc1024.bottom = 256;
+//		m_wrc1024.left = 0;
+//		m_wrc1024.top = 0;
+//		m_wrc1024.right = 256;
+//		m_wrc1024.bottom = 256;
 
-	}
+//	}
 
-	else /*if ( ScreenWidth <= 640 )*/
-	{
+//	else /*if ( ScreenWidth <= 640 )*/
+/*	{
 
 		m_sprHG	= SPR_Load("sprites/fsniper/fsniper_640_up_l.spr");
 		m_sprHD = SPR_Load("sprites/fsniper/fsniper_640_up_r.spr");
@@ -316,9 +319,90 @@ int CHudSniper :: VidInit( void )
 		m_wrc640Viseur.top		= 0;
 		m_wrc640Viseur.right	= 32;
 		m_wrc640Viseur.bottom	= 32;
-	}
+	}*/
 
 	m_iFlags |= HUD_ACTIVE;
 
 	return 1;
+}
+
+void CHudSniper::DrawScope(void)
+{
+	if ( !(m_iFlags & HUD_ACTIVE) )
+		return;
+
+	if ( gHUD.m_iFOV == 90 || gHUD.m_iFOV == 0 )
+		return;
+
+	int spriteHeight = ScreenHeight / 3;
+	int spriteWidth = spriteHeight;
+
+	const int CenterX = ScreenWidth / 2;
+	const int CenterY = ScreenHeight / 2;
+
+	int x = CenterX - spriteWidth / 2 - spriteWidth;
+	int y = CenterY - spriteHeight / 2 - spriteHeight;
+
+	// Top line sprites.
+	DrawScopeLine(m_sprHG, m_sprH, m_sprHD, x, y, spriteWidth, spriteHeight);
+
+	// Middle line sprites.
+	DrawScopeLine(m_sprG, m_sprViseur, m_sprD, x, y + spriteHeight, spriteWidth, spriteHeight);
+
+	// Bottom line sprites.
+	DrawScopeLine(m_sprBG, m_sprB, m_sprBD, x, y + spriteHeight * 2, spriteWidth, spriteHeight);
+
+	// Left top-bottom black overlay.
+	DrawSprite(m_sprBlack, 0, 0, 0, x, ScreenHeight);
+
+	// Right top-bottom black overlay.
+	DrawSprite(m_sprBlack, 0, ScreenWidth - x, 0, x, ScreenHeight);
+}
+
+void CHudSniper::DrawScopeLine(HSPRITE hLeft, HSPRITE hMiddle, HSPRITE hRight, int x, int y, int spriteWidth, int spriteHeight)
+{
+	if (hLeft)
+		DrawSprite(hLeft, 0, x, y, spriteWidth, spriteHeight);
+	if (hMiddle)
+		DrawSprite(hMiddle, 0, x + spriteWidth, y, spriteWidth, spriteHeight);
+	if (hRight)
+		DrawSprite(hRight, 0, x + spriteWidth * 2, y, spriteWidth, spriteHeight);
+}
+
+void CHudSniper::DrawSprite(HSPRITE hSprite, int frame, int x, int y, int width, int height)
+{
+	if (!hSprite)
+		return;
+
+	struct model_s* hSpriteModel = (struct model_s*)gEngfuncs.GetSpritePointer(hSprite);
+	if (!hSpriteModel)
+		return;
+
+	gEngfuncs.pTriAPI->RenderMode(kRenderTransTexture); //additive
+
+	gEngfuncs.pTriAPI->SpriteTexture(hSpriteModel, frame);
+	gEngfuncs.pTriAPI->Color4f(1.0, 1.0, 1.0, 1.0);
+
+	gEngfuncs.pTriAPI->CullFace(TRI_NONE);
+	gEngfuncs.pTriAPI->Begin(TRI_QUADS);
+
+	//top left
+	gEngfuncs.pTriAPI->TexCoord2f(0, 0);
+	gEngfuncs.pTriAPI->Vertex3f(x, y, 0);
+
+	//bottom left
+	gEngfuncs.pTriAPI->TexCoord2f(0, 1);
+	gEngfuncs.pTriAPI->Vertex3f(x, y + height, 0);
+
+	//bottom right
+	gEngfuncs.pTriAPI->TexCoord2f(1, 1);
+	gEngfuncs.pTriAPI->Vertex3f(x + width, y + height, 0);
+
+	//top right
+	gEngfuncs.pTriAPI->TexCoord2f(1, 0);
+	gEngfuncs.pTriAPI->Vertex3f(x + width, y, 0);
+
+	gEngfuncs.pTriAPI->End();
+
+	gEngfuncs.pTriAPI->RenderMode(kRenderNormal); //return to normal
 }

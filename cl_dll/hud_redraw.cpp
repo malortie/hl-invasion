@@ -92,6 +92,8 @@ void CHud::Think(void)
 	Bench_CheckStart();
 }
 
+void HUD_DrawOrthoTriangles(void);
+
 // Redraw
 // step through the local data,  placing the appropriate graphics & text as appropriate
 // returns 1 if they've changed, 0 otherwise
@@ -142,6 +144,8 @@ int CHud :: Redraw( float flTime, int intermission )
 	// if no redrawing is necessary
 	// return 0;
 	
+	HUD_DrawOrthoTriangles();
+
 	// draw all registered HUD elements
 	if ( m_pCvarDraw->value )
 	{

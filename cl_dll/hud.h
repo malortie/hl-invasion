@@ -743,6 +743,7 @@ public:
 	int Init( void );
 	int VidInit( void );
 	int Draw(float flTime);
+	void DrawScope(void);
 
 	HSPRITE m_sprHG;
 	HSPRITE m_sprH;
@@ -761,6 +762,11 @@ public:
 	wrect_t m_wrc1024;
 	wrect_t m_wrcNoir;
 
+protected:
+	// Draw a horizontal line made of 3 sprites.
+	void DrawScopeLine(HSPRITE hLeft, HSPRITE hMiddle, HSPRITE hRight, int x, int y, int spriteWidth, int spriteHeight);
+	// Draw a single sprite.
+	void DrawSprite(HSPRITE hSprite, int frame, int x, int y, int width, int height);
 };
 
 
