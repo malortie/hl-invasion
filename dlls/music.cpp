@@ -91,7 +91,7 @@ void CMusic :: OpenFile ( const char *filename, int repeat )
 	audiofile_t *p = NULL;
 	p = new audiofile_t;
 
-	sprintf ( p->name, filename );
+	std::sprintf ( p->name, filename );
 	p->repeat	= repeat;
 	p->next		= m_pTrack;
 
