@@ -39,6 +39,7 @@
 #include "usercmd.h"
 #include "netadr.h"
 #include "pm_shared.h"
+#include "music.h"
 
 #if !defined ( _WIN32 )
 #include <ctype.h>
@@ -860,6 +861,9 @@ void ServerDeactivate( void )
 
 	// Peform any shutdown operations here...
 	//
+
+	// HL: Invasion - Ensure tracks are freed.
+	g_MusicPlayer.Reset();
 }
 
 void ServerActivate( edict_t *pEdictList, int edictCount, int clientMax )
