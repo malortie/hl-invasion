@@ -370,7 +370,7 @@ void CTriggerMusic :: KeyValue( KeyValueData *pkvd )
 {
 	if (FStrEq(pkvd->szKeyName, "filetype"))
 	{
-		m_iFileType = atoi(pkvd->szValue);
+		m_iFileType = std::atoi(pkvd->szValue);
 		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "filename"))
