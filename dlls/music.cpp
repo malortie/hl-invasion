@@ -385,7 +385,9 @@ void CTriggerMusic :: KeyValue( KeyValueData *pkvd )
 void CTriggerMusic :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
 	if ( g_MusicPlayer.m_IsPlaying == TRUE )
-		return;
+	{
+		g_MusicPlayer.Reset(); // Clear any track if a new one is requested.
+	}
 
 	if ( m_iFileType == MUSIC_AUDIO_FILE )
 	{
