@@ -125,8 +125,8 @@ void CMusic :: OpenList ( const char *filename )
 	{
 		for ( int i=0; i<total; i++ )
 		{
-			int		irepeat;
 			char	ctitle [128] {};
+			int		irepeat = 0;
 
 			// lecture du titre
 
