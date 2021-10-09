@@ -42,6 +42,8 @@ struct audiofile_t
 {
 	char name [128];
 	int repeat;
+	int duration;
+	BOOL bNoTrackFile;
 	audiofile_t *next;
 };
 
@@ -55,7 +57,7 @@ public:
 
 	// fonctions de lecture
 
-	void OpenFile			( const char *filename, int repeat );	// ouverture d'un simple fichier
+	void OpenFile			( const char *filename, int repeat, int duration, BOOL bNoTrackFile );	// ouverture d'un simple fichier
 	void OpenList			( const char *filename );						// ouverture d'un fichier texte contenant les fichiers à lire
 
 	void Init				( void );		// initialisation
@@ -66,28 +68,31 @@ public:
 
 	// variables
 
-	FSOUND_STREAM *m_fsound;				// handle du fichier en cours de lecture
+//	FSOUND_STREAM *m_fsound;				// handle du fichier en cours de lecture
 
 	BOOL m_IsPlaying;						// témoin de lecture
 	BOOL m_bInit;							// témoin d'inititalisation
+	float m_flTrackDuration;
 
 	audiofile_t *m_pTrack;					// morceaux à jouer 
 
 	// constructeur / destructeur
 
-	CMusic	()	{ m_bInit = FALSE; m_IsPlaying = FALSE; m_pTrack = NULL; Reset(); };
+	CMusic	()	{ m_bInit = FALSE; m_IsPlaying = FALSE; m_pTrack = NULL; m_flTrackDuration = 0; Reset(); };
 	~CMusic ()	{};
 
 	// fonctions importées de la dll fmod
 
-	signed char		(_stdcall * FSOUND_INIT )				(int mixrate, int maxsoftwarechannels, unsigned int flags);
+/*	signed char		(_stdcall * FSOUND_INIT )				(int mixrate, int maxsoftwarechannels, unsigned int flags);
 	void			(_stdcall * FSOUND_CLOSE )				(void);
 	FSOUND_STREAM *	(_stdcall * FSOUND_STREAM_OPENFILE )	(const char *filename, unsigned int mode, int memlength);
 	signed char		(_stdcall * FSOUND_STREAM_CLOSE )		(FSOUND_STREAM *stream); 
 	int				(_stdcall * FSOUND_STREAM_PLAY )		(int channel, FSOUND_STREAM *stream);
 	signed char		(_stdcall * FSOUND_STREAM_ENDCALLBACK)	(FSOUND_STREAM *stream, FSOUND_STREAMCALLBACK callback, int userdata);
 
-	HINSTANCE		m_hFmodDll;
+	HINSTANCE		m_hFmodDll;*/
+
+	void DeleteTrack( audiofile_t* p );
 };
 
 extern CMusic g_MusicPlayer;

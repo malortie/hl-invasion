@@ -52,7 +52,7 @@ CMusic g_MusicPlayer;
 
 void CMusic :: Init ( void )
 {
-	m_hFmodDll = LoadLibrary ( FMOD_DLL_PATH );
+/*	m_hFmodDll = LoadLibrary ( FMOD_DLL_PATH );
 
 	if ( m_hFmodDll == NULL )
 		return;
@@ -76,7 +76,7 @@ void CMusic :: Init ( void )
 		return; 
 
 	
-	m_bInit = TRUE;
+	m_bInit = TRUE; */
 }
 
 
@@ -86,13 +86,15 @@ void CMusic :: Init ( void )
 // lecture d'un fichier audio
 
 
-void CMusic :: OpenFile ( const char *filename, int repeat )
+void CMusic :: OpenFile ( const char *filename, int repeat, int duration, BOOL bNoTrackFile )
 {
 	audiofile_t *p = NULL;
 	p = new audiofile_t;
 
 	std::sprintf ( p->name, filename );
 	p->repeat	= repeat;
+	p->duration	= duration;
+	p->bNoTrackFile = bNoTrackFile;
 	p->next		= m_pTrack;
 
 	m_pTrack	= p;
@@ -127,13 +129,14 @@ void CMusic :: OpenList ( const char *filename )
 		{
 			char	ctitle [128] {};
 			int		irepeat = 0;
+			int		iduration = 0;
 
 			// lecture du titre
 
 			if ( std::fscanf ( myfile, "%s", ctitle ) != EOF )
 			{
-				if ( std::fscanf ( myfile, "%i", &irepeat ) != EOF )
-					OpenFile ( ctitle, irepeat );
+				if ( std::fscanf ( myfile, "%i %i", &irepeat, &iduration ) != EOF )
+					OpenFile ( ctitle, irepeat, iduration, FALSE );
 
 				else
 					break;
@@ -186,22 +189,7 @@ signed char EndCallback ( FSOUND_STREAM *stream, void *buff, int len, int param 
 
 	if ( p->repeat < 1 )
 	{
-		if ( g_MusicPlayer.m_pTrack == p )
-		{
-			delete g_MusicPlayer.m_pTrack;
-			g_MusicPlayer.m_pTrack = NULL;
-		}
-		else
-		{
-			audiofile_t *q = NULL;
-			q = g_MusicPlayer.m_pTrack;
-
-			while ( q->next != p )
-				q = q->next;
-
-			delete q->next;
-			q->next = NULL;
-		}
+		g_MusicPlayer.DeleteTrack( p );
 	}
 
 	// fermeture du lecteur si la liste est vide
@@ -231,7 +219,7 @@ void CMusic :: Play	( void )
 	if ( m_IsPlaying == TRUE )
 		return;
 
-	if ( m_bInit == FALSE )
+/*	if ( m_bInit == FALSE )
 	{
 		Init ();
 
@@ -240,7 +228,7 @@ void CMusic :: Play	( void )
 			ALERT ( at_console, "\\\nMUSICPLAYER : initialisation impossible\n\\\n" );
 			return;
 		}
-	}
+	}*/
 
 	// recherche du premier morceau de la liste
 
@@ -263,22 +251,32 @@ void CMusic :: Play	( void )
 
 	// chargement du fichier
 	
-	m_fsound = FSOUND_STREAM_OPENFILE( p->name, FSOUND_NORMAL | FSOUND_LOOP_OFF, 0 );
+/*	m_fsound = FSOUND_STREAM_OPENFILE( p->name, FSOUND_NORMAL | FSOUND_LOOP_OFF, 0 );
 
 	if (!m_fsound)
 	{
 		ALERT ( at_console, "\\\nMUSICPLAYER : %s : fichier introuvable\n\\\n", p->name );
 		return; 
-	}
+	}*/
 
 	// lecture
 
-	FSOUND_STREAM_PLAY ( FSOUND_FREE, m_fsound );
+//	FSOUND_STREAM_PLAY ( FSOUND_FREE, m_fsound );
+
+	char cmd[256] {};
+	std::sprintf(cmd, "mp3 play media/%s\n", p->name);
+	SERVER_COMMAND(cmd);
+
 	m_IsPlaying = TRUE;
+	m_flTrackDuration = p->duration;
+
+	// If this file had no track file, delete it since it can only be played once.
+	if ( p->bNoTrackFile )
+		DeleteTrack( p );
 
 	// callback en fin de morceau
 
-	FSOUND_STREAM_ENDCALLBACK ( m_fsound, EndCallback, 0 );
+//	FSOUND_STREAM_ENDCALLBACK ( m_fsound, EndCallback, 0 );
 }
 
 
@@ -287,8 +285,10 @@ void CMusic :: Stop ( void )
 	if ( m_IsPlaying == TRUE )
 	{
 		m_IsPlaying = FALSE;
-		FSOUND_STREAM_CLOSE ( m_fsound );
+		SERVER_COMMAND( "mp3 stop\n" );
+//		FSOUND_STREAM_CLOSE ( m_fsound );
 	}
+	m_flTrackDuration = 0;
 }
 
 
@@ -306,19 +306,41 @@ void CMusic :: Reset ( void )
 		m_pTrack = p->next;
 		delete p;
 	}
+	m_pTrack = NULL;
 
-	if ( m_bInit == TRUE )
+/*	if ( m_bInit == TRUE )
 	{
 		FSOUND_CLOSE();
 		g_MusicPlayer.m_bInit = FALSE;
 
 	//	FreeLibrary( g_MusicPlayer.m_hFmodDll );
 		g_MusicPlayer.m_hFmodDll = NULL;
-	}
+	}*/
 }
 
 
+void CMusic::DeleteTrack( audiofile_t* p )
+{
+	if ( p == NULL )
+		return;
 
+	if ( m_pTrack == p )
+	{
+		delete m_pTrack;
+		m_pTrack = NULL;
+	}
+	else
+	{
+		audiofile_t *q = NULL;
+		q = m_pTrack;
+
+		while ( q->next != p )
+			q = q->next;
+
+		delete q->next;
+		q->next = NULL;
+	}
+}
 
 //---------------------------------------------------------
 // classe de l'entité dans les maps bsp
@@ -334,6 +356,7 @@ public:
 	void	KeyValue	( KeyValueData *pkvd );
 	void	Use			( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
+	void EXPORT EndCallbackThink( void );
 
 	virtual int	Save	( CSave &save );
 	virtual int	Restore	( CRestore &restore );
@@ -364,6 +387,8 @@ void CTriggerMusic :: Spawn( void )
 {
 	pev->solid = SOLID_NOT;
 	pev->effects = EF_NODRAW;
+
+	SetThink( NULL );
 }
 
 void CTriggerMusic :: KeyValue( KeyValueData *pkvd )
@@ -391,7 +416,7 @@ void CTriggerMusic :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 
 	if ( m_iFileType == MUSIC_AUDIO_FILE )
 	{
-		g_MusicPlayer.OpenFile ( STRING(m_iFileName), 1 );
+		g_MusicPlayer.OpenFile ( STRING(m_iFileName), 1, -1, TRUE );
 	}
 	else
 	{
@@ -399,9 +424,31 @@ void CTriggerMusic :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 	}
 
 	g_MusicPlayer.Play();
+
+	if ( g_MusicPlayer.m_IsPlaying && g_MusicPlayer.m_flTrackDuration > 0 )
+	{
+		SetThink( &CTriggerMusic::EndCallbackThink );
+		// Set next think to sound duration.
+		pev->nextthink = gpGlobals->time + g_MusicPlayer.m_flTrackDuration;
+	}
 }
 
+void CTriggerMusic::EndCallbackThink( void )
+{
+	if ( g_MusicPlayer.m_IsPlaying )
+	{
+		EndCallback(NULL, NULL, 0, 0);
 
+		// Check if sound is played again and set think to sound duration.
+		if ( g_MusicPlayer.m_IsPlaying && g_MusicPlayer.m_flTrackDuration > 0 )
+		{
+			pev->nextthink = gpGlobals->time + g_MusicPlayer.m_flTrackDuration;
+			return;
+		}
+	}
+
+	SetThink( NULL );
+}
 
 
 
