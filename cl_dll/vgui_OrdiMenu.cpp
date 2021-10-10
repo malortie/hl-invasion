@@ -526,7 +526,7 @@ void GetOrdiText ( const char *textname, char *messagename, Font *pRadioFont, in
 	}
 
 
-	char	cscan [128];
+	char	cscan [128] {};
 	char	messagetext [ORDI_STRING_LEN];
 	int		startoffset = 0;
 	int		stopoffset = 0;
