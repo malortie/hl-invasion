@@ -327,7 +327,6 @@ int CHudRadio :: VidInit( void )
 	m_iFlags &= ~HUD_ACTIVE;
 	m_iFlags |= HUD_ALWAYSDRAW;
 
-	gHUD.AddHudElem(this);
 	return 1;
 }
 
