@@ -481,7 +481,7 @@ void CHudLFlammes :: DrawFlammes ( void )
 			// y = 0.0837 e (7.712 x )
 
 			fldist = lifetime < 0.725 ?
-				SPRITE_START_WIDTH * ( 1 + 0.0837 * exp( 7.712 * lifetime )) * 32/24 :
+				SPRITE_START_WIDTH * ( 1 + 0.0837 * std::exp( 7.712 * lifetime )) * 32/24 :
 				SPRITE_START_WIDTH * 28;
 		}
 		else if ( p->imode == FLAMME_ATTACHEE )
