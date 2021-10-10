@@ -500,7 +500,7 @@ void CRpgRocket :: FollowThink( void  )
 			angDir = UTIL_VecToAngles( vecDir );
 
 
-			if ( (CBaseEntity::Instance(pev->owner)) ->IsPlayer() )
+			if ( (CBaseEntity::Instance(pev->owner)) && (CBaseEntity::Instance(pev->owner))->IsPlayer() )
 				vecTarget = vecDir/* * 100*/;
 
 			else
@@ -576,7 +576,7 @@ void CRpgRocket :: FollowThink( void  )
 
 	//modif de JUlien
 
-	if ( CBaseEntity::Instance( pev->owner )->IsPlayer() )
+	if ( CBaseEntity::Instance( pev->owner ) && CBaseEntity::Instance( pev->owner )->IsPlayer() )
 		CSoundEnt::InsertSound ( bits_SOUND_DANGER, pev->origin, pev->velocity.Length( ), 0.1 );
 
 	pev->nextthink = gpGlobals->time + 0.1;
