@@ -62,7 +62,7 @@ private:
 	int m_iY;
 
 public:
-	CHandler_Keypad( CKeypad *pKeypad )
+	CHandler_Keypad( CKeypad *pKeypad ) : m_iX(0), m_iY(0)
 	{
 		p = pKeypad;
 	}
