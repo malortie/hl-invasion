@@ -1523,7 +1523,7 @@ void UTIL_Bubbles( Vector mins, Vector maxs, int count )
 void UTIL_BubbleTrail( Vector from, Vector to, int count )
 {
 	//modif de Julien
-	float hfrom, hto;
+	float hfrom = 0, hto = 0;
 
 	float flHeight = UTIL_WaterLevel( from,  from.z, from.z + 256 );
 	flHeight = hfrom = flHeight - from.z;
