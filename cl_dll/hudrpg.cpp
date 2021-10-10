@@ -347,6 +347,7 @@ int HudRPG_GetAmmoCount( int iAmmoType )
 {
 	switch ( iAmmoType )
 	{
+	default:
 	case AMMO_ROCKET:
 		return gHUD.m_RPG.m_iAmmo1;
 	case AMMO_ELECTRO:
