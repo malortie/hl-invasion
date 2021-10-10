@@ -443,6 +443,5 @@ int CHudLensFlare :: VidInit( void )
 
 	m_iFlags &= ~HUD_ACTIVE;
 
-	gHUD.AddHudElem(this);
 	return 1;
 }
