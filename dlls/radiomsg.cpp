@@ -49,8 +49,8 @@ int	GetRadiomsgText ( int iszMessage )
 	}
 
 
-	char	cscan [128];
 	char	messagetext [1000];
+	char	cscan [128] {};
 	int		startoffset = 0;
 	int		stopoffset = 0;
 
