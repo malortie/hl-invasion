@@ -2979,7 +2979,7 @@ void CBasePlayer::PostThink()
 
 	//modif de Julien - annuler le zoom si le joueur bouge brusquement
 	if ( pev->velocity.Length() > 128 )
-		m_iFOV = 90;
+		pev->fov = m_iFOV = 90;
 
 	//modif de Julien - update la nvg
 	ThinkNVG ();
