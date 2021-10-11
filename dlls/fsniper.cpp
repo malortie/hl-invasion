@@ -189,7 +189,10 @@ void CFSniper::SecondaryAttack(void)
 	}
 
 	else if ( m_pPlayer->pev->fov > 10 )
-		m_pPlayer->pev->fov = m_pPlayer->m_iFOV -= 1.5;
+	{
+		m_pPlayer->pev->fov -= 1.5;
+		m_pPlayer->m_iFOV = m_pPlayer->pev->fov;
+	}
 
 	pev->nextthink = gpGlobals->time + 0.03;
 	m_flNextSecondaryAttack = GetNextAttackDelay(0.03);
