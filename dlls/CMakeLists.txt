@@ -74,15 +74,21 @@ set(HEADER_FILES
   explode.h
   extdll.h
   flyingmonster.h
+  fmod.h
+  fmod_errors.h
   func_break.h
   gamerules.h
   hornet.h
   items.h
+  lflammes.h
   monsterevent.h
   monsters.h
+  music.h
   nodes.h
   plane.h
   player.h
+  radiomsg.h
+  rpg.h
   saverestore.h
   schedule.h
   scripted.h
@@ -94,6 +100,7 @@ set(HEADER_FILES
   talkmonster.h
   teamplay_gamerules.h
   trains.h
+  triggers.h
   util.h
   vector.h
   weapons.h
@@ -120,22 +127,29 @@ set(SOURCE_FILES
   bigmomma.cpp
   bloater.cpp
   bmodels.cpp
+  briquet.cpp
   bullsquid.cpp
   buttons.cpp
   cbase.cpp
   client.cpp
   combat.cpp
   controller.cpp
-  crossbow.cpp
+#  crossbow.cpp
   crowbar.cpp
   defaultai.cpp
+  diablo.cpp
   doors.cpp
   effects.cpp
-  egon.cpp
+#  egon.cpp
   explode.cpp
+  fgrenade.cpp
+  flybee.cpp
   flyingmonster.cpp
+  fog.cpp
+  fsniper.cpp
   func_break.cpp
   func_tank.cpp
+  func_vgui.cpp
   game.cpp
   gamerules.cpp
   gargantua.cpp
@@ -150,7 +164,7 @@ set(SOURCE_FILES
   healthkit.cpp
   hgrunt.cpp
   hornet.cpp
-  hornetgun.cpp
+#  hornetgun.cpp
   houndeye.cpp
   h_ai.cpp
   h_battery.cpp
@@ -158,17 +172,23 @@ set(SOURCE_FILES
   h_cycler.cpp
   h_export.cpp
   ichthyosaur.cpp
+  irgun.cpp
   islave.cpp
   items.cpp
   leech.cpp
+  lflammes.cpp
   lights.cpp
+  luciole.cpp
+  m16.cpp
   maprules.cpp
+  miroir.cpp
   monstermaker.cpp
   monsters.cpp
   monsterstate.cpp
   mortar.cpp
   mp5.cpp
   multiplay_gamerules.cpp
+  music.cpp
   nihilanth.cpp
   nodes.cpp
   observer.cpp
@@ -178,9 +198,11 @@ set(SOURCE_FILES
   plats.cpp
   player.cpp
   python.cpp
+  radiomsg.cpp
   rat.cpp
   roach.cpp
   rpg.cpp
+  rpggrunt.cpp
   satchel.cpp
   schedule.cpp
   scientist.cpp
@@ -188,19 +210,23 @@ set(SOURCE_FILES
   shotgun.cpp
   singleplay_gamerules.cpp
   skill.cpp
+  sniper.cpp
   sound.cpp
   soundent.cpp
   spectator.cpp
   squadmonster.cpp
   squeakgrenade.cpp
   subs.cpp
+  supergun.cpp
   talkmonster.cpp
+  tank.cpp
   teamplay_gamerules.cpp
   tempmonster.cpp
   tentacle.cpp
   triggers.cpp
   tripmine.cpp
   turret.cpp
+  t_sub.cpp
   util.cpp 
   weapons.cpp 
   world.cpp 

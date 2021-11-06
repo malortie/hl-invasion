@@ -82,9 +82,14 @@ set(HEADER_FILES
   util_vector.h
   vgui_ControlConfigPanel.h
   vgui_int.h
+  vgui_keypad.h
+  vgui_OrdiControl.h
+  vgui_OrdiMenu.h
+  vgui_radio.h
   vgui_SchemeManager.h
   vgui_ScorePanel.h
   vgui_ServerBrowser.h
+  vgui_soin.h
   vgui_SpectatorPanel.h
   view.h
   wrect.h
@@ -100,6 +105,7 @@ set(HEADER_FILES
   ${PM_SHARED_DIR}/pm_movevars.h
   ${PM_SHARED_DIR}/pm_shared.h
   ${MOD_CONFIG_FILE_PATH}
+  ${DLLS_DIR}/lflammes.h
 )
 
 # Source files
@@ -109,6 +115,9 @@ set(SOURCE_FILES
   ammo_secondary.cpp
   battery.cpp
   cdll_int.cpp
+  clientbriquet.cpp
+  clientfog.cpp
+  clientlflammes.cpp
   com_weapons.cpp
   death.cpp
   demo.cpp
@@ -125,19 +134,26 @@ set(SOURCE_FILES
   hl/hl_objects.cpp
   hl/hl_weapons.cpp
   hud.cpp
+  hudradio.cpp
+  hudrpg.cpp
+  hudzoom.cpp
   hud_bench.cpp
   hud_benchtrace.cpp
   hud_msg.cpp
   hud_redraw.cpp
   hud_servers.cpp
   hud_spectator.cpp
+  hud_tank.cpp
   hud_update.cpp
   input.cpp
   inputw32.cpp
   interpolation.cpp
   in_camera.cpp
+  lensflare.cpp
   menu.cpp
   message.cpp
+  nvg.cpp
+  particules.cpp
   saytext.cpp
   statusbar.cpp
   status_icons.cpp
@@ -151,22 +167,27 @@ set(SOURCE_FILES
   vgui_ControlConfigPanel.cpp
   vgui_CustomObjects.cpp
   vgui_int.cpp
+  vgui_keypad.cpp
   vgui_MOTDWindow.cpp
+  vgui_OrdiControl.cpp
+  vgui_OrdiMenu.cpp
+  vgui_radio.cpp
   vgui_SchemeManager.cpp
   vgui_ScorePanel.cpp
   vgui_ServerBrowser.cpp
+  vgui_soin.cpp
   vgui_SpectatorPanel.cpp
   vgui_TeamFortressViewport.cpp
   vgui_teammenu.cpp
   view.cpp
   voice_status.cpp
   ${COMMON_DIR}/parsemsg.cpp
-  ${DLLS_DIR}/crossbow.cpp
+#  ${DLLS_DIR}/crossbow.cpp
   ${DLLS_DIR}/crowbar.cpp
-  ${DLLS_DIR}/egon.cpp
+#  ${DLLS_DIR}/egon.cpp
   ${DLLS_DIR}/gauss.cpp
   ${DLLS_DIR}/handgrenade.cpp
-  ${DLLS_DIR}/hornetgun.cpp
+#  ${DLLS_DIR}/hornetgun.cpp
   ${DLLS_DIR}/mp5.cpp
   ${DLLS_DIR}/python.cpp
   ${DLLS_DIR}/rpg.cpp
@@ -184,6 +205,13 @@ set(SOURCE_FILES
   ${GAME_SHARED_DIR}/vgui_slider2.cpp
   ${GAME_SHARED_DIR}/voice_banmgr.cpp
   ${PUBLIC_DIR}/interface.cpp
+  ${DLLS_DIR}/briquet.cpp
+  ${DLLS_DIR}/fgrenade.cpp
+  ${DLLS_DIR}/fsniper.cpp
+  ${DLLS_DIR}/irgun.cpp
+  ${DLLS_DIR}/lflammes.cpp
+  ${DLLS_DIR}/m16.cpp
+  ${DLLS_DIR}/supergun.cpp
 )
 
 set(PM_SHARED_SOURCE_FILES
