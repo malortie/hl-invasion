@@ -40,6 +40,7 @@
 #include "netadr.h"
 #include "pm_shared.h"
 #include "music.h"
+#include "mod_config.h"
 
 #if !defined ( _WIN32 )
 #include <ctype.h>
@@ -619,7 +620,7 @@ void ClientCommand( edict_t *pEntity )
 		{
 			EMIT_SOUND( ENT(pev), CHAN_ITEM, "buttons/blip2.wav", 1, ATTN_NORM );
 
-			//désactive les caméras
+			//dï¿½sactive les camï¿½ras
 			
 			edict_t* pentCherche = NULL;
 
@@ -631,11 +632,11 @@ void ClientCommand( edict_t *pEntity )
 				{
 					CBaseEntity *pTarget = CBaseEntity::Instance(pentCherche);
 					pTarget->Use( CBaseEntity::Instance(pEntity), CBaseEntity::Instance(pEntity), USE_ON, 1 );
-					//la valeur 1 désactive la camera, 0 la déclenche
+					//la valeur 1 dï¿½sactive la camera, 0 la dï¿½clenche
 				}
 			}
 
-			// détruit certains triggers
+			// dï¿½truit certains triggers
 
 			pentCherche = NULL;
 
@@ -757,6 +758,10 @@ void ClientCommand( edict_t *pEntity )
 
 		if ( pPlayer->IsObserver() )
 			pPlayer->Observer_FindNextPlayer( std::atoi( CMD_ARGV(1) )?true:false );
+	}
+	else if ( FStrEq( pcmd, "modinfo" )  ) // Display mod info.
+	{
+		ClientPrint( &pEntity->v, HUD_PRINTCONSOLE, UTIL_VarArgs( "%s %s\n", HLSDK_MOD_DESCRIPTION, HLSDK_MOD_VERSION ) );
 	}
 	else if ( g_pGameRules->ClientCommand( GetClassPtr((CBasePlayer *)pev), pcmd ) )
 	{
