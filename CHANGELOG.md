@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [invasion/2.0.0] - 2021-10-16
+## [2.0.0] - 2021-11-07
 
 ### Added
 
@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CHudRadio added twice in HUD list
 - CHudLensFlare added twice in HUD list
 
-## [invasion/1.0.2] - 2018-01-04
+## [1.0.2] - 2018-01-04
 
 ### Fixed
 
@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Firing using the tank no longer plays players' active selected weapon firing sound
 - Missing fog as seen in the original mod
 
-## [invasion/1.0.1] - 2018-01-03
+## [1.0.1] - 2018-01-03
 
 ### Fixed
 
@@ -61,7 +61,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - IRgun not playing correct idle sequences
 - Gas ignition trigger correctly when players attempt to use their weapons on map l4m5
 
-## [invasion/1.0.0] - 2016-01-12
+## [1.0.0] - 2016-01-12
 
 ### Added
 
