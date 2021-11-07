@@ -3,7 +3,9 @@
 
 This Work is based on [Half-Life 1 SDK](https://github.com/ValveSoftware/halflife). The Half-Life 1 SDK [License](https://github.com/ValveSoftware/halflife/blob/master/LICENSE) apply.
 
-On top of the Half-Life 1 SDK License, the following terms and conditions also apply.
+This Work also incorporates code from [Half-Life: Invasion repository](https://github.com/jlecorre/hlinvasion). The Half-Life: Invasion Licence and terms of conditions also apply.
+
+On top of the aforementioned license(s), the following terms and conditions also apply.
 
 ---
 

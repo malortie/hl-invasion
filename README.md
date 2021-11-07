@@ -2,7 +2,7 @@
 
 ## About The Project
 
-This project uses the Half-Life 1 SDK. The code has been modified to work with newer and modern compilers, while preserving the original structure of the default SDK.
+This project uses the Half-Life 1 SDK and incorporates code from https://github.com/jlecorre/hlinvasion. The code has been modified to work with newer and modern compilers, while preserving the original structure of the default SDK.
 
 ## Supported Platforms
 
@@ -43,4 +43,5 @@ Thanks to the following resources for templates, guides and or general structura
 - [Apache Licence v2.0](https://www.apache.org/licenses/LICENSE-2.0)
 - [Best README Template](https://github.com/othneildrew/Best-README-Template)
 - [Contributor Covenant](https://www.contributor-covenant.org/)
+- [Half-Life: Invasion team](http://hlinvasion.free.fr/index_eng.htm)
 - [Keep a Changelog](https://keepachangelog.com/)
